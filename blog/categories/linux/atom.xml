@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: linux | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Fedora19をMac用のNASに！Netatalkの最新版のインストール]]></title>
+    <link href="http://www.yujilow.net/2014-11-25/how-to-install-new-netatalk"/>
+    <updated>2014-11-25T14:49:10+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-25/how-to-install-new-netatalk</id>
+    <content type="html"><![CDATA[<p>MacのためのNASを作ります。NetatalkをFedora 19にインストールします。<br/>
+Time Machineでバックアップが出来るようにします。<br/>
+OS X 10.9, 10.10(多分)対応です。</p>
+
+<!--more-->
+
+
+<h3>NASって？</h3>
+
+<p>NASとは、Network Attached Storageの頭文字をとったものです。<br/>
+つまりは、「ネットワーク越しに使える共有HDD」のことです。<br/>
+MacBookを使っている人はディスクの容量不足に悩むことがしばしばあると思います。NASがあれば解決ですね！</p>
+
+<h3>なぜ最新版？</h3>
+
+<p>yumリポジトリにもNetatalkは含まれています。<br/>
+しかし、リポジトリのNetatalkはバージョンが古く、現在のOS Xでは使用できません。<br/>
+{% img /images/post/netatalk01.png %}<br/>
+こんなかんじのアラートが出ます。</p>
+
+<p>最新版のnetatalkはバージョンが3系になっているので、それを使いましょう。</p>
+
+<h3>ビルドからインストール</h3>
+
+<h4>1. rpm-buildをインストール</h4>
+
+<p>rpmを作るために、rpm-buildというツールをインストールします。</p>
+
+<pre><code># yum -y install rpm-build
+</code></pre>
+
+<h4>2. 依存関係を解決</h4>
+
+<p>依存するライブラリをインストールします。</p>
+
+<pre><code># yum -y install cracklib-devel openssl-devel quota-devel libtool automake  autoconf libdb-devel pam-devel  tcp_wrappers-devel  avahi-devel libacl-devel  openldap-devel  libevent-devel dbus-devel dbus-glib-devel glib2-devel systemtap-sdt-devel libtdb-devel tracker-devel mariadb-devel
+</code></pre>
+
+<h4>3. ソースのダウンロードと展開</h4>
+
+<p><a href="http://netatalk.sourceforge.net/wiki/index.php">Netatalk Wiki</a>より、最新版のsrpmをダウンロードしてきます。<br/>
+<a href="http://netatalk.sourceforge.net/wiki/index.php/Category:Howtos">カテゴリ</a>から最新版の記事を見つけるのがいいでしょう。</p>
+
+<pre><code>$ wget http://path/to/file/netatalk-xxxxx.src.rpm
+$ rpm -ivh netatalk-xxxxx.src.rpm
+</code></pre>
+
+<p>ユーザーがありませんとか言われても無視しましょう。</p>
+
+<h4>4. ビルド</h4>
+
+<pre><code>$ cd ~/rpmbuild/SPECS/
+$ rpmbuild -bb netatalk.spec
+</code></pre>
+
+<p>成功すると、<code>~/rpmbuild/RPMS/x86_64</code>配下にrpmが生成されます。</p>
+
+<h4>5. インストール</h4>
+
+<pre><code>$ cd ~/rpmbuild/RPMS/x86_64/
+# rpm -ivh *.rpm
+</code></pre>
+
+<p>2つあるrpmを両方インストールします。すでにyumかなんかでnetatalkがインストールされている環境には、</p>
+
+<pre><code># rpm -Uvh *.rpm
+</code></pre>
+
+<p>を実行してください。<br/>
+これでインストールは終わりです。</p>
+
+<h4>6. 設定</h4>
+
+<p>netatalk 2系は、ボリューム設定がAppleVolume.defaultかなんかのファイルに記載してました。<br/>
+3系では、すべて/etc/afp.confに記述します。</p>
+
+<p>以下、自分の記述内容です。</p>
+
+<pre><code>[Global]
+log level = defalut:warn
+log file = /var/log/netatalk.log
+uam list = uams_clrtxt.so uams_dhx.so uams_dhx2.so
+
+; [Homes]
+; basedir regex = /home
+
+; [My AFP Volume]
+; path = /path/to/volume
+
+[Disk]
+  path = /mnt/disk
+
+[Time Machine]
+  path = /mnt/disk/timeMachine
+  time machine = yes
+  vol size limit = 512000
+</code></pre>
+
+<p>自分の環境では、主に<code>/mnt/disk</code>というパスを共有しています。<br/>
+TimeMachineも上記のように書くことができます。<br/>
+Globalにあるuam listは、ユーザの権限を指定するものらしいです。詳しくは謎です。勉強したら追記します。</p>
+
+<h4>7. 起動</h4>
+
+<pre><code># systemctl enable avahi-daemon
+# systemctl enable netatalk
+# systemctl start avahi-daemon
+# systemctl start netatalk
+</code></pre>
+
+<p>以上でlinuxのフォルダがMacから見えるはずです。お疲れ様でした。</p>
+
+<h3>2014/12/03追記</h3>
+
+<p>コメントより、上記のuamの設定は現行のOS Xでは必要がないという指摘をいただきました。<br/>
+uams_clrtxt.soは、古の時代に認証をクリアテキストで行っていた際の設定であり、残りの2つはデフォルトで設定されているそうです。<br/>
+修正した[Global]は、以下のようになります。</p>
+
+<pre><code>[Global]
+log level = defalut:warn
+log file = /var/log/netatalk.log
+</code></pre>
+
+<p>指摘してくださったHATさん、ありがとうございました。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[フォルダ内のすべてのフォルダを個々にzipに固めるシェルスクリプト]]></title>
+    <link href="http://www.yujilow.net/2014-11-16/script-for-all-folder-packing-each-zip"/>
+    <updated>2014-11-16T00:51:25+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-16/script-for-all-folder-packing-each-zip</id>
+    <content type="html"><![CDATA[<p>とあるフォルダ内のフォルダをzipにまとめます。</p>
+
+<!--more-->
+
+
+<h3>利用シーン</h3>
+
+<pre><code>写真/2014-11-15  
+写真/2014-11-16  
+写真/2014-11-17  
+</code></pre>
+
+<p>といったように写真をフォルダ分けしてました。これを、<br/>
+<code>
+写真/2014-11-15.zip  
+写真/2014-11-16.zip  
+写真/2014-11-17.zip  
+</code>
+といったようにzipでまとめます。実際こんなことがしたかったので作りました。</p>
+
+<h3>スクリプト</h3>
+
+<pre><code>#!/bin/bash
+
+rm result.sh
+touch result.sh
+chmod +x result.sh
+
+for f in *
+do
+    echo zip \"$f.zip\" \"$f\"/\* &gt;&gt; result.sh
+
+done
+</code></pre>
+
+<h3>動作詳細</h3>
+
+<ul>
+<li>すべての(ファイル|フォルダ)に対してzipコマンドで圧縮を行う</li>
+<li>上記の動作を行うスクリプトを生成する</li>
+</ul>
+
+
+<p>スクリプトを生成することのメリットは以下の感じ。</p>
+
+<ul>
+<li>入力ミスでファイルを失うことを防ぐ</li>
+<li>生成スクリプトの1行を取り出してテストできる</li>
+<li>ダブルクォーテーションでのエスケープが確実に行える</li>
+</ul>
+
+
+<p>つまり、びびりなスクリプト初心者はこうすると安全だってことでした。</p>
+
+<p>良ければ使ってください。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PyLoadをDebianにインストールする]]></title>
+    <link href="http://www.yujilow.net/2014-11-15/how-to-install-pyload"/>
+    <updated>2014-11-15T17:21:32+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-15/how-to-install-pyload</id>
+    <content type="html"><![CDATA[<p>{% img /images/post/pyload01.png %}<br/>
+サーバインストール型Download ManagerであるPyLoadをインストールします。</p>
+
+<!--more-->
+
+
+<h3>PyLoadって？</h3>
+
+<p>{% img /images/post/pyload03.png 800 600 %}<br/>
+<a href="http://pyload.org/">Pyload</a>とは、PythonベースのDownload Managerです。<br/>
+特徴はこんな感じ。(公式より)</p>
+
+<ul>
+<li>完全Pythonベース</li>
+<li>ハードウェア要求が低い</li>
+<li>たくさんのHostに対応(RapidShareなどのことでしょう)</li>
+<li>Premium, Recconect対応(RapidShareなどのことでしょう)</li>
+<li>WebInterface完備</li>
+<li>GPLライセンス</li>
+<li>QNAP(お高めNAS)にも搭載</li>
+</ul>
+
+
+<p>もちろん、httpプロトコルでのダウンロードにも対応しています。<br/>
+ローカルでisoをダウンロードしてる最中についスリープしちゃった！ていううっかりさんには最適なツールでしょう。</p>
+
+<h3>インストール</h3>
+
+<h4>1. debをダウンロードしてインストール</h4>
+
+<p>{% img /images/post/pyload02.png %}<br/>
+<a href="http://pyload.org/download">ここ</a>にアクセスして、debをダウンロードします。<br/>
+今回はdebianにインストールするので、pyload-v0.4.9-all.deb(執筆時点最新)をダウンロードしてきます。<br/>
+以下のコマンドでも多分ダウンロードできます。<br/>
+<code>
+$ wget -O pyload-v0.4.9-all.deb http://get.pyload.org/get/ubuntu
+</code><br/>
+その後、以下のコマンドでインストール</p>
+
+<pre><code>$ sudo dpkg -i pyload-v0.4.9-all.deb
+</code></pre>
+
+<p>「依存関係が解決できないよ」とか言われたら、<code>sudo apt-get install -f</code>してからもっかい上のコマンド打ってみましょう。<br/>
+以上でインストールは完了です。</p>
+
+<h4>2. 設定する</h4>
+
+<p>以下のコマンドでセットアップウィザードを起動できます。</p>
+
+<pre><code>$ pyLoadCore -s
+</code></pre>
+
+<p>すると、いろいろ聞かれます。いちいち答えましょう。<br/>
+聞かれる内容は以下のとおり。<br/>
+&#8220;`
+//言語設定。日本語はなし
+Choose your Language / Wähle deine Sprache ([en], de, fr, it, es, nl, sv, ru, pl, cs, sr, pt_BR): en</p>
+
+<p>//エンター
+When you are ready for system check, hit enter.</p>
+
+<h2>System Check</h2>
+
+<p>Python Version: OK
+pycurl: OK
+sqlite3: OK</p>
+
+<p>pycrypto: OK
+py-OpenSSL: missing</p>
+
+<p>py-imaging: OK
+tesseract: OK</p>
+
+<p>PyQt4: OK</p>
+
+<p>jinja2: OK
+beaker: OK
+JS engine: missing</p>
+
+<p>//エンター
+System check finished, hit enter to see your status report.</p>
+
+<h2>Status</h2>
+
+<p>Features available: container decrypting, automatic captcha decryption, GUI, Webinterface</p>
+
+<p>Featues missing:</p>
+
+<p>no SSL available
+This is needed if you want to establish a secure connection to core or webinterface.
+If you only want to access locally to pyLoad ssl is not usefull.</p>
+
+<p>no JavaScript engine found
+You will need this for some Click&#8217;N&#8217;Load links. Install Spidermonkey, ossp-js, pyv8 or rhino
+You can abort the setup now and fix some dependicies if you want.
+//JSエンジンが無いけど、続ける？
+Continue with setup? ([y]/n): y</p>
+
+<p>Do you want to change the config path? Current is /home/owner/.pyload
+If you use pyLoad on a server or the home partition lives on an iternal flash it may be a good idea to change it.
+//Configパス変える？
+Change config path? (y/[n]):</p>
+
+<p>Do you want to configure login data and basic settings?
+This is recommend for first run.
+//Basic Setupする？
+Make basic setup? ([y]/n):</p>
+
+<h2>Basic Setup</h2>
+
+<p>The following logindata is valid for CLI, GUI and webinterface.
+Username [User]: owner
+Password:
+Password (again):</p>
+
+<p>External clients (GUI, CLI or other) need remote access to work over the network.
+However, if you only want to use the webinterface you may disable it to save ram.
+Enable remote access ([y]/n):</p>
+
+<p>Language ([en], de, fr, it, es, nl, sv, ru, pl, cs, sr, pt_BR):  //言語
+Downloadfolder [Downloads]:  //DLフォルダ
+Max parallel downloads [3]: 5  //最大同時ダウンロード件数
+Use Reconnect? (y/[n]): y  //Recconectする？
+Reconnect script location [./reconnect.sh]:  //スクリプトの位置</p>
+
+<p>Do you want to configure webinterface?
+Configure webinterface? ([y]/n):  //WebInterfaceの設定する？</p>
+
+<h2>Webinterface Setup</h2>
+
+<p>Activate webinterface? ([y]/n):</p>
+
+<p>Listen address, if you use 127.0.0.1 or localhost, the webinterface will only accessible locally.
+Address [0.0.0.0]: 192.168.0.xxx  //<strong>注意！サーバのIPアドレスを指定しないと、外部から参照できなくなる</strong>
+Port [8000]:  //ポート番号</p>
+
+<p>pyLoad offers several server backends, now following a short explanation.
+builtin: Default server, best choice if you dont know which one to choose.
+threaded: This server offers SSL and is a good alternative to builtin.
+fastcgi: Can be used by apache, lighttpd, requires you to configure them, which is not too easy job.
+lightweight: Very fast alternative written in C, requires libev and linux knowlegde.
+        Get it from here: <a href="https://github.com/jonashaag/bjoern,">https://github.com/jonashaag/bjoern,</a> compile it
+        and copy bjoern.so to module/lib</p>
+
+<p>Attention: In some rare cases the builtin server is not working, if you notice problems with the webinterface
+come back here and change the builtin server to the threaded one here.
+Server ([builtin], threaded, fastcgi, lightweight):</p>
+
+<p>Setup finished successfully.
+Hit enter to exit and restart pyLoad</p>
+
+<pre><code>
+気をつけなきゃいけないところは、IPアドレスの設定くらいだと思います。ほかはエンター押しとけば何とかなります。  
+
+####3. 起動
+
+起動します。以下のコマンドを打つと、サーバが起動します。  
+</code></pre>
+
+<p>$ pyLoadCore
+&#8220;`</p>
+
+<p>それでは、<a href="http://">http://</a>[IP_ADDR]:8000にアクセスしてみましょう。PyLoadの画面が表示されましたか？</p>
+
+<h3>まとめ</h3>
+
+<p>まだインストールしかしてないので、使い勝手とかはわかりません。<br/>
+ChromeとかFirefoxとかのaddonや、Android/iOSのクライアントアプリがあるらしいので、便利に使えそうです。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PackStackを使ったOpenStackインストールが簡単すぎる]]></title>
+    <link href="http://www.yujilow.net/2014-11-10/rdo-packstack-is-very-easy"/>
+    <updated>2014-11-10T05:17:02+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-10/rdo-packstack-is-very-easy</id>
+    <content type="html"><![CDATA[<p>{% img /images/post/rdo01.jpg 1000 800 %}
+RDOとは、RedHat系OSでOpenStackを使おう！という団体だそうです。上のそれはロゴです。<br/>
+RDOが提供している、<strong>PackStack</strong>というOpenStackインストールツールを使ってみたところ、すごかったのでメモしておきます。</p>
+
+<!--more-->
+
+
+<h3>参照元(ほぼ内容)</h3>
+
+<p><a href="https://openstack.redhat.com/Quickstart">https://openstack.redhat.com/Quickstart</a></p>
+
+<h3>大前提</h3>
+
+<ul>
+<li>CentOS7を使用
+
+<ul>
+<li>7以外じゃ動かないらしい</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>小前提(実行環境)</h3>
+
+<ul>
+<li>NetInstallを行った</li>
+<li>使用リポジトリは、<a href="http://ftp.tsukuba.wide.ad.jp/Linux/centos/7/os/x86_64/">http://ftp.tsukuba.wide.ad.jp/Linux/centos/7/os/x86_64/</a></li>
+<li>「最小構成」を選択</li>
+<li>ネットワーク設定はインストール時にすませた</li>
+<li>IPの固定もインストール時に行った</li>
+</ul>
+
+
+<h3>やりかた</h3>
+
+<h4>1. yum update</h4>
+
+<pre><code>$ sudo yum -y update
+</code></pre>
+
+<h4>2. RDOのリポジトリをインストール</h4>
+
+<pre><code>$ sudo yum install -y https://rdo.fedorapeople.org/rdo-release.rpm
+</code></pre>
+
+<h4>3. PackStackをインストール</h4>
+
+<pre><code>$ sudo yum -y install openstack-packstack
+</code></pre>
+
+<h4>4. PackStackのAllInOneインストールを実行</h4>
+
+<pre><code>$ sudo packstack --allinone
+</code></pre>
+
+<p>ほんとは &ndash;gen-answer-fileして設定項目をいじってからインストールするのがいいんでしょうけど。<br/>
+知識ないので、packstackにすべておまかせです。</p>
+
+<h4>5. おわり(！)</h4>
+
+<p>スクショ貼る必要もないほど簡単ですね。<br/>
+あとは、<a href="http://">http://</a>[IP ADDRESS]/dashboard にアクセスして、<br/>
+home直下に作成されたkeystonerc_adminの中に書いてあるパスワードを使ってログインすればOKです。</p>
+
+<p>こんなに簡単にOpenStackが構築できるとは、偉大なる有志たちに感謝です。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CentOSでありがちな恥ずかしい失敗 NetInstallへん]]></title>
+    <link href="http://www.yujilow.net/2014-11-10/warning-for-centos-7-netinstall"/>
+    <updated>2014-11-10T04:49:16+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-10/warning-for-centos-7-netinstall</id>
+    <content type="html"><![CDATA[<p><img src="http://www.yujilow.net/images/post/centos00.jpg"><br/>
+ものすごく恥ずかしい話をします。</p>
+
+<!--more-->
+
+
+<h3>NetInstallをした</h3>
+
+<p>CentOS7のNetInstallをしました。<br/>
+CentOSは、Debianと違ってNetInstall時にリポジトリのURLを要求するんですね。知らなかった。<br/>
+この時点ですでに情弱だったんですが、、、</p>
+
+<h3>リポジトリが追加されない？？</h3>
+
+<p>利用したリポジトリは<br/>
+<code>
+http://ftp.tsukuba.wide.ad.jp/Linux/centos/7/os/x86_64/
+</code>
+です。あってますよね。<br/>
+<img src="http://www.yujilow.net/images/post/centos01.png"><br/>
+何度リポジトリの追加を行っても、「URLを確認して下さい」と怒られてしまう。赤枠のとこ。<br/>
+合ってるわ！！と思いながらも何度も入力しても、一向にダメ。<br/>
+俺はネットインストールに向いてないんだ。DVDのISOをダウンロードしてこよう、、、と思いました。</p>
+
+<h3>ネットワークが、、、？</h3>
+
+<p>ふと、「他のバツを解決してみるか」と思ったんですよ。<br/>
+それで、下の方をスクロールしてみたら、、、</p>
+
+<p><img src="http://www.yujilow.net/images/post/centos02.png"><br/>
+ネットワークつながってないやんけ。</p>
+
+<p>そりゃ、リポジトリ見つからんわ。</p>
+
+<p>ネットワークを接続したら、無事リポジトリは見つかりました。<br/>
+<strong>CentOSって、自分でONにしないと何もやってくれない！！！</strong>って思った次第です。</p>
+]]></content>
+  </entry>
+  
+</feed>

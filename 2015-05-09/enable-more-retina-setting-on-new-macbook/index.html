@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>新しいMacBookで1680×1050(Retina)を表示する - Yujilow&#8217;s Note</title>
+  <meta name="author" content="yujilow">
+
+  
+  <meta name="description" content="">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.yujilow.net/2015-05-09/enable-more-retina-setting-on-new-macbook">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/bootstrap/bootstrap.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/bootstrap/responsive.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/syntax/syntax.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    body {
+      padding-bottom: 40px;
+    }
+    h1 {
+      margin-bottom: 15px;
+    }
+    img {
+      max-width: 100%;
+    }
+    .sharing, .meta, .pager {
+      margin: 20px 0px 20px 0px;
+    }
+    .page-footer p {
+      text-align: center;
+    }
+  </style>
+  <script src="/javascripts/libs/jquery.js"></script>
+  <script src="/javascripts/libs/modernizr-2.0.js"></script>
+  <script src="/javascripts/libs/bootstrap.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Yujilow's Note" type="application/atom+xml">
+  
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-46054416-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+	<meta name="google-site-verification" content="DWyBA5Ncz5c9ttvzx2wWXu2Ut58qEN2Ab0xvYVskycs" />
+</head>
+
+<body   >
+  <nav role="navigation"><div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+
+      <a class="brand" href="/">Yujilow&#8217;s Note</a>
+
+      <div class="nav-collapse">
+        <ul class="nav">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+
+        <ul class="nav pull-right" data-subscription="rss">
+          <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+          
+        </ul>
+
+        
+          <form class="pull-right navbar-search" action="https://www.google.com/search" method="get">
+            <fieldset role="search">
+              <input type="hidden" name="q" value="site:www.yujilow.net" />
+              <input class="search-query" type="text" name="q" results="0" placeholder="Search"/>
+            </fieldset>
+          </form>
+        
+      </div>
+    </div>
+  </div>
+</div>
+</nav>
+  <div class="container">
+    <div class="row-fluid">
+      
+<article class="hentry span9" role="article">
+
+
+  
+  <header class="page-header">
+    
+      <h2 class="entry-title">新しいMacBookで1680×1050(Retina)を表示する</h2>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-09T23:29:02+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:29 pm</span></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+
+<div class="entry-content"><p>新しいMacBook購入しました。Retinaがきれいですね。<br/>
+さて、新しいMacBook(以下、Mac)は、表示できる最大解像度が、1440×900なんですね。<br/>
+これは、MacBook Air 13インチと同サイズです。<br/>
+せっかく高解像度のディスプレイを持っているんだから、もうちょっと広く表示したい。<br/>
+表示させてみました。</p>
+
+<!--more-->
+
+
+<h3>QuickRes Proを購入</h3>
+
+<p>どこかで「QuickResを使うと、高解像度が選べる」という情報を手に入れたので、購入しました。<br/>
+結果、選べず、、、がっくしでした。</p>
+
+<p>無理やり、高解像度が選べるように設定しました。</p>
+
+<h3>設定ファイルを編集</h3>
+
+<p>現在のディスプレイが、どの設定ファイルを使っているかを確認します。必要なのは、<code>DisplayVendorID</code>と<code>DisplayProductID</code>です</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ioreg -lw0 |grep IODisplayPrefsKey</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>すると、以下の様な感じの出力を得ます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>| | | | | |       "IODisplayPrefsKey" = "IOService:/AppleACPIPlatformExpert/PCI0@0/AppleACPIPCI/IGPU@2/AppleIntelFramebuffer@0/display0/AppleBacklightDisplay-610-a027"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>重要なのは、最後の<code>AppleBacklightDisplay-610-a027</code>の部分です。この場合、<code>DisplayVendorID = 610</code>、<code>DisplayProductID = a027</code>となります。</p>
+
+<p>IDを確認したら、対応するファイルを開きます。ファイルの場所は、</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/System/Library/Displays/Overrides/DisplayVendorID-610/DisplayProductID-a027</span></code></pre></td></tr></table></div></figure>
+
+
+<p>です。VendorIDとProductIDの場所を間違えずに開きます。<br/>
+中身は、xmlの形式になっています。</p>
+
+<p>タグ<code>&lt;data&gt;</code> で囲まれている場所が、ディスプレイの解像度設定です。<br/>
+以下を参考にして、使いたい解像度を設定してあげます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;data&gt;AAAPAAAACWAAAAAB&lt;/data&gt; &lt;!-- 1920x1200 --&gt;
+</span><span class='line'>&lt;data&gt;AAANIAAACDQAAAAB&lt;/data&gt; &lt;!-- 1680x1050 --&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>dataのとこの最後に追加してあげればOKだそうです。設定例は以下の感じです。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>   &lt;key&gt;scale-resolutions&lt;/key&gt;
+</span><span class='line'>   &lt;array&gt;
+</span><span class='line'>     &lt;data&gt;AAAIAAAABQAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAKAAAABaAAAAABACAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAHgAAABLAAAAABACAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAHgAAABDgAAAABACAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAFAAAAAtAAAAABACAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAFoAAAA4QAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAFAAAAAyAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAEgAAAAtAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAEAAAAAwAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAADIAAAAlgAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAACgAAAAeAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAALQAAABwgAAAAJAKAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAKAAAABkAAAAAJAKAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAJAAAABaAAAAAJAKAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAIAAAABQAAAAAJAKAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAPAAAACWAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAANIAAACDQAAAAB&lt;/data&gt;
+</span><span class='line'>   &lt;/array&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>設定が終わったら、Macを再起動します。<br/>
+うまく行ったら、QuickResで高解像度が選べるようになってます。</p>
+
+<h3>高解像度にしてみて</h3>
+
+<p>ちょっと目が痛い。</p>
+
+<h3>参考</h3>
+
+<p><a href="https://discussions.apple.com/thread/4056198?tstart=0">Missing high res options on Retina MacBook Pro</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">yujilow</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-05-09T23:29:02+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:29 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mac/'>mac</a>
+  
+</span>
+
+
+    </p>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- article ad responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5090526240244888"
+     data-ad-slot="4282560655"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.yujilow.net/2015-05-09/enable-more-retina-setting-on-new-macbook" data-via="yujilow1220" data-counturl="http://www.yujilow.net/2015-05-09/enable-more-retina-setting-on-new-macbook" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    
+    <section>
+      <h1>Comments</h1>
+      <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </section>
+    
+    <ul class="pager">
+      
+      <li class="previous"><a class="basic-alignment left"
+        href="/2015-04-30/i-cant-sleep-well" title="Previous Post:
+        最近よく眠れない原因と対策">&laquo; 最近よく眠れない原因と対策</a></li>
+      
+      <li><a href="/blog/archives">Blog Archives</a></li>
+      
+      <li class="next"><a class="basic-alignment right" href="/2015-06-02/battery-bench-google-chrome-and-safari"
+        title="Next Post: GoogleChromeはどのくらい電池食いなのか調べてみた">GoogleChromeはどのくらい電池食いなのか調べてみた
+        &raquo;</a></li>
+      
+    </ul>
+  </footer>
+</article>
+
+<aside class="sidebar-nav span3">
+  
+    <section>
+  <h2>About Me</h2>
+  <img src="https://pbs.twimg.com/profile_images/378800000230460481/968d573106993f335d3151fa56de6906.jpeg" width="100px" height="100px">
+  <p></p>
+  <p>yujilow</p>
+  <p>PCがちょっと好きな大学生</p>
+  <p><a href="https://github.com/yujilow1220/note">More About</a></p>
+</section>
+<h3>Follow Me!</h3>
+<a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.yujilow.net%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-big_2x.png' alt='follow us in feedly' width='131' height='56'></a>
+<div style="margin-bottom:10px;"></div>
+<section>
+  <h2>Tag Cloud</h2>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 141.25%'>android(11)</a> <a href='/blog/categories/app' style='font-size: 115.0%'>app(4)</a> <a href='/blog/categories/cloud' style='font-size: 160.0%'>cloud(16)</a> <a href='/blog/categories/etc' style='font-size: 148.75%'>etc(13)</a> <a href='/blog/categories/ios-android' style='font-size: 103.75%'>ios android(1)</a> <a href='/blog/categories/java' style='font-size: 103.75%'>java(1)</a> <a href='/blog/categories/kimchi' style='font-size: 107.5%'>kimchi(2)</a> <a href='/blog/categories/kvm' style='font-size: 103.75%'>kvm(1)</a> <a href='/blog/categories/linux' style='font-size: 130.0%'>linux(8)</a> <a href='/blog/categories/mac' style='font-size: 115.0%'>mac(4)</a> <a href='/blog/categories/mobile' style='font-size: 115.0%'>mobile(4)</a> <a href='/blog/categories/network' style='font-size: 103.75%'>network(1)</a> <a href='/blog/categories/node' style='font-size: 115.0%'>node(4)</a> <a href='/blog/categories/octopress' style='font-size: 103.75%'>octopress(1)</a> <a href='/blog/categories/openvpn' style='font-size: 103.75%'>openvpn(1)</a> <a href='/blog/categories/owncloud' style='font-size: 107.5%'>owncloud(2)</a> <a href='/blog/categories/pc' style='font-size: 103.75%'>pc(1)</a> <a href='/blog/categories/subsonic' style='font-size: 103.75%'>subsonic(1)</a> <a href='/blog/categories/web' style='font-size: 103.75%'>web(1)</a> <a href='/blog/categories/zfs' style='font-size: 103.75%'>zfs(1)</a> </span>
+</section>
+<section>
+  <h2>Categories</h2>
+    <ul id="category-list"><li><a href='/blog/categories/android/'>android (11)</a></li><li><a href='/blog/categories/app/'>app (4)</a></li><li><a href='/blog/categories/cloud/'>cloud (16)</a></li><li><a href='/blog/categories/etc/'>etc (13)</a></li><li><a href='/blog/categories/ios-android/'>ios android (1)</a></li><li><a href='/blog/categories/java/'>java (1)</a></li><li><a href='/blog/categories/kimchi/'>kimchi (2)</a></li><li><a href='/blog/categories/kvm/'>kvm (1)</a></li><li><a href='/blog/categories/linux/'>linux (8)</a></li><li><a href='/blog/categories/mac/'>mac (4)</a></li><li><a href='/blog/categories/mobile/'>mobile (4)</a></li><li><a href='/blog/categories/network/'>network (1)</a></li><li><a href='/blog/categories/node/'>node (4)</a></li><li><a href='/blog/categories/octopress/'>octopress (1)</a></li><li><a href='/blog/categories/openvpn/'>openvpn (1)</a></li><li><a href='/blog/categories/owncloud/'>owncloud (2)</a></li><li><a href='/blog/categories/pc/'>pc (1)</a></li><li><a href='/blog/categories/subsonic/'>subsonic (1)</a></li><li><a href='/blog/categories/web/'>web (1)</a></li><li><a href='/blog/categories/zfs/'>zfs (1)</a></li></ul>
+</section>
+<section class="well">
+  <ul id="recent_posts" class="nav nav-list">
+    <li class="nav-header">Recent Posts</li>
+    
+      <li class="post">
+        <a href="/2015-12-28/zfs-was-repaired">RAIDZが壊れた絶望から復活まで</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015-09-23/esxi-new-official-web-client">VMWare ESXi無償版対応公式Webクライアント ESXi Embedded Host Clientを試してみた</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015-07-17/atok-is-the-best-ime-for-android-thinclient">Android + ATOKはVDIやSSHクライアントに最適だった</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015-06-02/battery-bench-google-chrome-and-safari">GoogleChromeはどのくらい電池食いなのか調べてみた</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015-05-09/enable-more-retina-setting-on-new-macbook">新しいMacBookで1680×1050(Retina)を表示する</a>
+      </li>
+    
+  </ul>
+</section>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- new sidebar ad -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:160px;height:600px"
+     data-ad-client="ca-pub-5090526240244888"
+     data-ad-slot="6711541854"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo" class="page-footer"><hr>
+<p>
+  Copyright &copy; 2015 - yujilow -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'yujilowsnote';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.yujilow.net/2015-05-09/enable-more-retina-setting-on-new-macbook';
+        var disqus_url = 'http://www.yujilow.net/2015-05-09/enable-more-retina-setting-on-new-macbook';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: node | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/node/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[node.jsでWebアプリケーションをつくってみる その4 - Express4でMongoDBを使う]]></title>
+    <link href="http://www.yujilow.net/2014-11-03/how-to-use-mongodb-for-node"/>
+    <updated>2014-11-03T21:07:15+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-03/how-to-use-mongodb-for-node</id>
+    <content type="html"><![CDATA[<p>{% img /images/post/mongo01.png %}
+NoSQLに分類されるデータベースシステムであるMongoDBを、node.js + Express4環境で使ってみましょう。</p>
+
+<!--more-->
+
+
+<h3>MongoDBの特徴</h3>
+
+<ul>
+<li>カラム、レコードの概念がない</li>
+<li>オブジェクトを直接DBに保存できる</li>
+</ul>
+
+
+<h3>つかいかた</h3>
+
+<h4>1. package.jsonに記述</h4>
+
+<p>mongooseというモジュールを追加します。<br/>
+以下の記述をpackage.jsonに追加します。<br/>
+<code>
+"mongoose": "*"
+</code>
+その後、<code>npm install</code>します。
+これでExpress側の設定はおわり。</p>
+
+<h4>2. MongoDBをPCにインストール</h4>
+
+<p>Macなら、brewを用いて<br/>
+<code>
+$ brew install mongo
+</code>
+でインストール出来ました。その他は調べてください。<br/>
+これでMongoDBを使用する準備が出来ました。</p>
+
+<h4>3. MongoDBを起動する</h4>
+
+<p><strong>db</strong>フォルダをプロジェクトルートに作成して、<br/>
+<code>
+$ mongod --dbpath ./db
+</code>
+で、起動します。</p>
+
+<h4>4. app.jsに機能を書いていく</h4>
+
+<p>基本的な流れは、</p>
+
+<ol>
+<li>mongooseをrequire</li>
+<li>Schemaを取得</li>
+<li>オブジェクトスキーマを作成</li>
+<li>スキーマからモデルを作成</li>
+<li>モデルオブジェクトを生成</li>
+<li>モデルを使ってDB操作</li>
+</ol>
+
+
+<p>と言った感じです。<br/>
+流れを一気に書いていきます。</p>
+
+<pre><code>var mongoose = require("mongoose");  //require
+var Schema = mongoose.Schema;   //スキーマ取得
+var TweetSchema = new Schema({  //目的のスキーマを作成
+    text: String,
+    good: Boolean
+});
+mongoose.model('Tweet', TweetSchema);  //スキーマからモデル作成
+var Tweet = mongoose.model('Tweet');  //モデルできあがり
+
+mongoose.connect('mongodb://localhost/twitter'); //mongoDBに接続
+
+var tweet = new Tweet();
+tweet.text = "this is tweet";
+tweet.good = true;
+
+tweet.save(function(err){  //DBに保存
+    if(err){
+        console.log("error occured. "+err);
+    }
+});
+</code></pre>
+
+<p>こんなかんじで使っていきます。ここまでで、データの永続化は完了です。<br/>
+あとの流れはfind()で見つけて操作してupdate()で更新したり、remove()したりです。これからまた勉強していきます。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[node.jsでWebアプリケーションをつくってみる その3 - Express4とSocket.ioを使う際の注意点]]></title>
+    <link href="http://www.yujilow.net/2014-11-02/warning-for-express4-and-socketio"/>
+    <updated>2014-11-02T20:54:06+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-02/warning-for-express4-and-socketio</id>
+    <content type="html"><![CDATA[<p>sailsを一旦諦めて、Express4系 + Socket.ioを使ってみました。<br/>
+その際に、/socket.io/socket.io.jsが生成されない現象でハマったので、メモします。</p>
+
+<!--more-->
+
+
+<h3>Express4はだいぶちがう</h3>
+
+<p>Expressはsailsの内部でも使用されている、node.jsのwebアプリケーションフレームワークです。<br/>
+Express3とExpress4でだいぶ書き方が変わってしまったのが特徴です。</p>
+
+<h3>bin/www</h3>
+
+<p>主な変更点として、<strong>bin/www</strong>というファイルが追加されたことが挙げられます。<br/>
+Express3までは、アプリケーション実行の際に</p>
+
+<pre><code>$ node app.js
+</code></pre>
+
+<p>と実行していたのに対し、Express4では、</p>
+
+<pre><code>node bin/www
+</code></pre>
+
+<p>と実行する必要があります。実際には内部でコマンドがラップされ、<code>npm start</code>と打てばいいんですが。</p>
+
+<h3>Socket.ioではまった</h3>
+
+<p>Socket.ioの内容を、記事頼りにapp.js内部に書いていました。すると、どうしても動かない。<br/>
+/socket.io/socket.io.jsが404となってしまいます。<br/>
+これはsocket.ioが実行される際に自動生成されるファイルです。設定がおかしいみたいでした。</p>
+
+<h3>解決</h3>
+
+<p>解決方法は、<strong>bin/www内部にsocket.ioの記述をする</strong>というものでした。</p>
+
+<p>変更後のbin/wwwを以下に示します。</p>
+
+<pre><code>#!/usr/bin/env node
+var debug = require('debug')('io-test');
+var app = require('../app');
+
+app.set('port', process.env.PORT || 3000);
+
+var server = app.listen(app.get('port'), function() {
+  debug('Express server listening on port ' + server.address().port);
+});
+
+/*ここから追加*/
+
+var io = require('socket.io').listen(server);
+io.sockets.on('connection', function (socket) {
+
+  console.log('a user connected');
+
+  socket.on('chat message', function(msg){
+    console.log('message: ' + msg);
+    io.emit('chat message', msg);
+  });
+
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+
+});
+
+/*ここまで追加*/
+</code></pre>
+
+<p>こうすることで、動作させることが出来ました。</p>
+
+<h3>結論</h3>
+
+<p>Expressはバージョンによって違いが大きいから、ググるときは&#8221;Express 4&#8221;と指定しよう。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[node.jsでWebアプリケーションをつくってみる その2 コントローラに新規アクションを追加]]></title>
+    <link href="http://www.yujilow.net/2014-10-27/how-to-create-new-action-into-sails-controller"/>
+    <updated>2014-10-27T12:31:27+09:00</updated>
+    <id>http://www.yujilow.net/2014-10-27/how-to-create-new-action-into-sails-controller</id>
+    <content type="html"><![CDATA[<p>題名のとおりなんですが、新規アクションを追加する段階で結構ハマってしまいました。<br/>
+メモメモ。</p>
+
+<!--more-->
+
+
+<h3>コントローラをgenerateする</h3>
+
+<pre><code>$ sails generate controller test index
+</code></pre>
+
+<p>ってすると、&#8221;index&#8221;というアクションを持つ&#8221;test&#8221;というコントローラを作ることができます。<br/>
+このアクションには、<a href="http://localhost:1337/test/index">http://localhost:1337/test/index</a> 的なURLでアクセスできます。<br/>
+ここまではいいと。</p>
+
+<h3>アクションが追加できない？</h3>
+
+<p>生成されたコントローラは以下のとおり。 /api/controllers/xxxController.jsという名前で生成されます。<br/>
+&#8220;`javascript
+/<em>*
+ * TestController
+ *
+ * @description :: Server-side logic for managing tests
+ * @help        :: See <a href="http://links.sailsjs.org/docs/controllers">http://links.sailsjs.org/docs/controllers</a>
+ </em>/</p>
+
+<p>module.exports = {</p>
+
+<p>  /<em>*
+   * <code>TestController.index()</code>
+   </em>/
+  index: function (req, res) {
+    return res.json({
+      todo: &lsquo;index() is not implemented yet!&rsquo;
+    });
+  }
+};</p>
+
+<pre><code>
+ここに、このように追加したんですね。そのまんま。  
+</code></pre>
+
+<p>/<em>*
+ * TestController
+ *
+ * @description :: Server-side logic for managing tests
+ * @help        :: See <a href="http://links.sailsjs.org/docs/controllers">http://links.sailsjs.org/docs/controllers</a>
+ </em>/</p>
+
+<p>module.exports = {</p>
+
+<p>  /<em>*
+   * <code>TestController.index()</code>
+   </em>/
+  index: function (req, res) {
+    return res.json({
+      todo: &lsquo;index() is not implemented yet!&rsquo;
+    });
+  }</p>
+
+<p>  test: function (req, res) {
+    return res.json({
+      todo: &lsquo;index() is not implemented yet!&rsquo;
+    });
+  }</p>
+
+<p>};
+&#8220;`</p>
+
+<p>そしたら、エラーが出てsailsが起動しない！</p>
+
+<h3>解決</h3>
+
+<pre><code>SyntaxError: Unexpected token ;
+    at Module._compile (module.js:439:25)
+    at Object.Module._extensions..js (module.js:474:10)
+    at Module.load (module.js:356:32)
+    at Function.Module._load (module.js:312:12)
+    at Module.require (module.js:364:17)
+    at require (module.js:380:17)
+    at /Users/owner/.nvm/v0.10.25/lib/node_modules/sails/node_modules/include-all/index.js:129:29
+    at Array.forEach (native)
+    at requireAll (/Users/owner/.nvm/v0.10.25/lib/node_modules/sails/node_modules/include-all/index.js:44:9)
+    at buildDictionary (/Users/owner/.nvm/v0.10.25/lib/node_modules/sails/node_modules/sails-build-dictionary/index.js:68:14)
+</code></pre>
+
+<p>こんなエラーが出たわけですよ。</p>
+
+<p>この中で、Array.forEachという項目が気になりまして。自動生成した他のコントローラをよーく見てみると、</p>
+
+<pre><code class="javascript">module.exports = {
+
+
+
+  /**
+   * `TestController.index()`
+   */
+  index: function (req, res) {
+    return res.json({
+      todo: 'index() is not implemented yet!'
+    });
+  },
+
+
+  test: function (req, res) {
+    return res.json({
+      todo: 'index() is not implemented yet!'
+    });
+  }
+
+};
+</code></pre>
+
+<p>アクションの終端にカンマが入っていました。つまり、module.exportsの中身はjsonで記述されていたんですね。<br/>
+ただのfunctionだと思って騙されてました、、、TestControllerにもカンマを追加したら、無事起動しました。</p>
+
+<p>sailsの洗礼を受けました。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[node.jsでWebアプリケーションをつくってみる その1 - sailsを使う]]></title>
+    <link href="http://www.yujilow.net/2014-10-27/node-js-and-sails"/>
+    <updated>2014-10-27T10:47:19+09:00</updated>
+    <id>http://www.yujilow.net/2014-10-27/node-js-and-sails</id>
+    <content type="html"><![CDATA[<p>node.jsで今風なweb開発するよ！<br/>
+Play!しか書けないのは今時おそろしいからね！</p>
+
+<!--more-->
+
+
+<h3>フレームワークの選択</h3>
+
+<p>node.js単体でもサーバサイドアプリケーションは書くことができます。<br/>
+しかし、それだとちょっとめんどくさいので、Webフレームワークを使うことにしました。</p>
+
+<p>選択したものは、<a href="http://sailsjs.org/">Sails</a>というフレームワーク。</p>
+
+<p>{% img /images/post/hyper-v.png %}</p>
+
+<h3>Sailsって？</h3>
+
+<p>Sailsとは、ミドルウェアにExpress.jsを利用したWebフレームワークです。<br/>
+名前の通りRailsを意識しており、<br/>
+<code>
+$ sails new app_name
+</code><br/>
+で新規アプリを作成したり、<br/>
+<code>
+$ sails generate controller test index
+</code><br/>
+なんかでコントローラーを自動生成するあたり、railsを踏襲してますね。</p>
+
+<p>これでTwitterと連携するWebアプリを作ってみます。</p>
+]]></content>
+  </entry>
+  
+</feed>

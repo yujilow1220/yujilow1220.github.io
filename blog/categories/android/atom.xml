@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: android | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/android/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Android + ATOKはVDIやSSHクライアントに最適だった]]></title>
+    <link href="http://www.yujilow.net/2015-07-17/atok-is-the-best-ime-for-android-thinclient"/>
+    <updated>2015-07-17T23:26:08+09:00</updated>
+    <id>http://www.yujilow.net/2015-07-17/atok-is-the-best-ime-for-android-thinclient</id>
+    <content type="html"><![CDATA[<p>AndroidとATOKを利用すると、sshとrdpがものすごく使いやすくなります。ほんとです。</p>
+
+<!--more-->
+
+
+<h3>事の発端</h3>
+
+<p>外出先でどうにか仮想Windowsをいじくりたいと思っていました。<br/>
+できれば、まるで手元でWindowsが動いているかのような操作感で。<br/>
+VAIO Type Pみたいな小さくて電池がもつWindowsパソコンが作れるんじゃないかと思うんですが、なかなか出てこないです。<br/>
+需要がないんですね。しょうがないので、Androidタブレットでどうにかします。</p>
+
+<h3>Android VDIに必要な要件</h3>
+
+<p>ただAndroidタブレットを利用するだけじゃ、VDIとは呼べません。<br/>
+<strong>ハードウェアキーボードでの文字入力がしっかりできれば</strong>おそらく問題なく運用できると思います。<br/>
+その要件は、僕が探した中では<strong>ATOK</strong>のみが満たせるものでした。</p>
+
+<h3>他のIMEじゃダメな理由</h3>
+
+<p>普段使いではGoogle日本語入力を使っていました。<br/>
+その中でわざわざATOKを利用することにしたのには、あるひとつの利点があったからです。<br/>
+それは、<strong>英字入力が入力後即確定される</strong>という点です。</p>
+
+<p>多くのIMEでは、英字入力の際も日本語入力と同様に変換候補が現れます。<br/>
+変換を確定するためには、キーボードのエンターを押す必要がありますね。<br/>
+SSHクライアントを例に取りましょう。<br/>
+&ldquo;ls&#8221;を入力し、出力を得るためには<br/>
+&#8220;ls&#8221;入力 → エンターで確定 → エンターで入力確定
+というプロセスを踏みます。つまり、1コマンドでエンターを2回押す必要があるのです。<br/>
+これは普通の運用はできないです。</p>
+
+<h3>ATOKを使うと</h3>
+
+<p>ATOKは、ハードウェアキーボードを利用した場合、英字は予測変換候補が出ません。<br/>
+普通のPCのキーボードと同様に入力することができます。<br/>
+SSHの使い勝手も<strong>通常のターミナルとほぼ同様のものとなります</strong>。<br/>
+RDPも<strong>Windowsを扱うようにキーボードを利用することができます</strong>。<br/>
+まさに最強です。</p>
+
+<h3>まとめ</h3>
+
+<p>Androidでシンクライアントが実現できそうだということがわかりました。<br/>
+これなら、Windowsはkvm上で動作させ、Androidスティックで操作するといった机の上がきれいな環境ができあがり、ほくほくです。<br/>
+スタバでスタイリッシュにsshが叩けそうです。やったね！</p>
+
+<iframe src="http://rcm-fe.amazon-adsystem.com/e/cm?t=yjee-22&o=9&p=8&l=as1&asins=B00GIKEONA&ref=tf_til&fc1=000000&IS2=1&lt1=_blank&m=amazon&lc1=0000FF&bc1=000000&bg1=FFFFFF&f=ifr" style="width:120px;height:240px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+
+
+<p>ATOK、是非買いましょう。僕は試用期間があと15日間あるのであとで買います。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android - スリープ中にバックグラウンドで定期的にPOSTを送りたい]]></title>
+    <link href="http://www.yujilow.net/2015-03-18/can-timer-run-with-background"/>
+    <updated>2015-03-18T18:37:47+09:00</updated>
+    <id>http://www.yujilow.net/2015-03-18/can-timer-run-with-background</id>
+    <content type="html"><![CDATA[<p>開発中のアプリで、「バックグラウンドで定期的にサーバにPOSTする」という機能を付ける必要があります。<br/>
+それで、Service内でTimerを動かし、そのTimer内でPOSTする、普通のコードを書きました。<br/>
+すると、スリープ中にPOSTが実行されないという現象が起こりました。それだとだめなんだよ、、<br/>
+原因を分析してみました。</p>
+
+<!--more-->
+
+
+<h3>電源を接続していると</h3>
+
+<p>電源を接続している場合、スリープでもきちんとPOSTできていることが確認できました。てことは、バッテリー動作での省電力機能が働いているからなんでしょうね。<br/>
+省電力機能でどこの段階で殺されているのか、確かめます。</p>
+
+<h3>無線デバッグを使う</h3>
+
+<p>電源に接続しない状態でLogCatを拾うために、無線でバッグを行います。<br/>
+<a href="http://www.absolute-keitarou.net/blog/?p=874#adb">この</a>ページを参考にしました。</p>
+
+<p>その結果、バッテリ駆動のスリープ中にはTimerがストップしてしまうことがわかりました。</p>
+
+<h3>どうやって解決しよう</h3>
+
+<p>プッシュ通知を利用してPOSTを送る指令を伝えます。</p>
+
+<p>その工程については、また次回、、(まだ実装できてない)</p>
+
+<h3>追記 2015/03/23</h3>
+
+<p>LTEでの通信の際は、ちゃんとPOSTされるようです。<br/>
+Wifiでの運用だと、一部そういうことが起こるということで、、、</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Xperia Z Ultra SimFree(C6833)を注文した]]></title>
+    <link href="http://www.yujilow.net/2014-09-23/buy-zulutra"/>
+    <updated>2014-09-23T23:13:34+09:00</updated>
+    <id>http://www.yujilow.net/2014-09-23/buy-zulutra</id>
+    <content type="html"><![CDATA[<p>ちょっと前に<a href="http://yujilow1220.github.io/blog/etc/i-want-a-big-iphone6/">こんな</a>記事書いて、iPhone6Plus(当時は名称未発表)に熱い期待を寄せていたんですが、SIMFreeがあまりに高いのでXperia Z Ultraでお茶を濁すことに。</p>
+
+<!--more-->
+
+
+<h3>お茶を濁すって言っても</h3>
+
+<p>Z Ultraは悪い機種じゃないですよ。<br/>
+逆に、今のところファブレットとしては唯一無二の存在です。</p>
+
+<h3>どこが</h3>
+
+<ul>
+<li>6.4インチというディスプレイサイズ</li>
+<li>Xperiaらしいデザイン</li>
+<li>薄さ</li>
+<li>SIMFreeの中でも多い対応バンド数(&frac12;/&frac34;/5/7/8/20 1と3がdocomo)</li>
+</ul>
+
+
+<p>こんなところでしょうか。<br/>
+<a href="http://www.expansys.jp/sony-xperia-z-ultra-c6833-sim-lte-16gb-black-251963/">EXPANSYSで</a>やたら安かったですし。<br/>
+いいMVNOを見つけて、モバイルルータ兼読書端末として使っていく予定です。<br/>
+しばらくはおサイフ要因(HTL22)も現役ですね。
+10月の発表でiPodTouch出ないかなあ、、、</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HTC J One HTL22のアップデートに注意！Bluetoothテザリングが常時ONにできない]]></title>
+    <link href="http://www.yujilow.net/2014-09-16/warning-for-upgrading-htc-j-one"/>
+    <updated>2014-09-16T23:05:11+09:00</updated>
+    <id>http://www.yujilow.net/2014-09-16/warning-for-upgrading-htc-j-one</id>
+    <content type="html"><![CDATA[<p>タイトル通りです。HTL22をアップデートしたら、Bluetoothテザリングが常時ONにできなくなりました。<br/>
+携帯を鞄にしまった状態で、タブレットからBluetoothの接続するだけでテザリングが開始できる超便利機能だったのに、、、<br/>
+今では、いちいち「インターネット共有」から「Bluetoothテザリング」の項目をONにしないと使えません。なんたることだ。<br/>
+手軽さが売りだった機能が潰れてしまいましたね。通知領域からONにできるWIFIテザリングのほうが手軽になったという。<br/>
+ストレス溜まりまくりです。これだけで携帯変えたくなる事案です。<br/>
+解決方法があったらぜひ教えて下さい。<br/>
+Bluetoothテザリングをよく使う方は、解決方法が見つかるまでアップデートを見送るべきかもしれません。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[UIスレッドの外でViewを変更する一番簡単な方法]]></title>
+    <link href="http://www.yujilow.net/2014-09-01/the-most-simple-code-for-changing-view-in-the-out-of-ui-thread"/>
+    <updated>2014-09-01T01:15:49+09:00</updated>
+    <id>http://www.yujilow.net/2014-09-01/the-most-simple-code-for-changing-view-in-the-out-of-ui-thread</id>
+    <content type="html"><![CDATA[<p>Viewの中身は、UIスレッド上でのみ変更できます。<br/>
+別Threadで変更したい場合、Handler.post()でUIスレッドに依頼する方法が一般的ですね。<br/>
+もっと簡単な方法があります。</p>
+
+<!--more-->
+
+
+<h2>その方法とは</h2>
+
+<pre><code class="java">    mActivity.runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+            Toast.makeText(this, "Hello?", Toast.LENGTH_SHORT).show();
+        }
+    }
+</code></pre>
+
+<p>Activity#runOnUiThread()を使う方法です。らくちん！<br/>
+別スレッド生成時にActivityのインスタンスを渡してあげれば応用が効きますね。</p>
+]]></content>
+  </entry>
+  
+</feed>

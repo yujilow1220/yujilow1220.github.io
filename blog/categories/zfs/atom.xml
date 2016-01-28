@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: zfs | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/zfs/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[RAIDZが壊れた絶望から復活まで]]></title>
+    <link href="http://www.yujilow.net/2015-12-28/zfs-was-repaired"/>
+    <updated>2015-12-28T14:33:12+09:00</updated>
+    <id>http://www.yujilow.net/2015-12-28/zfs-was-repaired</id>
+    <content type="html"><![CDATA[<p>ZFSアレイが壊れました。しかし、復活しました。<br/>
+復活した原因がわからないのですが、困っている人がいると思うので顛末を記しておきます。</p>
+
+<!--more-->
+
+
+<h2>前提</h2>
+
+<p>うちの環境では、SATA<em>5 + USB3.0ケース</em>2 の7つのHDDでRAIDZ2を組んでいます。<br/>
+まあ、クソですね。どうにかしようと思っていました。が、なあなあで手を付けていませんでした。<br/>
+ちなみに、OpenMediaVaultでNASを作成していました。</p>
+
+<h2>3行まとめ</h2>
+
+<ul>
+<li>プールがどうしてもインポートできない</li>
+<li>FreeBSDでのインポートを試すが失敗</li>
+<li>再びUbuntuでインポートすると、成功！！</li>
+</ul>
+
+
+<h2>事の発端</h2>
+
+<p>ちょっと長いこと外出してたら、調子悪くなってました。<br/>
+具体的には、HDDケースが認識されてないみたいな。。。<br/>
+RAIDZ2だったので、HDDケース分が認識されなくても問題ないんですが、まずいなと。<br/>
+対策しようとしました。</p>
+
+<h2>zpoolコマンドがハングし始める</h2>
+
+<p>zpoolコマンドが帰ってこなくなりました。<br/>
+トランザクションが完了しないまま再起動したりしたので、おかしくなったのでしょう。<br/>
+やばいな、と思いつつ、シャットダウンして放置してました。</p>
+
+<h2>カーネルパニック！！！</h2>
+
+<p>復旧の準備ができて、復旧を始めました。<br/>
+まずは、慣れ親しんだこのコマンド！！<br/>
+<code>
+$ sudo zpool import tank
+</code></p>
+
+<p>&hellip;ハングしました。なんてこった。</p>
+
+<p>では、強制的にインポートします。</p>
+
+<pre><code>$ sudo zpool import -f tank
+</code></pre>
+
+<p>&hellip;ハングしました。<br/>
+-Fをつけると、復旧しながらインポートしてくれるらしい。</p>
+
+<pre><code>$ sudo zpool import -fF tank
+</code></pre>
+
+<p>&hellip;カーネルパニック！！！どういうことだ！！！</p>
+
+<p>どうにもならなくなりました。インポートできないってどういうことだ。</p>
+
+<h2>がんばる</h2>
+
+<ul>
+<li>新たにUbuntuで試す → ハングする。だめ。</li>
+<li>FreeBSD LiveCDを試す → 強制再起動する。だめ。</li>
+</ul>
+
+
+<p>きっとダメなんだ。さようなら、僕のデータたち。楽しかったよ。。。。</p>
+
+<h2>いきなり復活</h2>
+
+<p>朝起きて、どうせダメなんだろうなと以下のコマンドを打ってみました。</p>
+
+<pre><code>$ sudo zpool import -f -o readonly=on tank
+</code></pre>
+
+<p>すると、なんと！！インポートできました！！！</p>
+
+<h2>予想</h2>
+
+<p>予想としては、FreeBSDでインポートを試みたところ、トランザクションが整理されたのではないかと思っています。<br/>
+だから、ハングの原因が取り除かれて、うまくインポートできたのではないかと。<br/>
+さっそくHDDを購入し、バックアップを取ります。</p>
+
+<h2>反省</h2>
+
+<p>バックアップはしっかり取ろう。</p>
+]]></content>
+  </entry>
+  
+</feed>

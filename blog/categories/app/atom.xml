@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: app | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/app/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Androidアプリ 「Batteli」をリリースしました]]></title>
+    <link href="http://www.yujilow.net/2015-04-29/new-app-batteli"/>
+    <updated>2015-04-29T23:17:29+09:00</updated>
+    <id>http://www.yujilow.net/2015-04-29/new-app-batteli</id>
+    <content type="html"><![CDATA[<p>Androidアプリ「Batteli」をリリースしました。手元にないデバイスのバッテリ残量を、スマートフォンで確認できます。<br/>
+詳細は以下。</p>
+
+<!--more-->
+
+
+<h3>概要</h3>
+
+<p>Androidデバイスのバッテリ残量を一元管理できます。<br/>
+プッシュ通知機能を利用することにより、今までのバッテリ統計アプリにはない省電力となりました。</p>
+
+<h3>機能</h3>
+
+<ul>
+<li>登録デバイスのバッテリ残量一覧表示</li>
+<li>直近3日のバッテリ推移の確認</li>
+</ul>
+
+
+<h3>今後実装機能</h3>
+
+<ul>
+<li>バッテリ動作時間の表示</li>
+<li>テザリング機能のリモート起動</li>
+<li>クロスプラットフォーム対応(iOS, Windows, Mac, Linux)</li>
+</ul>
+
+
+<h3>URL</h3>
+
+<p><a href="https://play.google.com/store/apps/details?id=net.yujilow.batteli">https://play.google.com/store/apps/details?id=net.yujilow.batteli</a></p>
+
+<h3>ひとこと</h3>
+
+<p>アイコンがめっちゃ苦労。ふなっしーみたいになっちゃった。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SSHコンフィグを簡単に書くrubyスクリプト]]></title>
+    <link href="http://www.yujilow.net/2014-10-14/ssh-config-easy-creator"/>
+    <updated>2014-10-14T22:13:02+09:00</updated>
+    <id>http://www.yujilow.net/2014-10-14/ssh-config-easy-creator</id>
+    <content type="html"><![CDATA[<p>SSHのconfigを簡単に出力するスクリプトを書いたので、使ってください。</p>
+
+<!--more-->
+
+
+<h2>場所</h2>
+
+<p><a href="https://github.com/yujilow1220/ssh_mkconfig/blob/master/README.md">Github</a>に置いてあります。</p>
+
+<h2>使い方</h2>
+
+<p>ssh接続するためのコマンドってこんなかんじですよね？<br/>
+<code>
+$ ssh owner@192.168.x.xxx -p 22222 -i path/to/id_rsa
+</code>
+このコマンドに、 -n オプションをつけてあげます<br/>
+<code>
+$ ssh_mkconfig.rb -n hostname owner@192.168.x.xxx -p 22222 -i path/to/id_rsa
+</code>
+すると、configが出力されます。それを.ssh/configに書けばおしまいです。めんどくさい人は<br/>
+<code>
+$ ssh_mkconfig.rb -n hostname owner@192.168.x.xxx -p 22222 -i path/to/id_rsa &gt;&gt; path/to/.ssh/config
+</code>
+と、書いてしまえば一発ですね。設定消さないように気をつけてください。</p>
+
+<p>-pと-iしか実装してない(それ以外よくわかんない)ので、誰か続き書いてください。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JSONPのコールバック関数を除去する - Java]]></title>
+    <link href="http://www.yujilow.net/2014-08-14/jsonp-to-json-using-java"/>
+    <updated>2014-08-14T19:41:09+09:00</updated>
+    <id>http://www.yujilow.net/2014-08-14/jsonp-to-json-using-java</id>
+    <content type="html"><![CDATA[<p>Androidアプリで天気予報APIを使おうとしています。<br/>
+使いたいAPIが、配信形式がJSONではなくJSONPなんですね。<br/>
+JSONPから、生のJSONを取り出します。</p>
+
+<!--more-->
+
+
+<h2>やりかた</h2>
+
+<pre><code class="java">    public static JSONObject StringToJsonObjectRemoveCallback(String json) throws IOException, JSONException{
+        String result;
+        result = json;
+        result = result.substring(23, result.length() - 2);
+        JSONObject ja = new JSONObject(result);
+        return ja;
+    }
+</code></pre>
+
+<h2>しくみ</h2>
+
+<p>説明するのも恥ずかしいくらい強引な解決法なんですが、、</p>
+
+<p>コールバック関数がわかっている場合、先頭の<code>callback(</code>みたいな場所(コールバックの括弧内)から、<code>);</code>までの部分を取り出します。<br/>
+今のところこれでうまく動いているのでよしとしよう。<br/>
+API配信元の仕様が変わったら一発アウトですね。コールバック関数名が変わっても平気な実装方法空から降ってこないかな（めんどくさい）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Androidアプリ「Happy?」をリリースしました]]></title>
+    <link href="http://www.yujilow.net/2014-07-04/new-app-happy"/>
+    <updated>2014-07-04T00:25:06+09:00</updated>
+    <id>http://www.yujilow.net/2014-07-04/new-app-happy</id>
+    <content type="html"><![CDATA[<p>Androidアプリをリリースしました。<br/>
+「幸せを数える」アプリです。</p>
+
+<!--more-->
+
+
+<p>ダウンロードは<a href="https://play.google.com/store/apps/details?id=com.yujilow.happy">こちら</a>からどうぞ。</p>
+
+<h3>機能</h3>
+
+<p>機能は下の通りです。</p>
+
+<ul>
+<li>幸せ・不幸せの数をカウントする</li>
+<li>カウントした数を、一定の単位(今日、今週等)で表示する</li>
+</ul>
+
+
+<h3>今後の予定</h3>
+
+<p>以下の内容の実装を予定しています。</p>
+
+<ul>
+<li>コメント表示(DBには登録されています)</li>
+<li>位置情報記録・MAPにリアルタイム表示</li>
+<li>一定周期にメールで幸せ等の数をお知らせ</li>
+<li>ウィジェット追加</li>
+</ul>
+
+
+<p>アプリを使って、「僕の人生あんまり悪くないな」って思ってもらえたらうれしいです。</p>
+]]></content>
+  </entry>
+  
+</feed>

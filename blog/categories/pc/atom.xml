@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: pc | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/pc/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[内向きDNSのすゝめ]]></title>
+    <link href="http://www.yujilow.net/2014-12-27/dns-server-must-be-built"/>
+    <updated>2014-12-27T18:47:50+09:00</updated>
+    <id>http://www.yujilow.net/2014-12-27/dns-server-must-be-built</id>
+    <content type="html"><![CDATA[<p>宅内専用のDNSサーバを設置すると、かなり便利なことがありますよ。</p>
+
+<!--more-->
+
+
+<h3>設置してよかったこと</h3>
+
+<ul>
+<li>サーバの名前がわかりやすくなる</li>
+<li>自宅と外部で同じ名前のアドレスが利用できる</li>
+<li>外部から自宅サーバへのssh接続が楽になる</li>
+<li>自己満足</li>
+</ul>
+
+
+<h3>詳細</h3>
+
+<h4>1. サーバの名前がわかりやすい</h4>
+
+<p>192.168.0.xxxって言われるよりも、www.yujilow.netって言われたほうがわかりやすいですよね。</p>
+
+<h4>2. 自宅と外部で同じ名前のアドレスが利用できる</h4>
+
+<p>外部公開しているドメインで内部からはアクセス出来ないことはご存知だと思います。</p>
+
+<p>gitなんかは、リモートリポジトリをgit.domain.com(外部)と192.168.0.xxx(内部)で登録してたりします。あほらしいですね。</p>
+
+<p>内向きDNSを利用することにより、その問題が解決します。</p>
+
+<p>それはつまり、自宅サーバをVPSのように利用できるようになるということです。便利ですね。</p>
+
+<h4>3. 外部から自宅サーバへの接続が楽になる</h4>
+
+<p>外部公開していないサーバへも外部からドメインを利用してssh接続できるようになります。</p>
+
+<p>やり方を説明します。</p>
+
+<p>外部接続用サーバを一台設置します。僕はVPNサーバと併用しています。</p>
+
+<p>便宜的に、このサーバをlogin.domain.comとします。</p>
+
+<p>sshのコンフィグを設定します。</p>
+
+<pre><code>Host login
+        User username
+        Port 22
+        HostName login.domain.com
+        IdentityFile    ~/.ssh/private_key
+
+Host *.domain.com
+                User username
+                ProxyCommand ssh login -W %h:%p
+</code></pre>
+
+<p>つまり、login.domain.comを踏み台にしてその下の*.domain.comへと接続するのです。</p>
+
+<p>こうすることによって、sshを外部公開するサーバは1台だけで済みます。この１台のセキュリティは完璧にしておきましょうね。</p>
+
+<p>え？VPNだけでいいじゃないかって？うるせえ！！</p>
+
+<h4>4. 自己満足</h4>
+
+<p>「俺、自分ちにDNSあるんだぜ〜」と、人知れずニヤニヤできます。</p>
+
+<p>自宅サーバを作る理由なんて、大体が自己満足の達成です。思いっきりニヤニヤしておきましょう。</p>
+
+<p>ただし、ニヤニヤを通り越して知り合いにいろいろ吹聴してまわると、大抵ウザがられます。気をつけましょう。</p>
+
+<h3>まとめ</h3>
+
+<ul>
+<li>内向き便利</li>
+<li>hostsいじるよりもよっぽど便利</li>
+<li>自己満足って大事</li>
+</ul>
+
+
+<p>次はdhcpを建てたいなあ、、、</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: openvpn | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/openvpn/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[auひかり環境上に構築したOpenVPNがぶちぶち切れる問題]]></title>
+    <link href="http://www.yujilow.net/2015-01-06/openvpn-on-au-hikari-are-disconnected"/>
+    <updated>2015-01-06T00:18:05+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-06/openvpn-on-au-hikari-are-disconnected</id>
+    <content type="html"><![CDATA[<p>年末の帰省中に、auひかりを契約している実家にOpenVPNを構築しました。<br/>
+帰省から帰ってきて接続してみると、なんかすぐ切れて使い物になりません。<br/>
+たぶん問題は解決したので、メモしておきます。</p>
+
+<!--more-->
+
+
+<h3>構築したOpenVPNについて</h3>
+
+<ul>
+<li>OpenVPN 2.3.6</li>
+<li>L3接続のtunを利用</li>
+<li>UDPプロトコルを利用</li>
+<li>クライアントにはTunnelblickを利用</li>
+<li>すべての通信をVPNを経由するように設定</li>
+</ul>
+
+
+<h3>接続していると、、、</h3>
+
+<p>最初の二分間くらいは疎通してたんですが、その後
+<code>
+*Tunnelblick: Expected disconnection occurred.
+</code>
+というログを吐いて接続不可になります。pingも通りません。<br/>
+「予想通りの切断」ですか、はあ。俺は予想してないぞ。</p>
+
+<h3>試したこと</h3>
+
+<h4>mssfixの設定→失敗</h4>
+
+<p><a href="http://yamatamemo.blogspot.jp/2012/06/openvpn-tips-udpvpn.html">このページ</a>を参考に、双方のコンフィグに
+<code>
+mssfix 1300
+</code>
+を追加してみました。しかし、あまり変わらず。<br/>
+そもそもpingも通らないんだから、違う気がする。</p>
+
+<h4>tun-mtuの設定→失敗</h4>
+
+<pre><code>tun-mtu 1200
+</code></pre>
+
+<p>を設定してみました。結果、切断は回避されません。<br/>
+困ったな。</p>
+
+<h4>ジャンボフレームの透過→失敗</h4>
+
+<p>HGWで、ジャンボフレームの透過を設定してみました。<br/>
+結果、やっぱりあまり変わらず。</p>
+
+<h4>tcpをつかってみる→すこし成功</h4>
+
+<p>udpではなく、tcpで通信してみました。<br/>
+結果、切断はされない気がしてました。<br/>
+しかし、速度が遅すぎて使い物になりません。udpの半分くらいです。<br/>
+できればudpを使いたいですねえ。</p>
+
+<h4>udpのポートを変更→成功！</h4>
+
+<p>udpのポートを初期設定の1194から変更してみました。<br/>
+するとなんと、接続が切れないじゃないですか！<br/>
+今でも安定して動いています。やったね！</p>
+
+<h3>原因を考えてみる</h3>
+
+<h4>ログ</h4>
+
+<pre><code>*Tunnelblick: Expected disconnection occurred.
+</code></pre>
+
+<p>というログは、手動で接続解除した際にも出てくるログです。<br/>
+ということは、パケットが詰まってたりして起こったのではなく、接続自体が遮断された可能性があります。<br/>
+また、ADSLを利用しているアパートのOpenVPNは切断されません。<br/>
+ここから、これはauひかり固有の問題ではないかと考えました。</p>
+
+<h4>VPNを遮断？</h4>
+
+<p>これはあくまでも予想ですが、auひかりは、意図的にVPN通信を遮断してるんじゃないんですかね？<br/>
+well-knownポートである1194を利用した接続 = OpenVPN = 切断！<br/>
+といったことをしてると予想します。<br/>
+一応、<a href="http://www.au.kddi.com/internet/application/agreement/">利用規約</a>を見る限りでは制限している項目はなさそうですが、、、プロパイダですかね。<br/>
+ちなみに、プロパイダはBiglobeを契約しています。<br/>
+<a href="http://media.kddi.com/extlib/pdf/internet/application/contract/biglobe.pdf">Biglobeの利用規約</a>の第12条の3(トラフィックについて)の項目に則って、帯域制限されてるんですかね。こればっかりは中の人に聞いてみないとわからないですね。</p>
+
+<h3>今後の予定</h3>
+
+<p><a href="http://yamatamemo.blogspot.jp/2012/01/openvpn-1.html">このページ</a>を参考に、チューニングをしたいと思います。<br/>
+AES-NIを利用するとだいぶパフォーマンスが向上するみたいです。kvmホストで利用しているNUC(BOXDC53427HYE)のCPUはどうやら対応しているみたいなので、楽しみですね。</p>
+
+<h3>さいごに</h3>
+
+<p>万が一この利用が各種利用規約に違反している場合は、ご連絡ください。対処いたします。</p>
+]]></content>
+  </entry>
+  
+</feed>

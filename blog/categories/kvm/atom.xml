@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: kvm | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/kvm/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[kvm上のVMでは、ネットワークはブリッジとNATのどっちが速いのか確かめてみた]]></title>
+    <link href="http://www.yujilow.net/2015-02-23/the-network-speed-comparison-between-bridge-and-nat-with-kvm"/>
+    <updated>2015-02-23T23:50:37+09:00</updated>
+    <id>http://www.yujilow.net/2015-02-23/the-network-speed-comparison-between-bridge-and-nat-with-kvm</id>
+    <content type="html"><![CDATA[<p>kvmが大好きな僕です。<br/>
+今回、ホストとゲストで高速ネットワーク通信を行う必要がでまして、NATとブリッジではどっちが速いのか、気になったので確かめてみました。</p>
+
+<!--more-->
+
+
+<h3>予想</h3>
+
+<ul>
+<li>NATが速いんじゃないの？kvmの機能だし。</li>
+<li>ブリッジは、なんかルータ介して通信しそうだから遅そう。</li>
+<li>NATで10Gbps, ブリッジで1Gbpsが妥当かな。</li>
+</ul>
+
+
+<h3>測定条件</h3>
+
+<p>以下の条件で測定しました。</p>
+
+<ul>
+<li>ホスト
+
+<ul>
+<li>OS : Ubuntu Server 14.10</li>
+<li>CPU : Intel Core i5-4460</li>
+<li>メモリ : 16GB</li>
+<li>NIC : Intel Gigabit CT Desktop Adapter EXPI9301CT</li>
+</ul>
+</li>
+<li>ゲスト
+
+<ul>
+<li>OS : Ubuntu Server 14.10</li>
+<li>NIC : NAT(192.168.112.xx), Bridge(192.168.0.xxx)</li>
+</ul>
+</li>
+<li>測定ソフトウェア
+
+<ul>
+<li>iperf 2.0.5</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>測定方法</h3>
+
+<h4>ホスト上でiperfをサーバモードで起動する</h4>
+
+<pre><code>$ iperf -s
+</code></pre>
+
+<h4>ゲスト上でiperfをクライアントモードで起動する</h4>
+
+<p>まずはNAT接続
+<code>
+$ iperf -c 192.168.122.1 -i 10
+</code></p>
+
+<p>次にブリッジ接続
+<code>
+$ iperf -c 192.168.0.xxx -i 10
+</code></p>
+
+<h3>測定結果</h3>
+
+<h4>NAT接続</h4>
+
+<pre><code>[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec   359 MBytes   301 Mbits/sec
+[  3]  0.0-10.0 sec   359 MBytes   301 Mbits/sec
+</code></pre>
+
+<h4>ブリッジ接続</h4>
+
+<pre><code>[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  38.1 GBytes  32.7 Gbits/sec
+[  3]  0.0-10.0 sec  38.1 GBytes  32.7 Gbits/sec
+</code></pre>
+
+<p>ブリッジ速すぎわろた。<br/>
+キャッシュが効きまくってる可能性がありますね。<br/>
+怪しかったので、もう一つ実験。</p>
+
+<h4>scpでファイル転送</h4>
+
+<p>VMのイメージファイル(4GBくらい)を転送してみる。</p>
+
+<pre><code># ブリッジ
+docker                                                                    100% 4537MB 133.4MB/s   00:34
+</code></pre>
+
+<pre><code># NAT
+docker                                                                    100% 4537MB 100.8MB/s   00:45
+</code></pre>
+
+<p>ブリッジのほうが速い。けど、iperfでの測定よりも差は小さい。</p>
+
+<h3>結論</h3>
+
+<p>ブリッジが速いから、ブリッジを使おう。NATはいらない子？？？<br/>
+NATのほうが速いべ！！！って思って、OSの再インストールまでして設定した時間が無駄になった、、、</p>
+]]></content>
+  </entry>
+  
+</feed>

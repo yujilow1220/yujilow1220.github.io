@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: owncloud | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/owncloud/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[owncloudをサブドメインで運用する]]></title>
+    <link href="http://www.yujilow.net/2015-01-07/how-to-use-owncloud-with-subdomain"/>
+    <updated>2015-01-07T19:05:59+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-07/how-to-use-owncloud-with-subdomain</id>
+    <content type="html"><![CDATA[<p>owncloudを、サブドメインでアクセスできるようにしましょう。</p>
+
+<!--more-->
+
+
+<h3>目標</h3>
+
+<ul>
+<li>サブドメインcloud.yujilow.net(例)でアクセスできるようにする</li>
+</ul>
+
+
+<h3>しくみ</h3>
+
+<p>apacheのバーチャルホストを利用します。<br/>
+cloud.yujilow.netにアクセスがあった場合に、/var/www/owncloudをドキュメントルート(バーチャルホストのルート)とするように設定します。</p>
+
+<h3>やりかた</h3>
+
+<h4>DNS設定をする</h4>
+
+<p>ドメインを取得した場所で、DNS設定をします。<br/>
+大体の自宅回線は動的IP割り当てなので、<a href="http://dip.jp">DDNS</a>サービスを併用します。<br/>
+cloud.yujilow.netにアクセスした場合、自宅のグローバルIPにアクセスされるようにしましょう。</p>
+
+<h4>owncloudを自宅サーバに構築する</h4>
+
+<p>自宅じゃなくても、vpsでもなんでもいいです。<br/>
+この説明は割愛します。</p>
+
+<h4>Apacheの設定をする</h4>
+
+<p>Debianなら、<br/>
+<code>
+sudo vim /etc/apache2/conf.d/owncloud.conf
+</code>
+CentOSなら、</p>
+
+<pre><code>sudo vim /etc/httpd/conf.d/owncloud.conf
+</code></pre>
+
+<p>と入力し、設定ファイルを新規作成します。CentOSの方はやったことないので確かめてくだささい。</p>
+
+<p>設定ファイルの内容は以下のとおり。</p>
+
+<pre><code>
+NameVirtualHost *:80
+
+&lt;VirtualHost *:80&gt;
+    ServerName cloud.yujilow.net
+    DocumentRoot /var/www/owncloud
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>そして、apacheを再起動します。<br/>
+<code>
+sudo service apache2 restart
+</code></p>
+
+<p><a href="http://cloud.yujilow.net">http://cloud.yujilow.net</a> にアクセスすると、owncloudが使えるはずです。</p>
+
+<h3>次は</h3>
+
+<p>証明書を発行して、httpsでアクセスできるようにしなきゃ、、<br/>
+そうしないと怖くて使えませんね。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[owncloudはただの自前DropBoxじゃない]]></title>
+    <link href="http://www.yujilow.net/2014-12-29/owncloud-install"/>
+    <updated>2014-12-29T22:29:29+09:00</updated>
+    <id>http://www.yujilow.net/2014-12-29/owncloud-install</id>
+    <content type="html"><![CDATA[<p><a href="http://owncloud.jp">owncloud</a>というソフトウェアはご存知ですか？<br/>
+DropBoxのようなクラウドストレージサービスを自前で構築できるという便利なソフトです。</p>
+
+<p>DropBoxあるからいらないじゃーん！って思ってスルーしてる人もいるかと思います。</p>
+
+<p>しかし、このowncloud、ただのDropBox代替ではありません。<br/>
+かなり便利な機能をたくさん搭載しています！</p>
+
+<p>詳しくは続きをどうぞ。</p>
+
+<!--more-->
+
+
+<h3>owncloudの記事いろいろ</h3>
+
+<p><a href="http://www.virment.com/linux/1861/">容量無制限のプライベートなDropBox環境として使えるownCloud環境の構築手順をメモ</a><br/>
+<a href="http://gihyo.jp/admin/serial/01/ubuntu-recipe/0231">第231回　ownCloudで自分専用クラウドストレージ：Ubuntu Weekly Recipe｜gihyo.jp … 技術評論社</a><br/>
+<a href="http://cloud.watch.impress.co.jp/docs/special/20141022_671477.html">ownCloudで“Dropboxライク”な自社専用ストレージをつくろう！</a></p>
+
+<p>構築方法なんかは先人の知恵を拝借することにします。</p>
+
+<h3>owncloud画面</h3>
+
+<p>{% img /images/post/own01.png %}</p>
+
+<p>これは、実際のowncloudの画面です。ここは普通のクラウドストレージとほぼ同じですね。<br/>
+左上の「ファイル」をクリックしてみましょう。<br/>
+{% img /images/post/own02.png %}<br/>
+いっぱいアイコンがありますね。</p>
+
+<p>これもすべてowncloudの機能の一部なんです。</p>
+
+<h3>ピクチャ</h3>
+
+<p>{% img /images/post/own03.png %}<br/>
+アップロードされた画像フォルダが表示されます。<br/>
+画像をクリックすると、、、<br/>
+{% img /images/post/own04.png %}<br/>
+このように、モーダルで表示されます。<br/>
+ちなみに、この写真は夏休みにNYに行ったときの写真です。どうでもいいです。<br/>
+旅行の写真をみんなで見ながら、ファイル共有で写真をダウンロードするという利用シーンが思い浮かびますね。</p>
+
+<h3>カレンダー</h3>
+
+<p>{% img /images/post/own05.png %}<br/>
+カレンダーです。月表示です。<br/>
+{% img /images/post/own06.png %}<br/>
+週表示もあります。ドラッグ&amp;ドロップで予定を追加したり、すでにある予定を移動したりできます。<br/>
+CalDavというカレンダー用プロトコルを使用することにより、Macの標準カレンダーアプリで操作することができるようになります。Googleカレンダーとほぼ一緒ですね。</p>
+
+<h3>ブックマーク</h3>
+
+<p>{% img /images/post/own07.png %}<br/>
+ブックマークです。
+{% img /images/post/own08.png %}<br/>
+ブックマークレットを使用して、ブックマークを追加することもできます。</p>
+
+<h3>Rainloop</h3>
+
+<p>{% img /images/post/own09.png %}<br/>
+プラグインを使用することで、オープンソースwebメーラであるRainloopを利用することもできます。すごいですね。</p>
+
+<h3>他にも、、、</h3>
+
+<p>{% img /images/post/own10.png %}<br/>
+<a href="https://apps.owncloud.com/">https://apps.owncloud.com/</a>には、owncloudで使用できるプラグインがたくさんあります。<br/>
+ownCloud SMSなんてちょっと気になりますね。</p>
+
+<p>{% img /images/post/own11.png %}<br/>
+また、「ファイル」から動画や音楽をストリーミング再生することもできます。意外と便利です。</p>
+
+<h3>まとめ</h3>
+
+<p>owncloudの一番素晴らしいところは、これらのデータを<strong>すべて手元においておける</strong>という点です。<br/>
+GoogleカレンダーやDropBoxを利用していると、どうしてもこれらの会社と一蓮托生となってしまいます。GoogleReaderがいい例ですね。<br/>
+自分でサービスを構築すれば、自分が飽きるまでサービスは継続するし、利用規約もないのでものすごい使い方しても大丈夫です。<br/>
+どんな用途でも使用できる、超自分勝手サービスへと育てましょう。</p>
+
+<p>#スクショ取る前にブックマークバー隠しとけばよかった、、、</p>
+]]></content>
+  </entry>
+  
+</feed>

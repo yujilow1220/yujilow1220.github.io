@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: kimchi | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/kimchi/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Kimchiもbr0を作らなきゃだめみたい]]></title>
+    <link href="http://www.yujilow.net/2015-01-17/kimchi-ethernet-must-be-bridged"/>
+    <updated>2015-01-17T18:22:28+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-17/kimchi-ethernet-must-be-bridged</id>
+    <content type="html"><![CDATA[<p>Kimchiのネットワーク設定では、ブリッジインターフェースを作らなくてもVMをLAN空間に置くことができます。<br/>
+しかし、ブリッジを作らないと、ある不都合が起こってしまいます。</p>
+
+<!--more-->
+
+
+<h3>不都合とは</h3>
+
+<p>何となく分かるかもしれませんが、<strong>VMからホストにアクセスできなくなる</strong>ということです。</p>
+
+<h3>それだけ？</h3>
+
+<p>え、それだけ？と思う人もいるかもしれません。<br/>
+しかし、これは結構重大な問題です。</p>
+
+<h3>というのも</h3>
+
+<p>自宅ネットワークにおいて、VPNサーバをVMとして設置しています。<br/>
+VPNサーバからホストにアクセス出来ないということは、<strong>外出先からKimchiをいじれない</strong>ということになりますね。<br/>
+前回の記事を作成しているときに、スクショを撮ろうとしてもkimchiにアクセスできなかったので気づきました。</p>
+
+<h3>解決策もなくはない</h3>
+
+<p>自宅にはNASが物理機として稼働しているので、</p>
+
+<pre><code>ssh -L 8001:host.ipaddr8001 nas.ipaddr
+</code></pre>
+
+<p>と、ポートフォワーディングしてあげれば接続することはできます。だけどねえ、、、</p>
+
+<h3>結論</h3>
+
+<p>めんどくさくてもbr0は作成しましょう。<br/>
+僕も、暇になったら作ってみます。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[KimchiへのKVMホスト移行]]></title>
+    <link href="http://www.yujilow.net/2015-01-16/kimchi-uses-libvirt"/>
+    <updated>2015-01-16T02:32:17+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-16/kimchi-uses-libvirt</id>
+    <content type="html"><![CDATA[<p>自宅のkvmホストを、Kimchiに置き換えました。<br/>
+いろいろあったので、メモしておきます。</p>
+
+<!--more-->
+
+
+<h3>移行前</h3>
+
+<ul>
+<li>ハードウェア(NUC)
+
+<ul>
+<li>CPU   : i5-3427U</li>
+<li>メモリ : 16GB</li>
+<li>SSD   : 32GB</li>
+</ul>
+</li>
+<li>ソフトウェア
+
+<ul>
+<li>OS    : Fedora19</li>
+<li>HV    : KVM + libvirt</li>
+<li>GUI   : webvirtmgr</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>移行後</h3>
+
+<ul>
+<li>ハードウェア
+
+<ul>
+<li>変化なし</li>
+</ul>
+</li>
+<li>ソフトウェア
+
+<ul>
+<li>OS    : Ubuntu Server 14.04</li>
+<li>HV    : KVM + libvirt</li>
+<li>GUI   : <strong>Kimchi</strong></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>もともと動いていたマシンたち</h3>
+
+<p>webvirtmgrで管理していたVMは、このページを動かしているものだけをNASで動作させ、全て停止しました。<br/>
+一応、xmlをバックアップしておきました。使わなかったけど。<br/>
+仮想ディスクなどは、もともとNASにおいてあったので、移動する必要はありませんでした。よかった。</p>
+
+<h3>Ubuntuインストール</h3>
+
+<p>パッケージはOpenSSH Serverのみを選択。</p>
+
+<h3>Kimchiインストール</h3>
+
+<p><a href="http://www.yujilow.net/2015-01-12/kimchi-is-the-best-frontend-for-kvm/">前回のページ</a>を参考に、Kimchiをインストールしました。</p>
+
+<h3>Kimchi起動！しかし、、</h3>
+
+<p>Kimchiを動かし、「仮想マシン作成」を実行。しかし、</p>
+
+<p>{% img /images/post/kimvirt01.png %}</p>
+
+<p>既存のディスクから起動する方法がありません。<br/>
+Existing Imageからテンプレートを作成することもできるんですが、「テンプレート」の趣旨からは外れてしまいますね。<br/>
+どうしよう、、、</p>
+
+<h3>libvirtでVM作成</h3>
+
+<p>virt-managerからVMを新規作成し、Kimchiを見てみたら、、</p>
+
+<p>{% img /images/post/kimvirt02.png %}</p>
+
+<p>うまくいってました！やったね！</p>
+
+<h3>まとめ</h3>
+
+<p>Kimchiには、既存環境からでも移行できますよ。</p>
+]]></content>
+  </entry>
+  
+</feed>

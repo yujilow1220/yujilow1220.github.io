@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cloud | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/cloud/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[VMWare ESXi無償版対応公式Webクライアント ESXi Embedded Host Clientを試してみた]]></title>
+    <link href="http://www.yujilow.net/2015-09-23/esxi-new-official-web-client"/>
+    <updated>2015-09-23T19:58:03+09:00</updated>
+    <id>http://www.yujilow.net/2015-09-23/esxi-new-official-web-client</id>
+    <content type="html"><![CDATA[<p>とうとうVMWare ESXiにWebクライアントが登場しました！しかも、公式に。</p>
+
+<!--more-->
+
+
+<h2>ESXi Embedded Host Client</h2>
+
+<p>その名も、<strong>ESXi Embedded Host Client</strong><br/>
+Embedded(組み込み)の名の通り、ホストに機能を組み込む形で利用します。<br/>
+現在Fling(投げっぱなし)版とのことで、補償なしです。</p>
+
+<h2>結論</h2>
+
+<p>ESXi6.0u1クリーンインストール後の環境では、VM追加等ができませんでした。<br/>
+現状は動かなそうです。。。</p>
+
+<h2>導入</h2>
+
+<p>以下の方法で導入しました。</p>
+
+<h3>1. ESXiのアップグレード(必要なら)</h3>
+
+<p>検証機のバージョンが5.5u1だったので、5.5u3へアップグレードしました。<br/>
+HostClientは5.5u2以上対応らしいのですが、一応(5.5の)最新に。<br/>
+新規インストールする人は6.0u1があるのでそれでいいと思います。</p>
+
+<h3>2. vibファイルのダウンロード&amp;ホストへ転送</h3>
+
+<p><a href="https://labs.vmware.com/flings/esxi-embedded-host-client">https://labs.vmware.com/flings/esxi-embedded-host-client</a> にアクセスして、vibファイルをダウンロードしてきます。<br/>
+scpなりでホストのわかりやすいところにおいておきます。</p>
+
+<h3>3. vibインストール</h3>
+
+<p>ホストにsshでログインし、以下のコマンドでインストールします。
+<code>
+esxcli software vib install -v /path/to/esxui-000000.vib
+</code></p>
+
+<p>これでインストールは完了です。<a href="https://hostip/ui/">https://hostip/ui/</a> にてアクセスできます。ホストの再起動は必要ありません。</p>
+
+<h2>外観</h2>
+
+<p><img src="https://lh3.googleusercontent.com/E6ZBmruMwE0Nj8-Tucjgh-o9rNiR0a35cQK2jiQ79KUkHe5ZojjFzFtC13202NfsF8j7ZM0TpKBHhZacdJ2BTEPclshjHF35BEQpYCrEvqzabdgMZqlQwmsIe4BDxe5KABRfNuunG_CWvVtBYZSp2K-KdvPynTPmxlyYQdhdCM49kyp9FqS8xYjFK4dxx-9t3e-zfNy4QXy0vEnlo0OsuaFkPIke4qTVXQfxKzelEVl1PMPs75R00Zi9u21Un0iscZC7oVd0B5aLiUxp7qybSmbFclix2zz_N0QRoKGnZ7Wzxeo4MheOMtupTycqtUf4X2vCSjTikiqquOP10hBKvJJlYnAxBHJhufBM4Q3hehHUM_WgnCi39e3aBEvt_MHXECMJ5vn0pLtuomJUX4B1ZPZKGvEs7P1jt8dF_7Hnn0gnN4GgpBm3ZCe6HufnxhkMeMxkZxp0PJeWfQclpuGXTaveZGp7tNu26kfUxp5j9TCdMfU1kYJzxvJxi9C4sX-AoccvDbxkpvx4Y6-xKQXgCknk22VyztNy60QuxJMcYX4=w3340-h1850-no" width=800/></p>
+
+<p>外観は、公式っぽい外観です。動作も軽いです。</p>
+
+<p><img src="https://lh3.googleusercontent.com/jNcobG2I9yEfzMq9dLSx7jWM9_Tv_Qsv11I-MBVmAkDslC9J_1QQlkFLaZS6L1o9XDLfdoAidnP8dh3nJkpRHr9GU3x2l6ba4yztLS3ljRP_sZg5n6L88h8KI58hojJECEgA7Vrv9-b8txuuyRi3-Abn4Y5kQGwrh9ZEXNSmG7aTli1GGrHz9vft_0Ft2kOum3w32nQ78hydnAhtMPdGcw9EjqXKFJ4low21DR1own46YSJfj8s6zu5uitdpAT6g4MRyXx86eDupEtboTxL23gMpdnzmSYiK-NVAEDi3hIrRYD_-spYj6l1nJZIMgy93Xynq8nUbbn9cBX0Lvj6V-oV1bJIFd2yliJTjox4SNIbUHfdy-bPBmTG_T2n9fs-qvl3_zpmw59IhFpN_4UqwQGizpXlwcjYI0_MbgmZaCkHKysrA62y2MTGMb0LTpTNmvtqXFJeETP0Datm-ZxyVLlIc-7prs01CJ5KcQohSNqJHnrGySAwl-QnDyMaXTK47kMhAiZOxh3Yt6oe6cp5yAyTGe4XmXCAYaCeJbp8WULg=w3328-h1832-no" width=800 /></p>
+
+<p>Storage画面です。</p>
+
+<p><img src="https://lh3.googleusercontent.com/m2ktXTomCSLYp5sz26m-Tvbn0Fhjao-JWqTJIw6qb2T6PzOMtF_axS_Kh-9K7Ox9tSw9eN7u8W_LgWcaMrbrbEAqFuAtKTyn3AZL025WeTDr-ev2c2QQ5KF4mwWZUwxbE9pocYAgyvvY8SXqVJ1p8a8a-G-feQaZuxDj8OC25NmxyImyY5hZB7fXMAeDHX4oHRIxPqoEL-0a9cq1Q2tzGxpLcKks2dNHMSMaidbY6O0cjVsE3NCz59y39ayHChjjBetRcIvDRZrAX_eniRwzjMMkNey23AfWdYRoSrFJRfMbC6kVFwgRfGzDR85jaQVAtijWBUeUF9Ug5s_A_wJhiKL9_9ZIaEav3Lad9T_eeXULV7vuWQB451Y7gIkSJxTeE2bgoqXfBKMLcrX0jDL3DlUySWAx-LFupz7kY1kDOG63AdjXZHPk-NaN6roicLQkyR6zmpo_Tlq_gkaVzd5bUGK7OBmHGEgATAaeh92yhjQmmTi02wvSZA5ZbYcx1yn2u_FGGu09Qhp98WPyN0ls95ot3Eyn__JhifbsATZr-r8=w3340-h1836-no" width=800 /></p>
+
+<p>Storage画面では、ファイルブラウザが利用できます。日本語対応です！</p>
+
+<h2>まとめ</h2>
+
+<p>これでWindows依存がなくなったので、個人ユーザー増えるんじゃないんですかね？</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[kvm上のVMでは、ネットワークはブリッジとNATのどっちが速いのか確かめてみた]]></title>
+    <link href="http://www.yujilow.net/2015-02-23/the-network-speed-comparison-between-bridge-and-nat-with-kvm"/>
+    <updated>2015-02-23T23:50:37+09:00</updated>
+    <id>http://www.yujilow.net/2015-02-23/the-network-speed-comparison-between-bridge-and-nat-with-kvm</id>
+    <content type="html"><![CDATA[<p>kvmが大好きな僕です。<br/>
+今回、ホストとゲストで高速ネットワーク通信を行う必要がでまして、NATとブリッジではどっちが速いのか、気になったので確かめてみました。</p>
+
+<!--more-->
+
+
+<h3>予想</h3>
+
+<ul>
+<li>NATが速いんじゃないの？kvmの機能だし。</li>
+<li>ブリッジは、なんかルータ介して通信しそうだから遅そう。</li>
+<li>NATで10Gbps, ブリッジで1Gbpsが妥当かな。</li>
+</ul>
+
+
+<h3>測定条件</h3>
+
+<p>以下の条件で測定しました。</p>
+
+<ul>
+<li>ホスト
+
+<ul>
+<li>OS : Ubuntu Server 14.10</li>
+<li>CPU : Intel Core i5-4460</li>
+<li>メモリ : 16GB</li>
+<li>NIC : Intel Gigabit CT Desktop Adapter EXPI9301CT</li>
+</ul>
+</li>
+<li>ゲスト
+
+<ul>
+<li>OS : Ubuntu Server 14.10</li>
+<li>NIC : NAT(192.168.112.xx), Bridge(192.168.0.xxx)</li>
+</ul>
+</li>
+<li>測定ソフトウェア
+
+<ul>
+<li>iperf 2.0.5</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>測定方法</h3>
+
+<h4>ホスト上でiperfをサーバモードで起動する</h4>
+
+<pre><code>$ iperf -s
+</code></pre>
+
+<h4>ゲスト上でiperfをクライアントモードで起動する</h4>
+
+<p>まずはNAT接続
+<code>
+$ iperf -c 192.168.122.1 -i 10
+</code></p>
+
+<p>次にブリッジ接続
+<code>
+$ iperf -c 192.168.0.xxx -i 10
+</code></p>
+
+<h3>測定結果</h3>
+
+<h4>NAT接続</h4>
+
+<pre><code>[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec   359 MBytes   301 Mbits/sec
+[  3]  0.0-10.0 sec   359 MBytes   301 Mbits/sec
+</code></pre>
+
+<h4>ブリッジ接続</h4>
+
+<pre><code>[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  38.1 GBytes  32.7 Gbits/sec
+[  3]  0.0-10.0 sec  38.1 GBytes  32.7 Gbits/sec
+</code></pre>
+
+<p>ブリッジ速すぎわろた。<br/>
+キャッシュが効きまくってる可能性がありますね。<br/>
+怪しかったので、もう一つ実験。</p>
+
+<h4>scpでファイル転送</h4>
+
+<p>VMのイメージファイル(4GBくらい)を転送してみる。</p>
+
+<pre><code># ブリッジ
+docker                                                                    100% 4537MB 133.4MB/s   00:34
+</code></pre>
+
+<pre><code># NAT
+docker                                                                    100% 4537MB 100.8MB/s   00:45
+</code></pre>
+
+<p>ブリッジのほうが速い。けど、iperfでの測定よりも差は小さい。</p>
+
+<h3>結論</h3>
+
+<p>ブリッジが速いから、ブリッジを使おう。NATはいらない子？？？<br/>
+NATのほうが速いべ！！！って思って、OSの再インストールまでして設定した時間が無駄になった、、、</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Kimchiもbr0を作らなきゃだめみたい]]></title>
+    <link href="http://www.yujilow.net/2015-01-17/kimchi-ethernet-must-be-bridged"/>
+    <updated>2015-01-17T18:22:28+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-17/kimchi-ethernet-must-be-bridged</id>
+    <content type="html"><![CDATA[<p>Kimchiのネットワーク設定では、ブリッジインターフェースを作らなくてもVMをLAN空間に置くことができます。<br/>
+しかし、ブリッジを作らないと、ある不都合が起こってしまいます。</p>
+
+<!--more-->
+
+
+<h3>不都合とは</h3>
+
+<p>何となく分かるかもしれませんが、<strong>VMからホストにアクセスできなくなる</strong>ということです。</p>
+
+<h3>それだけ？</h3>
+
+<p>え、それだけ？と思う人もいるかもしれません。<br/>
+しかし、これは結構重大な問題です。</p>
+
+<h3>というのも</h3>
+
+<p>自宅ネットワークにおいて、VPNサーバをVMとして設置しています。<br/>
+VPNサーバからホストにアクセス出来ないということは、<strong>外出先からKimchiをいじれない</strong>ということになりますね。<br/>
+前回の記事を作成しているときに、スクショを撮ろうとしてもkimchiにアクセスできなかったので気づきました。</p>
+
+<h3>解決策もなくはない</h3>
+
+<p>自宅にはNASが物理機として稼働しているので、</p>
+
+<pre><code>ssh -L 8001:host.ipaddr8001 nas.ipaddr
+</code></pre>
+
+<p>と、ポートフォワーディングしてあげれば接続することはできます。だけどねえ、、、</p>
+
+<h3>結論</h3>
+
+<p>めんどくさくてもbr0は作成しましょう。<br/>
+僕も、暇になったら作ってみます。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[KimchiへのKVMホスト移行]]></title>
+    <link href="http://www.yujilow.net/2015-01-16/kimchi-uses-libvirt"/>
+    <updated>2015-01-16T02:32:17+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-16/kimchi-uses-libvirt</id>
+    <content type="html"><![CDATA[<p>自宅のkvmホストを、Kimchiに置き換えました。<br/>
+いろいろあったので、メモしておきます。</p>
+
+<!--more-->
+
+
+<h3>移行前</h3>
+
+<ul>
+<li>ハードウェア(NUC)
+
+<ul>
+<li>CPU   : i5-3427U</li>
+<li>メモリ : 16GB</li>
+<li>SSD   : 32GB</li>
+</ul>
+</li>
+<li>ソフトウェア
+
+<ul>
+<li>OS    : Fedora19</li>
+<li>HV    : KVM + libvirt</li>
+<li>GUI   : webvirtmgr</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>移行後</h3>
+
+<ul>
+<li>ハードウェア
+
+<ul>
+<li>変化なし</li>
+</ul>
+</li>
+<li>ソフトウェア
+
+<ul>
+<li>OS    : Ubuntu Server 14.04</li>
+<li>HV    : KVM + libvirt</li>
+<li>GUI   : <strong>Kimchi</strong></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>もともと動いていたマシンたち</h3>
+
+<p>webvirtmgrで管理していたVMは、このページを動かしているものだけをNASで動作させ、全て停止しました。<br/>
+一応、xmlをバックアップしておきました。使わなかったけど。<br/>
+仮想ディスクなどは、もともとNASにおいてあったので、移動する必要はありませんでした。よかった。</p>
+
+<h3>Ubuntuインストール</h3>
+
+<p>パッケージはOpenSSH Serverのみを選択。</p>
+
+<h3>Kimchiインストール</h3>
+
+<p><a href="http://www.yujilow.net/2015-01-12/kimchi-is-the-best-frontend-for-kvm/">前回のページ</a>を参考に、Kimchiをインストールしました。</p>
+
+<h3>Kimchi起動！しかし、、</h3>
+
+<p>Kimchiを動かし、「仮想マシン作成」を実行。しかし、</p>
+
+<p>{% img /images/post/kimvirt01.png %}</p>
+
+<p>既存のディスクから起動する方法がありません。<br/>
+Existing Imageからテンプレートを作成することもできるんですが、「テンプレート」の趣旨からは外れてしまいますね。<br/>
+どうしよう、、、</p>
+
+<h3>libvirtでVM作成</h3>
+
+<p>virt-managerからVMを新規作成し、Kimchiを見てみたら、、</p>
+
+<p>{% img /images/post/kimvirt02.png %}</p>
+
+<p>うまくいってました！やったね！</p>
+
+<h3>まとめ</h3>
+
+<p>Kimchiには、既存環境からでも移行できますよ。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[KVM WEB GUIであるKimchiが本当に素晴らしかった]]></title>
+    <link href="http://www.yujilow.net/2015-01-12/kimchi-is-the-best-frontend-for-kvm"/>
+    <updated>2015-01-12T14:38:57+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-12/kimchi-is-the-best-frontend-for-kvm</id>
+    <content type="html"><![CDATA[<p>自宅サーバでは、kvmが動作しており、その管理にWebvirtmgrを使用していることは<a href="http://www.yujilow.net/2014-11-29/how-to-connect-novnc-for-webvirtmgr/">以前</a>書きました。<br/>
+結局VNCに接続できず、なんだかなあと思いながらも惰性で使っていたんですね。<br/>
+すごくいいGUIを発見してしまったので、紹介します。</p>
+
+<!--more-->
+
+
+<h3>その名も、Kimchi</h3>
+
+<p>{% img /images/post/kimchi01.png %}<br/>
+公式スライドの1ページ目がこれですからね。</p>
+
+<h3>ちなみに</h3>
+
+<p>キムチのお国製というわけではなさそうです。<br/>
+別にキムチのお国が嫌いというわけではないですが、、、</p>
+
+<h3>特徴</h3>
+
+<p>「最近のkvm管理システムは、大規模を重視しすぎ！小規模でも使いやすいものを！」という思想のもと、開発されています。<br/>
+よって、小規模環境、いわば、自宅サーバ環境に非常に使いやすい設計となっています。</p>
+
+<p>以下、特徴です。</p>
+
+<ul>
+<li>libvirtで動作</li>
+<li>unixユーザで動作</li>
+<li>テンプレートドリブンのマシン構築</li>
+<li>RESTfull</li>
+<li>NoVNCによる、ブラウザ上でのコンソール操作</li>
+<li>近未来的なインターフェース</li>
+<li>導入がとってもかんたん</li>
+</ul>
+
+
+<h4>libvirtで動作</h4>
+
+<p>kvmの管理ツールであるlivbirtを利用して動作します。<br/>
+この点は、virt-managerや、webvirtmgrと同様ですね。</p>
+
+<h4>unixユーザで動作</h4>
+
+<p>新たにユーザを作成せずとも、unixのユーザでログインできます。<br/>
+ユーザ管理が煩雑にならずにすみますね！</p>
+
+<h4>テンプレートドリブンのマシン構築</h4>
+
+<p>これが一番の特徴だと思います。<br/>
+Kimchiでは、すべての仮想マシンをテンプレートから作成します。<br/>
+初期状態では、テンプレートを作成する必要があるんですが、テンプレートの作成方法がなかなか面白くて、</p>
+
+<ul>
+<li>ローカルISO</li>
+<li>既存ディスク</li>
+<li>リモートISO</li>
+</ul>
+
+
+<p>以上の3種類から選択します。<br/>
+<strong>リモートISO</strong>とは、httpで公開されているISOを、ストリーミングで参照できる機能です。<br/>
+これは便利ですね！</p>
+
+<h4>RESTfull</h4>
+
+<p>仮想マシンの状態を、RESTで引っ張ってきたりできるそうです。<br/>
+例えば、</p>
+
+<ul>
+<li>/vms で、vmのリストを取得</li>
+<li>/vms/:vm_name で、vmの詳細を取得</li>
+<li>/vms/:vm_name/iface で、vmのNIC情報を取得</li>
+</ul>
+
+
+<p>などなど。jsonで出力されるそうです。</p>
+
+<h4>NoVNC</h4>
+
+<p>ConohaやOpenStackなどでも利用されている、VNC Over Httpツールです。(たぶん)<br/>
+Javaの実装とは違い、Chromeでも実行できます。セキュリティ的にも問題ないそうです。</p>
+
+<h4>近未来的なインターフェース</h4>
+
+<p>{% img /images/post/kimchi02.png %}<br/>
+かっこいい！</p>
+
+<h4>導入が簡単</h4>
+
+<p>Githubのとおりにやってれば、どこも引っかからずに終わります。<br/>
+ブリッジ設定もやってくれるという素晴らしさ。</p>
+
+<h3>導入</h3>
+
+<p>Ubuntu 14.10で導入した手順を紹介します。</p>
+
+<h4>1. aptでmakeの準備</h4>
+
+<pre><code>sudo apt-get install gcc make autoconf automake gettext git \
+                       python-cherrypy3 python-cheetah python-libvirt \
+                       libvirt-bin python-imaging \
+                       python-pam python-m2crypto python-jsonschema \
+                       qemu-kvm libtool python-psutil python-ethtool \
+                       sosreport python-ipaddr python-ldap \
+                       python-lxml nfs-common open-iscsi lvm2 xsltproc \
+                       python-parted nginx \
+                       firewalld python-guestfs libguestfs-tools \
+                       websockify novnc spice-html5
+</code></pre>
+
+<h4>2. プロジェクトをクローンする</h4>
+
+<p>あとで<code>/usr/bin</code>にインストールされるので、クローンする場所はどこでもいいです。</p>
+
+<pre><code>git clone https://github.com/kimchi-project/kimchi.git
+</code></pre>
+
+<h4>3. makeする</h4>
+
+<pre><code>./autogen.sh --system
+make
+sudo make install
+</code></pre>
+
+<p>すると、<code>/usr/bin</code>に<code>kimchid</code>が格納されるはずです。</p>
+
+<h4>4. iptablesに穴を開ける</h4>
+
+<p>ポート8001番を開けておきましょう。</p>
+
+<h4>5. 起動する</h4>
+
+<pre><code>sudo kimchid --host=192.168.xx.xxx
+</code></pre>
+
+<p>こうすることで、localhost以外からのアクセスも行えるようになります。<br/>
+xxの場所には、サーバのIPアドレスの適切なものを入れてください。(わかってるでしょうが、、、)</p>
+
+<h4>6. アクセス！</h4>
+
+<p><a href="https://192.168.xx.xxx:8001">https://192.168.xx.xxx:8001</a> にアクセスしましょう。<br/>
+無事、アクセスできましたね！</p>
+
+<h3>まとめ</h3>
+
+<p>個人ユースのkvmフロントエンドの決定版だと思います。<br/>
+まだまだ機能は少ないですが、頻繁に更新されているのであまり心配はなさそうです。<br/>
+LDAP連携なんかもできるみたいです。中小企業のバックエンドなんかにも良さそうですね！<br/>
+IBMのソフトらしく、Power8でも動作するそうです。お持ちの方はぜひ。</p>
+
+<h3>情報</h3>
+
+<p><a href="https://github.com/kimchi-project/kimchi">https://github.com/kimchi-project/kimchi</a><br/>
+<a href="http://www.linux-kvm.org/wiki/images/8/8f/Kvm-forum-2013-kimchi.pdf">http://www.linux-kvm.org/wiki/images/8/8f/Kvm-forum-2013-kimchi.pdf</a><br/>
+<a href="http://2014.texaslinuxfest.org/sites/default/files/tlf_2014_kimchi-cloud.pdf">http://2014.texaslinuxfest.org/sites/default/files/tlf_2014_kimchi-cloud.pdf</a></p>
+]]></content>
+  </entry>
+  
+</feed>

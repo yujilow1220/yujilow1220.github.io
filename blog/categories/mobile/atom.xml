@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: mobile | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/mobile/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Macで使える、最強SubSonicクライアントはこれだ！]]></title>
+    <link href="http://www.yujilow.net/2015-01-17/the-best-subsonic-client-for-mac-is-it"/>
+    <updated>2015-01-17T20:36:24+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-17/the-best-subsonic-client-for-mac-is-it</id>
+    <content type="html"><![CDATA[<p>散々迷った結果、いい感じに落ち着いたSubSonicクライアントを紹介します。</p>
+
+<!--more-->
+
+
+<h3>Mac</h3>
+
+<p><a href="http://www.subsonic.org/pages/apps.jsp">公式</a>には、多くのクライアントソフトが載ってますね。<br/>
+Macで使えるクライアントは、<a href="http://www.subsonic.org/pages/apps.jsp#submariner">Submariner</a> と <a href="http://www.subsonic.org/pages/apps.jsp#thumper">Thumper</a>でしょうか。</p>
+
+<h3>使ってみた</h3>
+
+<p>まずはSubmarinerから。あれ？OK押しても設定項目が消えない、接続できない、あれれ、、、<br/>
+サーバに接続することすら叶いませんでした。とほほ。</p>
+
+<h3>気を取り直して</h3>
+
+<p>Thumperを使ってみよう。Githubから.appをダウンロードしてきて、zipを解凍して、起動！あれ、<strong>起動しない</strong>。<br/>
+起動すらできませんでした。とほほほほ。</p>
+
+<h3>イチかバチかを思いついた</h3>
+
+<p>Mac用のアプリはだめだね。どうしようか、、、<br/>
+そういえば、<strong>AndroidアプリをChromeで使う</strong>方法があったっけ。</p>
+
+<h3>試してみた</h3>
+
+<p>ARChonというランタイムを使用します。</p>
+
+<p>{% img <a href="https://camo.githubusercontent.com/a97f2daa90c81be81c0459136067b016fa9215f7/687474703a2f2f763134642e636f6d2f672f6368726f6d6561706b732f342e706e67">https://camo.githubusercontent.com/a97f2daa90c81be81c0459136067b016fa9215f7/687474703a2f2f763134642e636f6d2f672f6368726f6d6561706b732f342e706e67</a> %}<br/>
+利用シーン</p>
+
+<p>Androidアプリには、使いやすいと評判の高い<a href="https://play.google.com/store/apps/details?id=com.thejoshwa.ultrasonic.androidapp&amp;hl=ja">UltraSonic</a>を利用します。</p>
+
+<h3>導入</h3>
+
+<h4>1. ARChonをインストール</h4>
+
+<p><a href="http://tabkul.com/?p=72610">Windows版Chrome拡張『ARChon』でAndroidアプリを起動した話</a><br/>
+こちらのページを参考に、ARChonをインストールします。<br/>
+MACでもWinでもOKなはずです。</p>
+
+<h4>2. apkを変換</h4>
+
+<p><a href="http://plaza.rakuten.co.jp/jashi/diary/201406170000/">どうにか</a>、<a href="https://chrome.google.com/webstore/detail/apk-downloader/cgihflhdpokeobcfimliamffejfnmfii">こうにか</a>して入手したUltraSonicのapkを変換します。<br/>
+僕は、Chromeアプリの<a href="https://chrome.google.com/webstore/detail/twerk/jhdnjmjhmfihbfjdgmnappnoaehnhiaf">twerk</a>を利用しました。これで問題無いと思います。</p>
+
+<h4>3. UltraSonicをインストール</h4>
+
+<p>ARChonと全く同じ要領で、UltraSonicをインストールします。</p>
+
+<h4>4. おしまい</h4>
+
+<p>{% img /images/post/subsonic01.png %}<br/>
+無事、使えるようになりました。</p>
+
+<h3>使用感</h3>
+
+<p>正直、実用に耐えうるのかは心配でした。しかし、それは杞憂でした。<br/>
+挙動、サウンド、機能、すべての面において申し分ない動作をしてくれます。<br/>
+こりゃすげえ！</p>
+
+<h3>まとめ</h3>
+
+<p>へたなネイティブアプリを使うよりも、これからはARChonの時代が来るかもしれない。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HTC J Oneの保護シートを剥がしたらホーム連打が解消した]]></title>
+    <link href="http://www.yujilow.net/2014-11-30/remove-htc-j-one-prasheet"/>
+    <updated>2014-11-30T23:41:41+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-30/remove-htc-j-one-prasheet</id>
+    <content type="html"><![CDATA[<p>HTL22に保護シートを貼っていました。<br/>
+剥がしたら、めちゃめちゃ快適になりました。</p>
+
+<!--more-->
+
+
+<h3>異変が、、、</h3>
+
+<p>ある日、その異変は突然起こりました。<br/>
+それは、<strong>自分の息でボタンが押下されてしまう</strong>という現象でした。</p>
+
+<p>僕は慢性鼻炎を患っていて、鼻がよく詰まります。<br/>
+口呼吸をすると、ホームボタンや戻るボタンが反応してしまいました。</p>
+
+<p>ご存じの通り、HTL22はハードウェアボタンに静電誘導式ボタンを採用しています。<br/>
+iPhoneのホームボタンのように物理的摩耗がないのは嬉しいんですが、こういう問題が出てしまっては微妙です。<br/>
+僕はHTL22を恨み、自分の鼻を恨み、あと1年は続くであろう割賦に思いを馳せて絶望した日々を送っていました。</p>
+
+<h3>転機は訪れる</h3>
+
+<p>ふと、本体に張ってある保護シートを剥がしてみようと思いました。<br/>
+保護シートは、本体購入時に貼った、500円くらいの平凡なシートでした。<br/>
+保護シートを剥がし、ボタンに息を吹きかけると、<strong>どんなに息を吹きかけても反応しなくなりました。</strong><br/>
+びっくりしました。</p>
+
+<h3>副産物</h3>
+
+<p>保護シートを剥がしたことによる副産物はいろいろありました。</p>
+
+<ul>
+<li>指紋が付きづらくなった</li>
+<li>指通りが良くなった</li>
+<li>シートによる段差がなくなった</li>
+</ul>
+
+
+<p>いずれも、スマホがより快適に使えるようになるものばかりでした。</p>
+
+<h3>結局は</h3>
+
+<p>開発者側は、保護シートを貼ることを想定せずに製品開発をしています。<br/>
+そのため、表面のガラスには強固なものを使用し、傷がつきづらいようにしています。<br/>
+保護シートを貼るという行為は、企業努力を無に返すものでした。<br/>
+われわれは、メーカーがつけてくれた傷がつきづらい高価なガラスの表面に、傷めっちゃつくし汚れめっちゃつく安っぽい保護シートを張っているということに気づきました。</p>
+
+<h3>結論</h3>
+
+<ul>
+<li>今のスマホのガラスはほぼ傷つかないだろう</li>
+<li>保護シートのほうがよっぽど傷つきやすい</li>
+<li>保護シートを貼ると不具合が起こるかもしれない</li>
+<li>保護シートは貼ってもいいことない</li>
+</ul>
+
+
+<p>ノングレアがいいんだ！って人や、覗き見防止シートがなけりゃ安心できない！って人はこの限りじゃないです。<br/>
+僕はもう保護シートは貼りません。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ぷららモバイルLTEを解約する方法]]></title>
+    <link href="http://www.yujilow.net/2014-11-03/how-to-cancel-plala"/>
+    <updated>2014-11-03T17:47:44+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-03/how-to-cancel-plala</id>
+    <content type="html"><![CDATA[<p>ぷららモバイルLTE無制限プランを解約しました。<br/>
+その時に行った方法を紹介します。</p>
+
+<!--more-->
+
+
+<h3>解約方法(Web経由)</h3>
+
+<h4>1. ぷららマイページにログイン</h4>
+
+<p>{% img /images/post/cplala01.png  600 800 %}</p>
+
+<p><a href="http://www.plala.or.jp/">http://www.plala.or.jp/</a>の中程にある、「マイページにログイン」をクリック。<br/>
+IDとパスワードを入力し、ログインします。</p>
+
+<h4>2. 「ご利用料明細を見る」をクリック</h4>
+
+<p>{% img /images/post/cplala02.png  600 800 %}</p>
+
+<p>ここです。</p>
+
+<h4>3. モバイルLTEの欄の「解約」をクリック</h4>
+
+<p>{% img /images/post/cplala03.png  600 800 %}</p>
+
+<p>「その他オプションサービスご利用状況」の欄にあった気がします。<br/>
+解約後で項目が消えてしまっているのでよくわかりません。</p>
+
+<h4>4. モバイルLTEの欄の「解約」をクリック</h4>
+
+<p>「解約しますか？」といった内容が表示されます。<br/>
+一番下のボタンをクリックして、解約します。<br/>
+<strong>注意！ボタンを押したら確認なしで解約されます。</strong></p>
+
+<h4>5. 解約完了</h4>
+
+<p>解約が完了した旨のメールが届きます。</p>
+
+<h3>備考</h3>
+
+<p>僕は<strong>10/31</strong>にWebより解約手続きを行いましたが、11月分の利用料金等はかかりませんでした。<br/>
+また、利用開始月無料キャンペーン中に解約しましたが、初期費用以外は請求されませんでした。</p>
+
+<h3>解約時の注意</h3>
+
+<ul>
+<li>解約月の末日まで契約が有効となります。SIMは月末まで使え、利用料金も日割りされず、一月分かかります。</li>
+<li>SIMは返却する必要があります。SIMが届いた際に封筒が入っているそうです。</li>
+</ul>
+
+
+<p>想像よりもはるかに簡単に解約出来ました。<br/>
+他の人の参考になれば幸いです。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ぷらら無制限を解約した]]></title>
+    <link href="http://www.yujilow.net/2014-11-01/cancel-plala"/>
+    <updated>2014-11-01T16:50:45+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-01/cancel-plala</id>
+    <content type="html"><![CDATA[<p>{% img /images/post/plala01.png %}
+ぷらら無制限を解約して、代わりにBIC SIMを契約しました。<br/>
+その経緯について。</p>
+
+<!--more-->
+
+
+<h3>なぜ契約したか</h3>
+
+<p>当初、ぷらら無制限が登場した際は非常に衝撃的でした。<br/>
+そこそこの速度(3Mbps)が無制限で使えるなんて！<br/>
+契約数も絞ってる感じだし、今のうちに契約しなきゃ！<br/>
+ってな感じで契約しました。</p>
+
+<h3>使ってみてどうだったか</h3>
+
+<p>だいたい10/10ごろにsimが届いて使い始めました。<br/>
+契約はじめの頃は、外出先でYouTube見たり、自炊書籍のストリーミングしたりしてなんとか使いこなしてる感を出そうとしてましたね。</p>
+
+<p>でも、使用から一ヶ月経って回線使用量を確認したところ、なんと<strong>1.5GB</strong>……<br/>
+980円simでも事足りる程度にしか使ってませんでした。</p>
+
+<h3>なぜ使用量が少なかったか</h3>
+
+<p>内的要因(自分の使い方)によれば、</p>
+
+<ul>
+<li>契約前から使用量がそれほど多くなかった。(3GBほど)</li>
+<li>自宅、研究室、カフェ等、作業を行う場所にはたいていwifiが飛んでおり、そちらのほうが高速で使いやすかった。</li>
+<li>動画を流し見ながら作業するタイプではなかった。(だから使用料が少ない)</li>
+</ul>
+
+
+<p>外的要因(ぷらら側の仕様)によれば、</p>
+
+<ul>
+<li>3Mbpsという速度を達成することが殆どなかった。(速度が出て2Mbpsほど)</li>
+<li>昼時等、回線速度が0.5Mbpsほどになることも多かった。</li>
+<li>そのため、アプリダウンロードなど急を要する作業はできなかった。</li>
+<li><strong>安定して高速通信を利用できるサービスではなかった。</strong>(2014年10月現在)</li>
+</ul>
+
+
+<h3>ぷららを使ってわかったこと</h3>
+
+<p>自分のモバイルに対する要求は、</p>
+
+<p><strong>通信料は少なくても、いつでも繋がり、高速</strong></p>
+
+<p>ということであることがわかりました。</p>
+
+<h3>ぷららに向く人、向かない人</h3>
+
+<p>ぷららを今すぐ契約した方がいい人</p>
+
+<ul>
+<li>毎月制限がかかるほど通信する人</li>
+<li>YouTubeやニコ動など、動画ストリーミングをかなり頻繁に利用する人</li>
+<li>radikoやSubSonic等の音声ストリーミングをかなり頻繁に利用する人</li>
+<li>要するに、めっちゃ通信する人</li>
+</ul>
+
+
+<p>ぷららを契約しないほうがいい人</p>
+
+<ul>
+<li>スマホでは、WebやTwitterなどを見る人</li>
+<li>作業場所にwifi環境が確立されている人</li>
+<li><strong>ある程度の高速通信を急に使う必要ができることがある人</strong></li>
+<li>前月の回線使用量が2,3GB程度の人</li>
+<li>要するに、あまり使わないけどたまに高速が必要になる人</li>
+</ul>
+
+
+<h3>かわりのsim</h3>
+
+<p>ぷららの代わりに、BIC SIMを契約しました。<br/>
+公共無線LANであるwi2が使えたり、クーポンの使用を切り替えられたり、BIC SIMはぷららにはないいいところが多くあります。<br/>
+このsimを主回線として使用し、サブとしてmineoの1GBを契約しようと考えています。<br/>
+毎月の支払は、BIC SIM 4GB(1500円) + mineo 1GB(1000円) = 2500円 であるため、ぷららよりもお得に運用できます。</p>
+
+<h3>最後に</h3>
+
+<p>これはぷららをdisりまくる記事ではありません。ただ、自分の利用目的には合わなかったというものです。<br/>
+ぷららに向く人にとっては、ぷらら無制限は唯一無二のsimであります。<br/>
+自分の利用シーンに合ったsimを選び、快適なMVNOライフを送りましょう！</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: mac | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/mac/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GoogleChromeはどのくらい電池食いなのか調べてみた]]></title>
+    <link href="http://www.yujilow.net/2015-06-02/battery-bench-google-chrome-and-safari"/>
+    <updated>2015-06-02T23:42:43+09:00</updated>
+    <id>http://www.yujilow.net/2015-06-02/battery-bench-google-chrome-and-safari</id>
+    <content type="html"><![CDATA[<p>「Chromeは電池食い」、「MacではSafariを使え」というのが最近の通説だそうですが、本当でしょうか。ちょっと調べてみました。</p>
+
+<!--more-->
+
+
+<h3>調べ方</h3>
+
+<p>Safari，Chrome双方で、このブログのトップページを表示し、その間アクティビティモニタの「エネルギー影響」の値を記録します。<br/>
+記録方法は、人力です。</p>
+
+<h3>結果</h3>
+
+<p>結果は以下のとおりです。平均値のみ記します。</p>
+
+<table>
+<thead>
+<tr>
+<th> ブラウザ </th>
+<th> 平均 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Chrome   </td>
+<td> 2.6  </td>
+</tr>
+<tr>
+<td> Safari   </td>
+<td> 0.3  </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Chromeは、Safariの8~10倍の待機電力であることがわかりました。<br/>
+しばらくほおっておくと、少し傾向が変わったようです。</p>
+
+<table>
+<thead>
+<tr>
+<th> ブラウザ </th>
+<th> 平均 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Chrome   </td>
+<td> 0.7  </td>
+</tr>
+<tr>
+<td> Safari   </td>
+<td> 0.1  </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>しばらく待機すると、双方ともに待機電力は低下しますが、やはり7倍ほどの差がありそうです。</p>
+
+<h3>もう一つ実験</h3>
+
+<p>Youtubeで480pの動画を同時に再生し、同様に記録しました。</p>
+
+<h3>結果</h3>
+
+<table>
+<thead>
+<tr>
+<th> ブラウザ </th>
+<th> 平均 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Chrome   </td>
+<td> 281  </td>
+</tr>
+<tr>
+<td> Safari   </td>
+<td> 22.1  </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>圧倒的でした。</p>
+
+<h3>おわりに</h3>
+
+<p>Chromeの消費電力はどうやら半端ないらしいです。<br/>
+個人的には、Chromeは一番好きなブラウザなので、消費電力が低下する方向で頑張って欲しいです。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[新しいMacBookで1680×1050(Retina)を表示する]]></title>
+    <link href="http://www.yujilow.net/2015-05-09/enable-more-retina-setting-on-new-macbook"/>
+    <updated>2015-05-09T23:29:02+09:00</updated>
+    <id>http://www.yujilow.net/2015-05-09/enable-more-retina-setting-on-new-macbook</id>
+    <content type="html"><![CDATA[<p>新しいMacBook購入しました。Retinaがきれいですね。<br/>
+さて、新しいMacBook(以下、Mac)は、表示できる最大解像度が、1440×900なんですね。<br/>
+これは、MacBook Air 13インチと同サイズです。<br/>
+せっかく高解像度のディスプレイを持っているんだから、もうちょっと広く表示したい。<br/>
+表示させてみました。</p>
+
+<!--more-->
+
+
+<h3>QuickRes Proを購入</h3>
+
+<p>どこかで「QuickResを使うと、高解像度が選べる」という情報を手に入れたので、購入しました。<br/>
+結果、選べず、、、がっくしでした。</p>
+
+<p>無理やり、高解像度が選べるように設定しました。</p>
+
+<h3>設定ファイルを編集</h3>
+
+<p>現在のディスプレイが、どの設定ファイルを使っているかを確認します。必要なのは、<code>DisplayVendorID</code>と<code>DisplayProductID</code>です<br/>
+<code>
+$ ioreg -lw0 |grep IODisplayPrefsKey
+</code></p>
+
+<p>すると、以下の様な感じの出力を得ます。</p>
+
+<pre><code>    | | | | | |       "IODisplayPrefsKey" = "IOService:/AppleACPIPlatformExpert/PCI0@0/AppleACPIPCI/IGPU@2/AppleIntelFramebuffer@0/display0/AppleBacklightDisplay-610-a027"
+</code></pre>
+
+<p>重要なのは、最後の<code>AppleBacklightDisplay-610-a027</code>の部分です。この場合、<code>DisplayVendorID = 610</code>、<code>DisplayProductID = a027</code>となります。</p>
+
+<p>IDを確認したら、対応するファイルを開きます。ファイルの場所は、<br/>
+<code>
+/System/Library/Displays/Overrides/DisplayVendorID-610/DisplayProductID-a027
+</code>
+です。VendorIDとProductIDの場所を間違えずに開きます。<br/>
+中身は、xmlの形式になっています。</p>
+
+<p>タグ<code>&lt;data&gt;</code> で囲まれている場所が、ディスプレイの解像度設定です。<br/>
+以下を参考にして、使いたい解像度を設定してあげます。<br/>
+<code>
+&lt;data&gt;AAAPAAAACWAAAAAB&lt;/data&gt; &lt;!-- 1920x1200 --&gt;
+&lt;data&gt;AAANIAAACDQAAAAB&lt;/data&gt; &lt;!-- 1680x1050 --&gt;
+</code>
+dataのとこの最後に追加してあげればOKだそうです。設定例は以下の感じです。<br/>
+<code>
+   &lt;key&gt;scale-resolutions&lt;/key&gt;
+   &lt;array&gt;
+     &lt;data&gt;AAAIAAAABQAAAAAB&lt;/data&gt;
+     &lt;data&gt;AAAKAAAABaAAAAABACAAAA==&lt;/data&gt;
+     &lt;data&gt;AAAHgAAABLAAAAABACAAAA==&lt;/data&gt;
+     &lt;data&gt;AAAHgAAABDgAAAABACAAAA==&lt;/data&gt;
+     &lt;data&gt;AAAFAAAAAtAAAAABACAAAA==&lt;/data&gt;
+     &lt;data&gt;AAAFoAAAA4QAAAAB&lt;/data&gt;
+     &lt;data&gt;AAAFAAAAAyAAAAAB&lt;/data&gt;
+     &lt;data&gt;AAAEgAAAAtAAAAAB&lt;/data&gt;
+     &lt;data&gt;AAAEAAAAAwAAAAAB&lt;/data&gt;
+     &lt;data&gt;AAADIAAAAlgAAAAB&lt;/data&gt;
+     &lt;data&gt;AAACgAAAAeAAAAAB&lt;/data&gt;
+     &lt;data&gt;AAALQAAABwgAAAAJAKAAAA==&lt;/data&gt;
+     &lt;data&gt;AAAKAAAABkAAAAAJAKAAAA==&lt;/data&gt;
+     &lt;data&gt;AAAJAAAABaAAAAAJAKAAAA==&lt;/data&gt;
+     &lt;data&gt;AAAIAAAABQAAAAAJAKAAAA==&lt;/data&gt;
+     &lt;data&gt;AAAPAAAACWAAAAAB&lt;/data&gt;
+     &lt;data&gt;AAANIAAACDQAAAAB&lt;/data&gt;
+   &lt;/array&gt;
+</code></p>
+
+<p>設定が終わったら、Macを再起動します。<br/>
+うまく行ったら、QuickResで高解像度が選べるようになってます。</p>
+
+<h3>高解像度にしてみて</h3>
+
+<p>ちょっと目が痛い。</p>
+
+<h3>参考</h3>
+
+<p><a href="https://discussions.apple.com/thread/4056198?tstart=0">Missing high res options on Retina MacBook Pro</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Fedora19をMac用のNASに！Netatalkの最新版のインストール]]></title>
+    <link href="http://www.yujilow.net/2014-11-25/how-to-install-new-netatalk"/>
+    <updated>2014-11-25T14:49:10+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-25/how-to-install-new-netatalk</id>
+    <content type="html"><![CDATA[<p>MacのためのNASを作ります。NetatalkをFedora 19にインストールします。<br/>
+Time Machineでバックアップが出来るようにします。<br/>
+OS X 10.9, 10.10(多分)対応です。</p>
+
+<!--more-->
+
+
+<h3>NASって？</h3>
+
+<p>NASとは、Network Attached Storageの頭文字をとったものです。<br/>
+つまりは、「ネットワーク越しに使える共有HDD」のことです。<br/>
+MacBookを使っている人はディスクの容量不足に悩むことがしばしばあると思います。NASがあれば解決ですね！</p>
+
+<h3>なぜ最新版？</h3>
+
+<p>yumリポジトリにもNetatalkは含まれています。<br/>
+しかし、リポジトリのNetatalkはバージョンが古く、現在のOS Xでは使用できません。<br/>
+{% img /images/post/netatalk01.png %}<br/>
+こんなかんじのアラートが出ます。</p>
+
+<p>最新版のnetatalkはバージョンが3系になっているので、それを使いましょう。</p>
+
+<h3>ビルドからインストール</h3>
+
+<h4>1. rpm-buildをインストール</h4>
+
+<p>rpmを作るために、rpm-buildというツールをインストールします。</p>
+
+<pre><code># yum -y install rpm-build
+</code></pre>
+
+<h4>2. 依存関係を解決</h4>
+
+<p>依存するライブラリをインストールします。</p>
+
+<pre><code># yum -y install cracklib-devel openssl-devel quota-devel libtool automake  autoconf libdb-devel pam-devel  tcp_wrappers-devel  avahi-devel libacl-devel  openldap-devel  libevent-devel dbus-devel dbus-glib-devel glib2-devel systemtap-sdt-devel libtdb-devel tracker-devel mariadb-devel
+</code></pre>
+
+<h4>3. ソースのダウンロードと展開</h4>
+
+<p><a href="http://netatalk.sourceforge.net/wiki/index.php">Netatalk Wiki</a>より、最新版のsrpmをダウンロードしてきます。<br/>
+<a href="http://netatalk.sourceforge.net/wiki/index.php/Category:Howtos">カテゴリ</a>から最新版の記事を見つけるのがいいでしょう。</p>
+
+<pre><code>$ wget http://path/to/file/netatalk-xxxxx.src.rpm
+$ rpm -ivh netatalk-xxxxx.src.rpm
+</code></pre>
+
+<p>ユーザーがありませんとか言われても無視しましょう。</p>
+
+<h4>4. ビルド</h4>
+
+<pre><code>$ cd ~/rpmbuild/SPECS/
+$ rpmbuild -bb netatalk.spec
+</code></pre>
+
+<p>成功すると、<code>~/rpmbuild/RPMS/x86_64</code>配下にrpmが生成されます。</p>
+
+<h4>5. インストール</h4>
+
+<pre><code>$ cd ~/rpmbuild/RPMS/x86_64/
+# rpm -ivh *.rpm
+</code></pre>
+
+<p>2つあるrpmを両方インストールします。すでにyumかなんかでnetatalkがインストールされている環境には、</p>
+
+<pre><code># rpm -Uvh *.rpm
+</code></pre>
+
+<p>を実行してください。<br/>
+これでインストールは終わりです。</p>
+
+<h4>6. 設定</h4>
+
+<p>netatalk 2系は、ボリューム設定がAppleVolume.defaultかなんかのファイルに記載してました。<br/>
+3系では、すべて/etc/afp.confに記述します。</p>
+
+<p>以下、自分の記述内容です。</p>
+
+<pre><code>[Global]
+log level = defalut:warn
+log file = /var/log/netatalk.log
+uam list = uams_clrtxt.so uams_dhx.so uams_dhx2.so
+
+; [Homes]
+; basedir regex = /home
+
+; [My AFP Volume]
+; path = /path/to/volume
+
+[Disk]
+  path = /mnt/disk
+
+[Time Machine]
+  path = /mnt/disk/timeMachine
+  time machine = yes
+  vol size limit = 512000
+</code></pre>
+
+<p>自分の環境では、主に<code>/mnt/disk</code>というパスを共有しています。<br/>
+TimeMachineも上記のように書くことができます。<br/>
+Globalにあるuam listは、ユーザの権限を指定するものらしいです。詳しくは謎です。勉強したら追記します。</p>
+
+<h4>7. 起動</h4>
+
+<pre><code># systemctl enable avahi-daemon
+# systemctl enable netatalk
+# systemctl start avahi-daemon
+# systemctl start netatalk
+</code></pre>
+
+<p>以上でlinuxのフォルダがMacから見えるはずです。お疲れ様でした。</p>
+
+<h3>2014/12/03追記</h3>
+
+<p>コメントより、上記のuamの設定は現行のOS Xでは必要がないという指摘をいただきました。<br/>
+uams_clrtxt.soは、古の時代に認証をクリアテキストで行っていた際の設定であり、残りの2つはデフォルトで設定されているそうです。<br/>
+修正した[Global]は、以下のようになります。</p>
+
+<pre><code>[Global]
+log level = defalut:warn
+log file = /var/log/netatalk.log
+</code></pre>
+
+<p>指摘してくださったHATさん、ありがとうございました。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[virt-managerをMacにインストール(できない)]]></title>
+    <link href="http://www.yujilow.net/2014-06-18/virt-manager-on-osx"/>
+    <updated>2014-06-18T01:19:31+09:00</updated>
+    <id>http://www.yujilow.net/2014-06-18/virt-manager-on-osx</id>
+    <content type="html"><![CDATA[<p>KVM管理ツールであるVirt-managerをMacで動かしましょう。</p>
+
+<!--more-->
+
+
+<h3>前提</h3>
+
+<ul>
+<li>Gitがインストールされている</li>
+<li>MacPortsがインストールされている</li>
+<li>HomeBrewがインストールされている</li>
+<li>変になっても泣かない</li>
+</ul>
+
+
+<h3>やりかた</h3>
+
+<pre><code>git clone git://git.fedorahosted.org/virt-manager.git
+cd virt-manager
+sudo port -v install intltool py27-pygtk
+sudo python setup.py install
+brew install cairo --use-clang
+brew install py2cairo
+sudo ln -s /usr/bin/python2.7 /usr/bin/python2 #python2がない場合  
+</code></pre>
+
+<p><a href="http://ftp.gnome.org/pub/GNOME/sources/pygobject/2.28/">ここ</a>から、pygobjectのソースを拾ってくる&amp;展開<br/>
+<code>
+cd path/to/gobject-folder
+./configure
+make
+sudo make install
+</code>
+&hellip;makeできない。pycairoがないと言われる。どこにあるんだーーーーーーーー</p>
+
+<h3>結果</h3>
+
+<p>わざわざX転送しなくていいので便利 (まだ使えず)</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ios android | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/ios-android/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[スマホをAndroidからiPhoneに変えて思ったこと]]></title>
+    <link href="http://www.yujilow.net/2015-02-09/change-to-iphone"/>
+    <updated>2015-02-09T14:25:16+09:00</updated>
+    <id>http://www.yujilow.net/2015-02-09/change-to-iphone</id>
+    <content type="html"><![CDATA[<p>しばらくブログ更新できなかったのは、卒論を書いていたからです。<br/>
+泣きそうでした。<br/>
+ところで、携帯をiPhoneに変えてみました。最初に思ったことをつらつらと。</p>
+
+<!--more-->
+
+
+<h3>なにPhoneになったか</h3>
+
+<p>iPhone5s 16GB docomo版をヤフオクでゲットしました。<br/>
+計33000円ほどかかりましたが、相場より安く手に入れられたと思います。</p>
+
+<h3>良かったこと</h3>
+
+<h4>電池がめっちゃ持つ</h4>
+
+<p>以前はHTL22を使用していたんですが、こいつのバッテリーが半端無くひどいやつでした。<br/>
+まず、25％で電源が落ちてしまうという不具合。これが手ごわかったです。<br/>
+iPhoneにしてからはそんな不具合はなくなりましたね。当たり前ですが。<br/>
+あと、余裕で1日持ちますね。すげえ。</p>
+
+<h4>ネットの接続が安定している</h4>
+
+<p>LTEが非常に安定してます。使いやすい！</p>
+
+<h4>ちっちゃい</h4>
+
+<p>ちっちゃい！握りやすい！いい！<br/>
+iPhone6にしなかったのは、このちっささがいいなと思ったからです。</p>
+
+<h4>Touch IDすごい</h4>
+
+<p>ログイン楽です。アプリをダウンロードするのが楽です。これはすごい！</p>
+
+<h3>だめだと思ったところ</h3>
+
+<h4>良いアプリはだいたい有料</h4>
+
+<p>だめというか、びっくりしたところです。<br/>
+しかも、有料アプリでも完成度の低いものがチラホラあるのが驚きです。<br/>
+有料の文化が根付いているのはいいと思うんですが、ねえ、、、</p>
+
+<h4>ホームボタンの依存度が高過ぎる</h4>
+
+<p>何をするにもホームボタンを押しますね。思った以上に押す回数が多いです。<br/>
+画面にホームボタンを表示する機能もありますが、ホームに戻る手順が多いので使ってません。<br/>
+いずれ、ホームボタンが壊れる気がします。</p>
+
+<h4>キーボードが使いづらい</h4>
+
+<p>なんかいまいちキーボードが使いづらいですね。<br/>
+iOS8からは3rdキーボード使えるようになったので、ATOKでも買ってみます。</p>
+
+<h4>やっぱり自由度が低い</h4>
+
+<p>iOS標準機能には意地でも触れさせない精神がありそうです。<br/>
+カメラロールをアプリから削除できない、ホームに戻れない、くどくど、、<br/>
+ホームボタン代替機能は、だいたい脱獄しなきゃ使えないですね。</p>
+
+<h3>結論</h3>
+
+<p>まだ使い始めて数日しか経ってないのでわかりませんが、今のところ、iOSじゃなきゃいや！とも、Androidじゃなきゃいや！ともなってないですね。<br/>
+ただ、脱獄したい、、、</p>
+]]></content>
+  </entry>
+  
+</feed>

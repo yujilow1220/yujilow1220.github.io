@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: web | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/web/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[HighChartsでプロットする点の個数を固定する]]></title>
+    <link href="http://www.yujilow.net/2014-11-20/highcharts-tips-for-static-points"/>
+    <updated>2014-11-20T01:59:14+09:00</updated>
+    <id>http://www.yujilow.net/2014-11-20/highcharts-tips-for-static-points</id>
+    <content type="html"><![CDATA[<p>{% img /images/post/highcharts01.png %}
+HighChartsという、JavaScriptでグラフを作成するライブラリがあります。<br/>
+グラフに動的に点を追加すると、あっという間にグラフの感覚が狭まって見づらいものになってしまいます。<br/>
+解決方法をググってもあんまり出てこなかったので、メモします。</p>
+
+<!--more-->
+
+
+<h3>その方法</h3>
+
+<ol>
+<li>点の個数を取り出す</li>
+<li>点の個数がしきい値を超えたら、先頭の点を消去する</li>
+<li>点を追加する</li>
+<li>1 ~ 3 を繰り返す</li>
+</ol>
+
+
+<h3>具体的に</h3>
+
+<pre><code>    $('#esense_chart').highcharts({
+          chart: {
+            width:800,
+            heigth:100
+          },
+          title: {
+            text: 'eSense',
+            x: -20 //center
+          },
+          xAxis: {
+            categories: [],
+            labels:{
+                enabled:false
+            }
+          },
+          tooltip: {
+            valueSuffix: '°C'
+          },
+          legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+          },
+          series: [{
+            name: 'attention',
+            data: []
+          }]
+        });
+
+        var esense_chart = $('#esense_chart').highcharts();
+        var attention = new Array();
+        var se_att = esense_chart.series[0];
+        se_att.setData(attention,true); //Arrayをセット
+
+        setInterval(function(){
+            $.ajax({
+                type: "GET",
+                url:"http://localhost:3000/api/eeg",
+                dataType: 'json'
+            }).always(function(data){
+                var MAX = 50;
+                if(data.attention){
+                    se_att.addPoint(data.attention);  //点を追加
+                    if(attention.length &gt; MAX){
+                        se_att.points[0].remove();  //先頭の点を削除
+                    }
+                }
+</code></pre>
+
+<h3>説明</h3>
+
+<p>まず、<code>highcharts()</code>を使ってグラフを定義します。<br/>
+その後、<code>Array</code>を定義し、seriesにセットします。こうすることで、Arrayのlengthを拾うことができるようになります。<br/>
+そして、ajaxなりでデータを取得してデータを<code>series.addPoint()</code>で追加します。<br/>
+サイズがしきい値を超えたら、<code>series.points[0]</code>(先頭のpoint)を削除するという手順です。</p>
+
+<h3>P.S.</h3>
+
+<p>何に使ったjsかわかった人はすごいです。</p>
+]]></content>
+  </entry>
+  
+</feed>

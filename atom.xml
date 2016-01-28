@@ -1,0 +1,1730 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:12:53+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[RAIDZが壊れた絶望から復活まで]]></title>
+    <link href="http://www.yujilow.net/2015-12-28/zfs-was-repaired"/>
+    <updated>2015-12-28T14:33:12+09:00</updated>
+    <id>http://www.yujilow.net/2015-12-28/zfs-was-repaired</id>
+    <content type="html"><![CDATA[<p>ZFSアレイが壊れました。しかし、復活しました。<br/>
+復活した原因がわからないのですが、困っている人がいると思うので顛末を記しておきます。</p>
+
+<!--more-->
+
+
+<h2>前提</h2>
+
+<p>うちの環境では、SATA<em>5 + USB3.0ケース</em>2 の7つのHDDでRAIDZ2を組んでいます。<br/>
+まあ、クソですね。どうにかしようと思っていました。が、なあなあで手を付けていませんでした。<br/>
+ちなみに、OpenMediaVaultでNASを作成していました。</p>
+
+<h2>3行まとめ</h2>
+
+<ul>
+<li>プールがどうしてもインポートできない</li>
+<li>FreeBSDでのインポートを試すが失敗</li>
+<li>再びUbuntuでインポートすると、成功！！</li>
+</ul>
+
+
+<h2>事の発端</h2>
+
+<p>ちょっと長いこと外出してたら、調子悪くなってました。<br/>
+具体的には、HDDケースが認識されてないみたいな。。。<br/>
+RAIDZ2だったので、HDDケース分が認識されなくても問題ないんですが、まずいなと。<br/>
+対策しようとしました。</p>
+
+<h2>zpoolコマンドがハングし始める</h2>
+
+<p>zpoolコマンドが帰ってこなくなりました。<br/>
+トランザクションが完了しないまま再起動したりしたので、おかしくなったのでしょう。<br/>
+やばいな、と思いつつ、シャットダウンして放置してました。</p>
+
+<h2>カーネルパニック！！！</h2>
+
+<p>復旧の準備ができて、復旧を始めました。<br/>
+まずは、慣れ親しんだこのコマンド！！</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo zpool import tank</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&hellip;ハングしました。なんてこった。</p>
+
+<p>では、強制的にインポートします。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo zpool import -f tank</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&hellip;ハングしました。<br/>
+-Fをつけると、復旧しながらインポートしてくれるらしい。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo zpool import -fF tank</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&hellip;カーネルパニック！！！どういうことだ！！！</p>
+
+<p>どうにもならなくなりました。インポートできないってどういうことだ。</p>
+
+<h2>がんばる</h2>
+
+<ul>
+<li>新たにUbuntuで試す → ハングする。だめ。</li>
+<li>FreeBSD LiveCDを試す → 強制再起動する。だめ。</li>
+</ul>
+
+
+<p>きっとダメなんだ。さようなら、僕のデータたち。楽しかったよ。。。。</p>
+
+<h2>いきなり復活</h2>
+
+<p>朝起きて、どうせダメなんだろうなと以下のコマンドを打ってみました。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo zpool import -f -o readonly=on tank</span></code></pre></td></tr></table></div></figure>
+
+
+<p>すると、なんと！！インポートできました！！！</p>
+
+<h2>予想</h2>
+
+<p>予想としては、FreeBSDでインポートを試みたところ、トランザクションが整理されたのではないかと思っています。<br/>
+だから、ハングの原因が取り除かれて、うまくインポートできたのではないかと。<br/>
+さっそくHDDを購入し、バックアップを取ります。</p>
+
+<h2>反省</h2>
+
+<p>バックアップはしっかり取ろう。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[VMWare ESXi無償版対応公式Webクライアント ESXi Embedded Host Clientを試してみた]]></title>
+    <link href="http://www.yujilow.net/2015-09-23/esxi-new-official-web-client"/>
+    <updated>2015-09-23T19:58:03+09:00</updated>
+    <id>http://www.yujilow.net/2015-09-23/esxi-new-official-web-client</id>
+    <content type="html"><![CDATA[<p>とうとうVMWare ESXiにWebクライアントが登場しました！しかも、公式に。</p>
+
+<!--more-->
+
+
+<h2>ESXi Embedded Host Client</h2>
+
+<p>その名も、<strong>ESXi Embedded Host Client</strong><br/>
+Embedded(組み込み)の名の通り、ホストに機能を組み込む形で利用します。<br/>
+現在Fling(投げっぱなし)版とのことで、補償なしです。</p>
+
+<h2>結論</h2>
+
+<p>ESXi6.0u1クリーンインストール後の環境では、VM追加等ができませんでした。<br/>
+現状は動かなそうです。。。</p>
+
+<h2>導入</h2>
+
+<p>以下の方法で導入しました。</p>
+
+<h3>1. ESXiのアップグレード(必要なら)</h3>
+
+<p>検証機のバージョンが5.5u1だったので、5.5u3へアップグレードしました。<br/>
+HostClientは5.5u2以上対応らしいのですが、一応(5.5の)最新に。<br/>
+新規インストールする人は6.0u1があるのでそれでいいと思います。</p>
+
+<h3>2. vibファイルのダウンロード&amp;ホストへ転送</h3>
+
+<p><a href="https://labs.vmware.com/flings/esxi-embedded-host-client">https://labs.vmware.com/flings/esxi-embedded-host-client</a> にアクセスして、vibファイルをダウンロードしてきます。<br/>
+scpなりでホストのわかりやすいところにおいておきます。</p>
+
+<h3>3. vibインストール</h3>
+
+<p>ホストにsshでログインし、以下のコマンドでインストールします。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>esxcli software vib install -v /path/to/esxui-000000.vib</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでインストールは完了です。<a href="https://hostip/ui/">https://hostip/ui/</a> にてアクセスできます。ホストの再起動は必要ありません。</p>
+
+<h2>外観</h2>
+
+<p><img src="https://lh3.googleusercontent.com/E6ZBmruMwE0Nj8-Tucjgh-o9rNiR0a35cQK2jiQ79KUkHe5ZojjFzFtC13202NfsF8j7ZM0TpKBHhZacdJ2BTEPclshjHF35BEQpYCrEvqzabdgMZqlQwmsIe4BDxe5KABRfNuunG_CWvVtBYZSp2K-KdvPynTPmxlyYQdhdCM49kyp9FqS8xYjFK4dxx-9t3e-zfNy4QXy0vEnlo0OsuaFkPIke4qTVXQfxKzelEVl1PMPs75R00Zi9u21Un0iscZC7oVd0B5aLiUxp7qybSmbFclix2zz_N0QRoKGnZ7Wzxeo4MheOMtupTycqtUf4X2vCSjTikiqquOP10hBKvJJlYnAxBHJhufBM4Q3hehHUM_WgnCi39e3aBEvt_MHXECMJ5vn0pLtuomJUX4B1ZPZKGvEs7P1jt8dF_7Hnn0gnN4GgpBm3ZCe6HufnxhkMeMxkZxp0PJeWfQclpuGXTaveZGp7tNu26kfUxp5j9TCdMfU1kYJzxvJxi9C4sX-AoccvDbxkpvx4Y6-xKQXgCknk22VyztNy60QuxJMcYX4=w3340-h1850-no" width=800/></p>
+
+<p>外観は、公式っぽい外観です。動作も軽いです。</p>
+
+<p><img src="https://lh3.googleusercontent.com/jNcobG2I9yEfzMq9dLSx7jWM9_Tv_Qsv11I-MBVmAkDslC9J_1QQlkFLaZS6L1o9XDLfdoAidnP8dh3nJkpRHr9GU3x2l6ba4yztLS3ljRP_sZg5n6L88h8KI58hojJECEgA7Vrv9-b8txuuyRi3-Abn4Y5kQGwrh9ZEXNSmG7aTli1GGrHz9vft_0Ft2kOum3w32nQ78hydnAhtMPdGcw9EjqXKFJ4low21DR1own46YSJfj8s6zu5uitdpAT6g4MRyXx86eDupEtboTxL23gMpdnzmSYiK-NVAEDi3hIrRYD_-spYj6l1nJZIMgy93Xynq8nUbbn9cBX0Lvj6V-oV1bJIFd2yliJTjox4SNIbUHfdy-bPBmTG_T2n9fs-qvl3_zpmw59IhFpN_4UqwQGizpXlwcjYI0_MbgmZaCkHKysrA62y2MTGMb0LTpTNmvtqXFJeETP0Datm-ZxyVLlIc-7prs01CJ5KcQohSNqJHnrGySAwl-QnDyMaXTK47kMhAiZOxh3Yt6oe6cp5yAyTGe4XmXCAYaCeJbp8WULg=w3328-h1832-no" width=800 /></p>
+
+<p>Storage画面です。</p>
+
+<p><img src="https://lh3.googleusercontent.com/m2ktXTomCSLYp5sz26m-Tvbn0Fhjao-JWqTJIw6qb2T6PzOMtF_axS_Kh-9K7Ox9tSw9eN7u8W_LgWcaMrbrbEAqFuAtKTyn3AZL025WeTDr-ev2c2QQ5KF4mwWZUwxbE9pocYAgyvvY8SXqVJ1p8a8a-G-feQaZuxDj8OC25NmxyImyY5hZB7fXMAeDHX4oHRIxPqoEL-0a9cq1Q2tzGxpLcKks2dNHMSMaidbY6O0cjVsE3NCz59y39ayHChjjBetRcIvDRZrAX_eniRwzjMMkNey23AfWdYRoSrFJRfMbC6kVFwgRfGzDR85jaQVAtijWBUeUF9Ug5s_A_wJhiKL9_9ZIaEav3Lad9T_eeXULV7vuWQB451Y7gIkSJxTeE2bgoqXfBKMLcrX0jDL3DlUySWAx-LFupz7kY1kDOG63AdjXZHPk-NaN6roicLQkyR6zmpo_Tlq_gkaVzd5bUGK7OBmHGEgATAaeh92yhjQmmTi02wvSZA5ZbYcx1yn2u_FGGu09Qhp98WPyN0ls95ot3Eyn__JhifbsATZr-r8=w3340-h1836-no" width=800 /></p>
+
+<p>Storage画面では、ファイルブラウザが利用できます。日本語対応です！</p>
+
+<h2>まとめ</h2>
+
+<p>これでWindows依存がなくなったので、個人ユーザー増えるんじゃないんですかね？</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android + ATOKはVDIやSSHクライアントに最適だった]]></title>
+    <link href="http://www.yujilow.net/2015-07-17/atok-is-the-best-ime-for-android-thinclient"/>
+    <updated>2015-07-17T23:26:08+09:00</updated>
+    <id>http://www.yujilow.net/2015-07-17/atok-is-the-best-ime-for-android-thinclient</id>
+    <content type="html"><![CDATA[<p>AndroidとATOKを利用すると、sshとrdpがものすごく使いやすくなります。ほんとです。</p>
+
+<!--more-->
+
+
+<h3>事の発端</h3>
+
+<p>外出先でどうにか仮想Windowsをいじくりたいと思っていました。<br/>
+できれば、まるで手元でWindowsが動いているかのような操作感で。<br/>
+VAIO Type Pみたいな小さくて電池がもつWindowsパソコンが作れるんじゃないかと思うんですが、なかなか出てこないです。<br/>
+需要がないんですね。しょうがないので、Androidタブレットでどうにかします。</p>
+
+<h3>Android VDIに必要な要件</h3>
+
+<p>ただAndroidタブレットを利用するだけじゃ、VDIとは呼べません。<br/>
+<strong>ハードウェアキーボードでの文字入力がしっかりできれば</strong>おそらく問題なく運用できると思います。<br/>
+その要件は、僕が探した中では<strong>ATOK</strong>のみが満たせるものでした。</p>
+
+<h3>他のIMEじゃダメな理由</h3>
+
+<p>普段使いではGoogle日本語入力を使っていました。<br/>
+その中でわざわざATOKを利用することにしたのには、あるひとつの利点があったからです。<br/>
+それは、<strong>英字入力が入力後即確定される</strong>という点です。</p>
+
+<p>多くのIMEでは、英字入力の際も日本語入力と同様に変換候補が現れます。<br/>
+変換を確定するためには、キーボードのエンターを押す必要がありますね。<br/>
+SSHクライアントを例に取りましょう。<br/>
+&ldquo;ls&#8221;を入力し、出力を得るためには<br/>
+&#8220;ls&#8221;入力 → エンターで確定 → エンターで入力確定
+というプロセスを踏みます。つまり、1コマンドでエンターを2回押す必要があるのです。<br/>
+これは普通の運用はできないです。</p>
+
+<h3>ATOKを使うと</h3>
+
+<p>ATOKは、ハードウェアキーボードを利用した場合、英字は予測変換候補が出ません。<br/>
+普通のPCのキーボードと同様に入力することができます。<br/>
+SSHの使い勝手も<strong>通常のターミナルとほぼ同様のものとなります</strong>。<br/>
+RDPも<strong>Windowsを扱うようにキーボードを利用することができます</strong>。<br/>
+まさに最強です。</p>
+
+<h3>まとめ</h3>
+
+<p>Androidでシンクライアントが実現できそうだということがわかりました。<br/>
+これなら、Windowsはkvm上で動作させ、Androidスティックで操作するといった机の上がきれいな環境ができあがり、ほくほくです。<br/>
+スタバでスタイリッシュにsshが叩けそうです。やったね！</p>
+
+<iframe src="http://rcm-fe.amazon-adsystem.com/e/cm?t=yjee-22&o=9&p=8&l=as1&asins=B00GIKEONA&ref=tf_til&fc1=000000&IS2=1&lt1=_blank&m=amazon&lc1=0000FF&bc1=000000&bg1=FFFFFF&f=ifr" style="width:120px;height:240px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+
+
+<p>ATOK、是非買いましょう。僕は試用期間があと15日間あるのであとで買います。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GoogleChromeはどのくらい電池食いなのか調べてみた]]></title>
+    <link href="http://www.yujilow.net/2015-06-02/battery-bench-google-chrome-and-safari"/>
+    <updated>2015-06-02T23:42:43+09:00</updated>
+    <id>http://www.yujilow.net/2015-06-02/battery-bench-google-chrome-and-safari</id>
+    <content type="html"><![CDATA[<p>「Chromeは電池食い」、「MacではSafariを使え」というのが最近の通説だそうですが、本当でしょうか。ちょっと調べてみました。</p>
+
+<!--more-->
+
+
+<h3>調べ方</h3>
+
+<p>Safari，Chrome双方で、このブログのトップページを表示し、その間アクティビティモニタの「エネルギー影響」の値を記録します。<br/>
+記録方法は、人力です。</p>
+
+<h3>結果</h3>
+
+<p>結果は以下のとおりです。平均値のみ記します。</p>
+
+<table>
+<thead>
+<tr>
+<th> ブラウザ </th>
+<th> 平均 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Chrome   </td>
+<td> 2.6  </td>
+</tr>
+<tr>
+<td> Safari   </td>
+<td> 0.3  </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Chromeは、Safariの8~10倍の待機電力であることがわかりました。<br/>
+しばらくほおっておくと、少し傾向が変わったようです。</p>
+
+<table>
+<thead>
+<tr>
+<th> ブラウザ </th>
+<th> 平均 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Chrome   </td>
+<td> 0.7  </td>
+</tr>
+<tr>
+<td> Safari   </td>
+<td> 0.1  </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>しばらく待機すると、双方ともに待機電力は低下しますが、やはり7倍ほどの差がありそうです。</p>
+
+<h3>もう一つ実験</h3>
+
+<p>Youtubeで480pの動画を同時に再生し、同様に記録しました。</p>
+
+<h3>結果</h3>
+
+<table>
+<thead>
+<tr>
+<th> ブラウザ </th>
+<th> 平均 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Chrome   </td>
+<td> 281  </td>
+</tr>
+<tr>
+<td> Safari   </td>
+<td> 22.1  </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>圧倒的でした。</p>
+
+<h3>おわりに</h3>
+
+<p>Chromeの消費電力はどうやら半端ないらしいです。<br/>
+個人的には、Chromeは一番好きなブラウザなので、消費電力が低下する方向で頑張って欲しいです。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[新しいMacBookで1680×1050(Retina)を表示する]]></title>
+    <link href="http://www.yujilow.net/2015-05-09/enable-more-retina-setting-on-new-macbook"/>
+    <updated>2015-05-09T23:29:02+09:00</updated>
+    <id>http://www.yujilow.net/2015-05-09/enable-more-retina-setting-on-new-macbook</id>
+    <content type="html"><![CDATA[<p>新しいMacBook購入しました。Retinaがきれいですね。<br/>
+さて、新しいMacBook(以下、Mac)は、表示できる最大解像度が、1440×900なんですね。<br/>
+これは、MacBook Air 13インチと同サイズです。<br/>
+せっかく高解像度のディスプレイを持っているんだから、もうちょっと広く表示したい。<br/>
+表示させてみました。</p>
+
+<!--more-->
+
+
+<h3>QuickRes Proを購入</h3>
+
+<p>どこかで「QuickResを使うと、高解像度が選べる」という情報を手に入れたので、購入しました。<br/>
+結果、選べず、、、がっくしでした。</p>
+
+<p>無理やり、高解像度が選べるように設定しました。</p>
+
+<h3>設定ファイルを編集</h3>
+
+<p>現在のディスプレイが、どの設定ファイルを使っているかを確認します。必要なのは、<code>DisplayVendorID</code>と<code>DisplayProductID</code>です</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ioreg -lw0 |grep IODisplayPrefsKey</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>すると、以下の様な感じの出力を得ます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>| | | | | |       "IODisplayPrefsKey" = "IOService:/AppleACPIPlatformExpert/PCI0@0/AppleACPIPCI/IGPU@2/AppleIntelFramebuffer@0/display0/AppleBacklightDisplay-610-a027"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>重要なのは、最後の<code>AppleBacklightDisplay-610-a027</code>の部分です。この場合、<code>DisplayVendorID = 610</code>、<code>DisplayProductID = a027</code>となります。</p>
+
+<p>IDを確認したら、対応するファイルを開きます。ファイルの場所は、</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/System/Library/Displays/Overrides/DisplayVendorID-610/DisplayProductID-a027</span></code></pre></td></tr></table></div></figure>
+
+
+<p>です。VendorIDとProductIDの場所を間違えずに開きます。<br/>
+中身は、xmlの形式になっています。</p>
+
+<p>タグ<code>&lt;data&gt;</code> で囲まれている場所が、ディスプレイの解像度設定です。<br/>
+以下を参考にして、使いたい解像度を設定してあげます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;data&gt;AAAPAAAACWAAAAAB&lt;/data&gt; &lt;!-- 1920x1200 --&gt;
+</span><span class='line'>&lt;data&gt;AAANIAAACDQAAAAB&lt;/data&gt; &lt;!-- 1680x1050 --&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>dataのとこの最後に追加してあげればOKだそうです。設定例は以下の感じです。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>   &lt;key&gt;scale-resolutions&lt;/key&gt;
+</span><span class='line'>   &lt;array&gt;
+</span><span class='line'>     &lt;data&gt;AAAIAAAABQAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAKAAAABaAAAAABACAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAHgAAABLAAAAABACAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAHgAAABDgAAAABACAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAFAAAAAtAAAAABACAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAFoAAAA4QAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAFAAAAAyAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAEgAAAAtAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAEAAAAAwAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAADIAAAAlgAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAACgAAAAeAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAALQAAABwgAAAAJAKAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAKAAAABkAAAAAJAKAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAJAAAABaAAAAAJAKAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAIAAAABQAAAAAJAKAAAA==&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAAPAAAACWAAAAAB&lt;/data&gt;
+</span><span class='line'>     &lt;data&gt;AAANIAAACDQAAAAB&lt;/data&gt;
+</span><span class='line'>   &lt;/array&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>設定が終わったら、Macを再起動します。<br/>
+うまく行ったら、QuickResで高解像度が選べるようになってます。</p>
+
+<h3>高解像度にしてみて</h3>
+
+<p>ちょっと目が痛い。</p>
+
+<h3>参考</h3>
+
+<p><a href="https://discussions.apple.com/thread/4056198?tstart=0">Missing high res options on Retina MacBook Pro</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[最近よく眠れない原因と対策]]></title>
+    <link href="http://www.yujilow.net/2015-04-30/i-cant-sleep-well"/>
+    <updated>2015-04-30T22:29:30+09:00</updated>
+    <id>http://www.yujilow.net/2015-04-30/i-cant-sleep-well</id>
+    <content type="html"><![CDATA[<p>最近、夜に眠れないことが多くて、、<br/>
+パソコンに向かうことの多い人は、夜型人間が多いんじゃないでしょうか。<br/>
+眠れない夜の対策法を考えてみました。</p>
+
+<!--more-->
+
+
+<h3>眠れない原因</h3>
+
+<p>11時〜深夜1時頃、布団に入っても眠れない。その原因には、「睡眠禁止時間帯」と「体内時計のズレ」が関係します。</p>
+
+<h3>睡眠禁止時間帯</h3>
+
+<p>人間は、眠りに入る3〜4時間前が、一日の中で最も体温が高くなります。<br/>
+体温が高い状態だと、身体活動が活発になります。そのため、体が睡眠状態に入ることができません。これが、「睡眠禁止時間帯」です。<br/>
+この時間帯には、寝ようとしても眠ることができません。<br/>
+通常、21〜23時ごろだと言われているそうです。</p>
+
+<h3>体内時計のズレ</h3>
+
+<p>しかし、体内時計が3時間ほどずれてしまった場合はどうでしょう。<br/>
+睡眠禁止時間帯は、23 + 3 = 26 = 深夜2時ごろまでずれ込みます。<br/>
+さて、寝るかという時間帯に、どうしても寝ることのできない時間帯が訪れます。<br/>
+眠れないことが更にストレスとなり、睡眠の質が悪く、寝起きが悪い状態になるという悪循環に陥ります。</p>
+
+<h3>せめて眠れるように</h3>
+
+<p>では、布団に入っても眠くならない場合、どうしたらいいのでしょうか。</p>
+
+<p>それは、<strong>寝ることをあきらめる</strong>ことです。</p>
+
+<p>徹夜するぞ！ではなく、来る睡眠時間帯にむけてコンディションを高めるのです。<br/>
+僕が具体的に行ったことは以下のとおり。</p>
+
+<ul>
+<li>布団から出る</li>
+<li>部屋の換気をする</li>
+<li>外に出て散歩する
+
+<ul>
+<li>体温を下げます。強い光は浴びないように。</li>
+</ul>
+</li>
+<li>本を読む
+
+<ul>
+<li>タブレットでの読書とかは逆効果</li>
+</ul>
+</li>
+</ul>
+
+
+<p>夜3時ごろから翌日の昼間で起きられない僕の場合、散歩したらだいたい眠くなります。4時くらいまでに寝付くことができれば、次の日10時ごろには起きることができます。<br/>
+自分の生活習慣に合わせて調節してください。</p>
+
+<p>次は早起きしたい。</p>
+
+<h3>参考</h3>
+
+<p><a href="http://b-chive.com/sleep18/">http://b-chive.com/sleep18/</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Androidアプリ 「Batteli」をリリースしました]]></title>
+    <link href="http://www.yujilow.net/2015-04-29/new-app-batteli"/>
+    <updated>2015-04-29T23:17:29+09:00</updated>
+    <id>http://www.yujilow.net/2015-04-29/new-app-batteli</id>
+    <content type="html"><![CDATA[<p>Androidアプリ「Batteli」をリリースしました。手元にないデバイスのバッテリ残量を、スマートフォンで確認できます。<br/>
+詳細は以下。</p>
+
+<!--more-->
+
+
+<h3>概要</h3>
+
+<p>Androidデバイスのバッテリ残量を一元管理できます。<br/>
+プッシュ通知機能を利用することにより、今までのバッテリ統計アプリにはない省電力となりました。</p>
+
+<h3>機能</h3>
+
+<ul>
+<li>登録デバイスのバッテリ残量一覧表示</li>
+<li>直近3日のバッテリ推移の確認</li>
+</ul>
+
+
+<h3>今後実装機能</h3>
+
+<ul>
+<li>バッテリ動作時間の表示</li>
+<li>テザリング機能のリモート起動</li>
+<li>クロスプラットフォーム対応(iOS, Windows, Mac, Linux)</li>
+</ul>
+
+
+<h3>URL</h3>
+
+<p><a href="https://play.google.com/store/apps/details?id=net.yujilow.batteli">https://play.google.com/store/apps/details?id=net.yujilow.batteli</a></p>
+
+<h3>ひとこと</h3>
+
+<p>アイコンがめっちゃ苦労。ふなっしーみたいになっちゃった。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android - スリープ中にバックグラウンドで定期的にPOSTを送りたい]]></title>
+    <link href="http://www.yujilow.net/2015-03-18/can-timer-run-with-background"/>
+    <updated>2015-03-18T18:37:47+09:00</updated>
+    <id>http://www.yujilow.net/2015-03-18/can-timer-run-with-background</id>
+    <content type="html"><![CDATA[<p>開発中のアプリで、「バックグラウンドで定期的にサーバにPOSTする」という機能を付ける必要があります。<br/>
+それで、Service内でTimerを動かし、そのTimer内でPOSTする、普通のコードを書きました。<br/>
+すると、スリープ中にPOSTが実行されないという現象が起こりました。それだとだめなんだよ、、<br/>
+原因を分析してみました。</p>
+
+<!--more-->
+
+
+<h3>電源を接続していると</h3>
+
+<p>電源を接続している場合、スリープでもきちんとPOSTできていることが確認できました。てことは、バッテリー動作での省電力機能が働いているからなんでしょうね。<br/>
+省電力機能でどこの段階で殺されているのか、確かめます。</p>
+
+<h3>無線デバッグを使う</h3>
+
+<p>電源に接続しない状態でLogCatを拾うために、無線でバッグを行います。<br/>
+<a href="http://www.absolute-keitarou.net/blog/?p=874#adb">この</a>ページを参考にしました。</p>
+
+<p>その結果、バッテリ駆動のスリープ中にはTimerがストップしてしまうことがわかりました。</p>
+
+<h3>どうやって解決しよう</h3>
+
+<p>プッシュ通知を利用してPOSTを送る指令を伝えます。</p>
+
+<p>その工程については、また次回、、(まだ実装できてない)</p>
+
+<h3>追記 2015/03/23</h3>
+
+<p>LTEでの通信の際は、ちゃんとPOSTされるようです。<br/>
+Wifiでの運用だと、一部そういうことが起こるということで、、、</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[kvm上のVMでは、ネットワークはブリッジとNATのどっちが速いのか確かめてみた]]></title>
+    <link href="http://www.yujilow.net/2015-02-23/the-network-speed-comparison-between-bridge-and-nat-with-kvm"/>
+    <updated>2015-02-23T23:50:37+09:00</updated>
+    <id>http://www.yujilow.net/2015-02-23/the-network-speed-comparison-between-bridge-and-nat-with-kvm</id>
+    <content type="html"><![CDATA[<p>kvmが大好きな僕です。<br/>
+今回、ホストとゲストで高速ネットワーク通信を行う必要がでまして、NATとブリッジではどっちが速いのか、気になったので確かめてみました。</p>
+
+<!--more-->
+
+
+<h3>予想</h3>
+
+<ul>
+<li>NATが速いんじゃないの？kvmの機能だし。</li>
+<li>ブリッジは、なんかルータ介して通信しそうだから遅そう。</li>
+<li>NATで10Gbps, ブリッジで1Gbpsが妥当かな。</li>
+</ul>
+
+
+<h3>測定条件</h3>
+
+<p>以下の条件で測定しました。</p>
+
+<ul>
+<li>ホスト
+
+<ul>
+<li>OS : Ubuntu Server 14.10</li>
+<li>CPU : Intel Core i5-4460</li>
+<li>メモリ : 16GB</li>
+<li>NIC : Intel Gigabit CT Desktop Adapter EXPI9301CT</li>
+</ul>
+</li>
+<li>ゲスト
+
+<ul>
+<li>OS : Ubuntu Server 14.10</li>
+<li>NIC : NAT(192.168.112.xx), Bridge(192.168.0.xxx)</li>
+</ul>
+</li>
+<li>測定ソフトウェア
+
+<ul>
+<li>iperf 2.0.5</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>測定方法</h3>
+
+<h4>ホスト上でiperfをサーバモードで起動する</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ iperf -s</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>ゲスト上でiperfをクライアントモードで起動する</h4>
+
+<p>まずはNAT接続</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ iperf -c 192.168.122.1 -i 10</span></code></pre></td></tr></table></div></figure>
+
+
+<p>次にブリッジ接続</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ iperf -c 192.168.0.xxx -i 10</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>測定結果</h3>
+
+<h4>NAT接続</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[ ID] Interval       Transfer     Bandwidth
+</span><span class='line'>[  3]  0.0-10.0 sec   359 MBytes   301 Mbits/sec
+</span><span class='line'>[  3]  0.0-10.0 sec   359 MBytes   301 Mbits/sec</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>ブリッジ接続</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[ ID] Interval       Transfer     Bandwidth
+</span><span class='line'>[  3]  0.0-10.0 sec  38.1 GBytes  32.7 Gbits/sec
+</span><span class='line'>[  3]  0.0-10.0 sec  38.1 GBytes  32.7 Gbits/sec</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ブリッジ速すぎわろた。<br/>
+キャッシュが効きまくってる可能性がありますね。<br/>
+怪しかったので、もう一つ実験。</p>
+
+<h4>scpでファイル転送</h4>
+
+<p>VMのイメージファイル(4GBくらい)を転送してみる。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># ブリッジ
+</span><span class='line'>docker                                                                    100% 4537MB 133.4MB/s   00:34</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># NAT
+</span><span class='line'>docker                                                                    100% 4537MB 100.8MB/s   00:45</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ブリッジのほうが速い。けど、iperfでの測定よりも差は小さい。</p>
+
+<h3>結論</h3>
+
+<p>ブリッジが速いから、ブリッジを使おう。NATはいらない子？？？<br/>
+NATのほうが速いべ！！！って思って、OSの再インストールまでして設定した時間が無駄になった、、、</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[スマホをAndroidからiPhoneに変えて思ったこと]]></title>
+    <link href="http://www.yujilow.net/2015-02-09/change-to-iphone"/>
+    <updated>2015-02-09T14:25:16+09:00</updated>
+    <id>http://www.yujilow.net/2015-02-09/change-to-iphone</id>
+    <content type="html"><![CDATA[<p>しばらくブログ更新できなかったのは、卒論を書いていたからです。<br/>
+泣きそうでした。<br/>
+ところで、携帯をiPhoneに変えてみました。最初に思ったことをつらつらと。</p>
+
+<!--more-->
+
+
+<h3>なにPhoneになったか</h3>
+
+<p>iPhone5s 16GB docomo版をヤフオクでゲットしました。<br/>
+計33000円ほどかかりましたが、相場より安く手に入れられたと思います。</p>
+
+<h3>良かったこと</h3>
+
+<h4>電池がめっちゃ持つ</h4>
+
+<p>以前はHTL22を使用していたんですが、こいつのバッテリーが半端無くひどいやつでした。<br/>
+まず、25％で電源が落ちてしまうという不具合。これが手ごわかったです。<br/>
+iPhoneにしてからはそんな不具合はなくなりましたね。当たり前ですが。<br/>
+あと、余裕で1日持ちますね。すげえ。</p>
+
+<h4>ネットの接続が安定している</h4>
+
+<p>LTEが非常に安定してます。使いやすい！</p>
+
+<h4>ちっちゃい</h4>
+
+<p>ちっちゃい！握りやすい！いい！<br/>
+iPhone6にしなかったのは、このちっささがいいなと思ったからです。</p>
+
+<h4>Touch IDすごい</h4>
+
+<p>ログイン楽です。アプリをダウンロードするのが楽です。これはすごい！</p>
+
+<h3>だめだと思ったところ</h3>
+
+<h4>良いアプリはだいたい有料</h4>
+
+<p>だめというか、びっくりしたところです。<br/>
+しかも、有料アプリでも完成度の低いものがチラホラあるのが驚きです。<br/>
+有料の文化が根付いているのはいいと思うんですが、ねえ、、、</p>
+
+<h4>ホームボタンの依存度が高過ぎる</h4>
+
+<p>何をするにもホームボタンを押しますね。思った以上に押す回数が多いです。<br/>
+画面にホームボタンを表示する機能もありますが、ホームに戻る手順が多いので使ってません。<br/>
+いずれ、ホームボタンが壊れる気がします。</p>
+
+<h4>キーボードが使いづらい</h4>
+
+<p>なんかいまいちキーボードが使いづらいですね。<br/>
+iOS8からは3rdキーボード使えるようになったので、ATOKでも買ってみます。</p>
+
+<h4>やっぱり自由度が低い</h4>
+
+<p>iOS標準機能には意地でも触れさせない精神がありそうです。<br/>
+カメラロールをアプリから削除できない、ホームに戻れない、くどくど、、<br/>
+ホームボタン代替機能は、だいたい脱獄しなきゃ使えないですね。</p>
+
+<h3>結論</h3>
+
+<p>まだ使い始めて数日しか経ってないのでわかりませんが、今のところ、iOSじゃなきゃいや！とも、Androidじゃなきゃいや！ともなってないですね。<br/>
+ただ、脱獄したい、、、</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Macで使える、最強SubSonicクライアントはこれだ！]]></title>
+    <link href="http://www.yujilow.net/2015-01-17/the-best-subsonic-client-for-mac-is-it"/>
+    <updated>2015-01-17T20:36:24+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-17/the-best-subsonic-client-for-mac-is-it</id>
+    <content type="html"><![CDATA[<p>散々迷った結果、いい感じに落ち着いたSubSonicクライアントを紹介します。</p>
+
+<!--more-->
+
+
+<h3>Mac</h3>
+
+<p><a href="http://www.subsonic.org/pages/apps.jsp">公式</a>には、多くのクライアントソフトが載ってますね。<br/>
+Macで使えるクライアントは、<a href="http://www.subsonic.org/pages/apps.jsp#submariner">Submariner</a> と <a href="http://www.subsonic.org/pages/apps.jsp#thumper">Thumper</a>でしょうか。</p>
+
+<h3>使ってみた</h3>
+
+<p>まずはSubmarinerから。あれ？OK押しても設定項目が消えない、接続できない、あれれ、、、<br/>
+サーバに接続することすら叶いませんでした。とほほ。</p>
+
+<h3>気を取り直して</h3>
+
+<p>Thumperを使ってみよう。Githubから.appをダウンロードしてきて、zipを解凍して、起動！あれ、<strong>起動しない</strong>。<br/>
+起動すらできませんでした。とほほほほ。</p>
+
+<h3>イチかバチかを思いついた</h3>
+
+<p>Mac用のアプリはだめだね。どうしようか、、、<br/>
+そういえば、<strong>AndroidアプリをChromeで使う</strong>方法があったっけ。</p>
+
+<h3>試してみた</h3>
+
+<p>ARChonというランタイムを使用します。</p>
+
+<p><img src="https://camo.githubusercontent.com/a97f2daa90c81be81c0459136067b016fa9215f7/687474703a2f2f763134642e636f6d2f672f6368726f6d6561706b732f342e706e67"><br/>
+利用シーン</p>
+
+<p>Androidアプリには、使いやすいと評判の高い<a href="https://play.google.com/store/apps/details?id=com.thejoshwa.ultrasonic.androidapp&amp;hl=ja">UltraSonic</a>を利用します。</p>
+
+<h3>導入</h3>
+
+<h4>1. ARChonをインストール</h4>
+
+<p><a href="http://tabkul.com/?p=72610">Windows版Chrome拡張『ARChon』でAndroidアプリを起動した話</a><br/>
+こちらのページを参考に、ARChonをインストールします。<br/>
+MACでもWinでもOKなはずです。</p>
+
+<h4>2. apkを変換</h4>
+
+<p><a href="http://plaza.rakuten.co.jp/jashi/diary/201406170000/">どうにか</a>、<a href="https://chrome.google.com/webstore/detail/apk-downloader/cgihflhdpokeobcfimliamffejfnmfii">こうにか</a>して入手したUltraSonicのapkを変換します。<br/>
+僕は、Chromeアプリの<a href="https://chrome.google.com/webstore/detail/twerk/jhdnjmjhmfihbfjdgmnappnoaehnhiaf">twerk</a>を利用しました。これで問題無いと思います。</p>
+
+<h4>3. UltraSonicをインストール</h4>
+
+<p>ARChonと全く同じ要領で、UltraSonicをインストールします。</p>
+
+<h4>4. おしまい</h4>
+
+<p><img src="http://www.yujilow.net/images/post/subsonic01.png"><br/>
+無事、使えるようになりました。</p>
+
+<h3>使用感</h3>
+
+<p>正直、実用に耐えうるのかは心配でした。しかし、それは杞憂でした。<br/>
+挙動、サウンド、機能、すべての面において申し分ない動作をしてくれます。<br/>
+こりゃすげえ！</p>
+
+<h3>まとめ</h3>
+
+<p>へたなネイティブアプリを使うよりも、これからはARChonの時代が来るかもしれない。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Kimchiもbr0を作らなきゃだめみたい]]></title>
+    <link href="http://www.yujilow.net/2015-01-17/kimchi-ethernet-must-be-bridged"/>
+    <updated>2015-01-17T18:22:28+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-17/kimchi-ethernet-must-be-bridged</id>
+    <content type="html"><![CDATA[<p>Kimchiのネットワーク設定では、ブリッジインターフェースを作らなくてもVMをLAN空間に置くことができます。<br/>
+しかし、ブリッジを作らないと、ある不都合が起こってしまいます。</p>
+
+<!--more-->
+
+
+<h3>不都合とは</h3>
+
+<p>何となく分かるかもしれませんが、<strong>VMからホストにアクセスできなくなる</strong>ということです。</p>
+
+<h3>それだけ？</h3>
+
+<p>え、それだけ？と思う人もいるかもしれません。<br/>
+しかし、これは結構重大な問題です。</p>
+
+<h3>というのも</h3>
+
+<p>自宅ネットワークにおいて、VPNサーバをVMとして設置しています。<br/>
+VPNサーバからホストにアクセス出来ないということは、<strong>外出先からKimchiをいじれない</strong>ということになりますね。<br/>
+前回の記事を作成しているときに、スクショを撮ろうとしてもkimchiにアクセスできなかったので気づきました。</p>
+
+<h3>解決策もなくはない</h3>
+
+<p>自宅にはNASが物理機として稼働しているので、</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh -L 8001:host.ipaddr8001 nas.ipaddr</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+と、ポートフォワーディングしてあげれば接続することはできます。だけどねえ、、、</p>
+
+<h3>結論</h3>
+
+<p>めんどくさくてもbr0は作成しましょう。<br/>
+僕も、暇になったら作ってみます。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[KimchiへのKVMホスト移行]]></title>
+    <link href="http://www.yujilow.net/2015-01-16/kimchi-uses-libvirt"/>
+    <updated>2015-01-16T02:32:17+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-16/kimchi-uses-libvirt</id>
+    <content type="html"><![CDATA[<p>自宅のkvmホストを、Kimchiに置き換えました。<br/>
+いろいろあったので、メモしておきます。</p>
+
+<!--more-->
+
+
+<h3>移行前</h3>
+
+<ul>
+<li>ハードウェア(NUC)
+
+<ul>
+<li>CPU   : i5-3427U</li>
+<li>メモリ : 16GB</li>
+<li>SSD   : 32GB</li>
+</ul>
+</li>
+<li>ソフトウェア
+
+<ul>
+<li>OS    : Fedora19</li>
+<li>HV    : KVM + libvirt</li>
+<li>GUI   : webvirtmgr</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>移行後</h3>
+
+<ul>
+<li>ハードウェア
+
+<ul>
+<li>変化なし</li>
+</ul>
+</li>
+<li>ソフトウェア
+
+<ul>
+<li>OS    : Ubuntu Server 14.04</li>
+<li>HV    : KVM + libvirt</li>
+<li>GUI   : <strong>Kimchi</strong></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>もともと動いていたマシンたち</h3>
+
+<p>webvirtmgrで管理していたVMは、このページを動かしているものだけをNASで動作させ、全て停止しました。<br/>
+一応、xmlをバックアップしておきました。使わなかったけど。<br/>
+仮想ディスクなどは、もともとNASにおいてあったので、移動する必要はありませんでした。よかった。</p>
+
+<h3>Ubuntuインストール</h3>
+
+<p>パッケージはOpenSSH Serverのみを選択。</p>
+
+<h3>Kimchiインストール</h3>
+
+<p><a href="http://www.yujilow.net/2015-01-12/kimchi-is-the-best-frontend-for-kvm/">前回のページ</a>を参考に、Kimchiをインストールしました。</p>
+
+<h3>Kimchi起動！しかし、、</h3>
+
+<p>Kimchiを動かし、「仮想マシン作成」を実行。しかし、</p>
+
+<p><img src="http://www.yujilow.net/images/post/kimvirt01.png"></p>
+
+<p>既存のディスクから起動する方法がありません。<br/>
+Existing Imageからテンプレートを作成することもできるんですが、「テンプレート」の趣旨からは外れてしまいますね。<br/>
+どうしよう、、、</p>
+
+<h3>libvirtでVM作成</h3>
+
+<p>virt-managerからVMを新規作成し、Kimchiを見てみたら、、</p>
+
+<p><img src="http://www.yujilow.net/images/post/kimvirt02.png"></p>
+
+<p>うまくいってました！やったね！</p>
+
+<h3>まとめ</h3>
+
+<p>Kimchiには、既存環境からでも移行できますよ。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[KVM WEB GUIであるKimchiが本当に素晴らしかった]]></title>
+    <link href="http://www.yujilow.net/2015-01-12/kimchi-is-the-best-frontend-for-kvm"/>
+    <updated>2015-01-12T14:38:57+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-12/kimchi-is-the-best-frontend-for-kvm</id>
+    <content type="html"><![CDATA[<p>自宅サーバでは、kvmが動作しており、その管理にWebvirtmgrを使用していることは<a href="http://www.yujilow.net/2014-11-29/how-to-connect-novnc-for-webvirtmgr/">以前</a>書きました。<br/>
+結局VNCに接続できず、なんだかなあと思いながらも惰性で使っていたんですね。<br/>
+すごくいいGUIを発見してしまったので、紹介します。</p>
+
+<!--more-->
+
+
+<h3>その名も、Kimchi</h3>
+
+<p><img src="http://www.yujilow.net/images/post/kimchi01.png"><br/>
+公式スライドの1ページ目がこれですからね。</p>
+
+<h3>ちなみに</h3>
+
+<p>キムチのお国製というわけではなさそうです。<br/>
+別にキムチのお国が嫌いというわけではないですが、、、</p>
+
+<h3>特徴</h3>
+
+<p>「最近のkvm管理システムは、大規模を重視しすぎ！小規模でも使いやすいものを！」という思想のもと、開発されています。<br/>
+よって、小規模環境、いわば、自宅サーバ環境に非常に使いやすい設計となっています。</p>
+
+<p>以下、特徴です。</p>
+
+<ul>
+<li>libvirtで動作</li>
+<li>unixユーザで動作</li>
+<li>テンプレートドリブンのマシン構築</li>
+<li>RESTfull</li>
+<li>NoVNCによる、ブラウザ上でのコンソール操作</li>
+<li>近未来的なインターフェース</li>
+<li>導入がとってもかんたん</li>
+</ul>
+
+
+<h4>libvirtで動作</h4>
+
+<p>kvmの管理ツールであるlivbirtを利用して動作します。<br/>
+この点は、virt-managerや、webvirtmgrと同様ですね。</p>
+
+<h4>unixユーザで動作</h4>
+
+<p>新たにユーザを作成せずとも、unixのユーザでログインできます。<br/>
+ユーザ管理が煩雑にならずにすみますね！</p>
+
+<h4>テンプレートドリブンのマシン構築</h4>
+
+<p>これが一番の特徴だと思います。<br/>
+Kimchiでは、すべての仮想マシンをテンプレートから作成します。<br/>
+初期状態では、テンプレートを作成する必要があるんですが、テンプレートの作成方法がなかなか面白くて、</p>
+
+<ul>
+<li>ローカルISO</li>
+<li>既存ディスク</li>
+<li>リモートISO</li>
+</ul>
+
+
+<p>以上の3種類から選択します。<br/>
+<strong>リモートISO</strong>とは、httpで公開されているISOを、ストリーミングで参照できる機能です。<br/>
+これは便利ですね！</p>
+
+<h4>RESTfull</h4>
+
+<p>仮想マシンの状態を、RESTで引っ張ってきたりできるそうです。<br/>
+例えば、</p>
+
+<ul>
+<li>/vms で、vmのリストを取得</li>
+<li>/vms/:vm_name で、vmの詳細を取得</li>
+<li>/vms/:vm_name/iface で、vmのNIC情報を取得</li>
+</ul>
+
+
+<p>などなど。jsonで出力されるそうです。</p>
+
+<h4>NoVNC</h4>
+
+<p>ConohaやOpenStackなどでも利用されている、VNC Over Httpツールです。(たぶん)<br/>
+Javaの実装とは違い、Chromeでも実行できます。セキュリティ的にも問題ないそうです。</p>
+
+<h4>近未来的なインターフェース</h4>
+
+<p><img src="http://www.yujilow.net/images/post/kimchi02.png"><br/>
+かっこいい！</p>
+
+<h4>導入が簡単</h4>
+
+<p>Githubのとおりにやってれば、どこも引っかからずに終わります。<br/>
+ブリッジ設定もやってくれるという素晴らしさ。</p>
+
+<h3>導入</h3>
+
+<p>Ubuntu 14.10で導入した手順を紹介します。</p>
+
+<h4>1. aptでmakeの準備</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install gcc make autoconf automake gettext git \
+</span><span class='line'>                       python-cherrypy3 python-cheetah python-libvirt \
+</span><span class='line'>                       libvirt-bin python-imaging \
+</span><span class='line'>                       python-pam python-m2crypto python-jsonschema \
+</span><span class='line'>                       qemu-kvm libtool python-psutil python-ethtool \
+</span><span class='line'>                       sosreport python-ipaddr python-ldap \
+</span><span class='line'>                       python-lxml nfs-common open-iscsi lvm2 xsltproc \
+</span><span class='line'>                       python-parted nginx \
+</span><span class='line'>                       firewalld python-guestfs libguestfs-tools \
+</span><span class='line'>                       websockify novnc spice-html5</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2. プロジェクトをクローンする</h4>
+
+<p>あとで<code>/usr/bin</code>にインストールされるので、クローンする場所はどこでもいいです。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone https://github.com/kimchi-project/kimchi.git</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3. makeする</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>./autogen.sh --system
+</span><span class='line'>make
+</span><span class='line'>sudo make install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+すると、<code>/usr/bin</code>に<code>kimchid</code>が格納されるはずです。</p>
+
+<h4>4. iptablesに穴を開ける</h4>
+
+<p>ポート8001番を開けておきましょう。</p>
+
+<h4>5. 起動する</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo kimchid --host=192.168.xx.xxx</span></code></pre></td></tr></table></div></figure>
+
+
+<p>こうすることで、localhost以外からのアクセスも行えるようになります。<br/>
+xxの場所には、サーバのIPアドレスの適切なものを入れてください。(わかってるでしょうが、、、)</p>
+
+<h4>6. アクセス！</h4>
+
+<p><a href="https://192.168.xx.xxx:8001">https://192.168.xx.xxx:8001</a> にアクセスしましょう。<br/>
+無事、アクセスできましたね！</p>
+
+<h3>まとめ</h3>
+
+<p>個人ユースのkvmフロントエンドの決定版だと思います。<br/>
+まだまだ機能は少ないですが、頻繁に更新されているのであまり心配はなさそうです。<br/>
+LDAP連携なんかもできるみたいです。中小企業のバックエンドなんかにも良さそうですね！<br/>
+IBMのソフトらしく、Power8でも動作するそうです。お持ちの方はぜひ。</p>
+
+<h3>情報</h3>
+
+<p><a href="https://github.com/kimchi-project/kimchi">https://github.com/kimchi-project/kimchi</a><br/>
+<a href="http://www.linux-kvm.org/wiki/images/8/8f/Kvm-forum-2013-kimchi.pdf">http://www.linux-kvm.org/wiki/images/8/8f/Kvm-forum-2013-kimchi.pdf</a><br/>
+<a href="http://2014.texaslinuxfest.org/sites/default/files/tlf_2014_kimchi-cloud.pdf">http://2014.texaslinuxfest.org/sites/default/files/tlf_2014_kimchi-cloud.pdf</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[「ただの大学生」も、名刺を持とう]]></title>
+    <link href="http://www.yujilow.net/2015-01-10/name-card-must-need-for-students"/>
+    <updated>2015-01-10T21:36:24+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-10/name-card-must-need-for-students</id>
+    <content type="html"><![CDATA[<p>皆さんは自分の名刺を持っていますか？<br/>
+社会人のあなたは自分の名刺をお持ちでしょう。<br/>
+学生のあなたは、名刺を持っていますか？<br/>
+ぜひ、名刺を持っておきましょう。というお話です。</p>
+
+<!--more-->
+
+
+<h3>なぜ？</h3>
+
+<h4>インターンにて</h4>
+
+<p>昨年、インターンシップやハッカソンに参加し、知らない人と接する機会がありました。<br/>
+数日間いっしょに活動した人たちですから、ぜひとも何かしらつながりを保っておきたいものです。<br/>
+インターンシップの参加者の方々は、多くが名刺を持参していました。学校で作成したもの、自分で作成したもの、様々でした。</p>
+
+<h4>ところが</h4>
+
+<p>僕はその時、<strong>連絡先を気軽に渡しておけるツールを一切持ち合わせていませんでした。</strong><br/>
+名刺をもらった代わりに、一枚名刺をお借りして裏にtwitterアカウントを書くことしかできませんでした。<br/>
+それですら、めんどくさい。かつ、おそらくアカウントを見てもらえることはないでしょう。僕は、やってしまった。と思いました。</p>
+
+<h4>要約すると</h4>
+
+<p>インターンやミートアップなど、対外活動を行う際に、簡単に配れる名刺があるとものすごくいいね！ってことでした。<br/>
+僕はインターンのあと、すぐに名刺を作成しました。</p>
+
+<h4>なまいきだ！</h4>
+
+<p>そう思う人もいるかと思います。大学生が名刺だなんて、、、<br/>
+僕は、名刺は<strong>不特定多数に短時間にプロフィールを配布できるツール</strong>だと思っています。<br/>
+名刺自体に意味はなく、名刺に記載されている情報に意味があると考えます。<br/>
+プロフィール交換がとても簡単にだれでも(アプリインストール無しで)行えるツールがあればそれでも構いません。しかし、現状そのようなものはありません。よって、名刺を選択したまでです。</p>
+
+<h3>どんな名刺がいいか</h3>
+
+<p>名刺を作る際に、大事そうなことを考えてみました。</p>
+
+<ul>
+<li>連絡先が変わっても大丈夫</li>
+<li>名刺の中身を簡単にデバイスで読み取れる</li>
+<li>パッと見て目立つ</li>
+</ul>
+
+
+<p>要するに、<strong>めんどくさくなくて、印象に残るもの</strong>を目指しました。</p>
+
+<h3>こうすればいいだろう</h3>
+
+<p>僕は、名刺に<strong>QRコード</strong>を添付しました。<br/>
+QRコードを読み取ると、Github上のプロフィールページへのリンクが読み取れます。<br/>
+<a href="https://github.com/yujilow1220/note">ここ</a>です。<br/>
+こうすることにより、QRを読み取るだけで、SNSなどすべてのアカウント情報にアクセスできます。<br/>
+また、内容変更もとても簡単に行うことができ、QRを読み取ると常に最新の情報にアクセスできます。</p>
+
+<h3>できればやりたいこと</h3>
+
+<p>顔写真を載せておくと、思い出しやすいですね。</p>
+
+<h3>まとめ</h3>
+
+<p>名刺をつくろう。<br/>
+めんどくさくない名刺をつくろう。</p>
+
+<p>社会人も、「株式会社〇〇のなになに」という名刺だけでなく、自分個人を紹介する名刺を作成してもいいと思いますよ。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[owncloudをサブドメインで運用する]]></title>
+    <link href="http://www.yujilow.net/2015-01-07/how-to-use-owncloud-with-subdomain"/>
+    <updated>2015-01-07T19:05:59+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-07/how-to-use-owncloud-with-subdomain</id>
+    <content type="html"><![CDATA[<p>owncloudを、サブドメインでアクセスできるようにしましょう。</p>
+
+<!--more-->
+
+
+<h3>目標</h3>
+
+<ul>
+<li>サブドメインcloud.yujilow.net(例)でアクセスできるようにする</li>
+</ul>
+
+
+<h3>しくみ</h3>
+
+<p>apacheのバーチャルホストを利用します。<br/>
+cloud.yujilow.netにアクセスがあった場合に、/var/www/owncloudをドキュメントルート(バーチャルホストのルート)とするように設定します。</p>
+
+<h3>やりかた</h3>
+
+<h4>DNS設定をする</h4>
+
+<p>ドメインを取得した場所で、DNS設定をします。<br/>
+大体の自宅回線は動的IP割り当てなので、<a href="http://dip.jp">DDNS</a>サービスを併用します。<br/>
+cloud.yujilow.netにアクセスした場合、自宅のグローバルIPにアクセスされるようにしましょう。</p>
+
+<h4>owncloudを自宅サーバに構築する</h4>
+
+<p>自宅じゃなくても、vpsでもなんでもいいです。<br/>
+この説明は割愛します。</p>
+
+<h4>Apacheの設定をする</h4>
+
+<p>Debianなら、</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo vim /etc/apache2/conf.d/owncloud.conf</span></code></pre></td></tr></table></div></figure>
+
+
+<p>CentOSなら、</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo vim /etc/httpd/conf.d/owncloud.conf</span></code></pre></td></tr></table></div></figure>
+
+
+<p>と入力し、設定ファイルを新規作成します。CentOSの方はやったことないので確かめてくだささい。</p>
+
+<p>設定ファイルの内容は以下のとおり。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>NameVirtualHost *:80
+</span><span class='line'>
+</span><span class='line'>&lt;VirtualHost *:80&gt;
+</span><span class='line'>    ServerName cloud.yujilow.net
+</span><span class='line'>    DocumentRoot /var/www/owncloud
+</span><span class='line'>&lt;/VirtualHost&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>そして、apacheを再起動します。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo service apache2 restart</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://cloud.yujilow.net">http://cloud.yujilow.net</a> にアクセスすると、owncloudが使えるはずです。</p>
+
+<h3>次は</h3>
+
+<p>証明書を発行して、httpsでアクセスできるようにしなきゃ、、<br/>
+そうしないと怖くて使えませんね。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[auひかり環境上に構築したOpenVPNがぶちぶち切れる問題]]></title>
+    <link href="http://www.yujilow.net/2015-01-06/openvpn-on-au-hikari-are-disconnected"/>
+    <updated>2015-01-06T00:18:05+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-06/openvpn-on-au-hikari-are-disconnected</id>
+    <content type="html"><![CDATA[<p>年末の帰省中に、auひかりを契約している実家にOpenVPNを構築しました。<br/>
+帰省から帰ってきて接続してみると、なんかすぐ切れて使い物になりません。<br/>
+たぶん問題は解決したので、メモしておきます。</p>
+
+<!--more-->
+
+
+<h3>構築したOpenVPNについて</h3>
+
+<ul>
+<li>OpenVPN 2.3.6</li>
+<li>L3接続のtunを利用</li>
+<li>UDPプロトコルを利用</li>
+<li>クライアントにはTunnelblickを利用</li>
+<li>すべての通信をVPNを経由するように設定</li>
+</ul>
+
+
+<h3>接続していると、、、</h3>
+
+<p>最初の二分間くらいは疎通してたんですが、その後</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>*Tunnelblick: Expected disconnection occurred.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>というログを吐いて接続不可になります。pingも通りません。<br/>
+「予想通りの切断」ですか、はあ。俺は予想してないぞ。</p>
+
+<h3>試したこと</h3>
+
+<h4>mssfixの設定→失敗</h4>
+
+<p><a href="http://yamatamemo.blogspot.jp/2012/06/openvpn-tips-udpvpn.html">このページ</a>を参考に、双方のコンフィグに</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mssfix 1300</span></code></pre></td></tr></table></div></figure>
+
+
+<p>を追加してみました。しかし、あまり変わらず。<br/>
+そもそもpingも通らないんだから、違う気がする。</p>
+
+<h4>tun-mtuの設定→失敗</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tun-mtu 1200</span></code></pre></td></tr></table></div></figure>
+
+
+<p>を設定してみました。結果、切断は回避されません。<br/>
+困ったな。</p>
+
+<h4>ジャンボフレームの透過→失敗</h4>
+
+<p>HGWで、ジャンボフレームの透過を設定してみました。<br/>
+結果、やっぱりあまり変わらず。</p>
+
+<h4>tcpをつかってみる→すこし成功</h4>
+
+<p>udpではなく、tcpで通信してみました。<br/>
+結果、切断はされない気がしてました。<br/>
+しかし、速度が遅すぎて使い物になりません。udpの半分くらいです。<br/>
+できればudpを使いたいですねえ。</p>
+
+<h4>udpのポートを変更→成功！</h4>
+
+<p>udpのポートを初期設定の1194から変更してみました。<br/>
+するとなんと、接続が切れないじゃないですか！<br/>
+今でも安定して動いています。やったね！</p>
+
+<h3>原因を考えてみる</h3>
+
+<h4>ログ</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>*Tunnelblick: Expected disconnection occurred.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>というログは、手動で接続解除した際にも出てくるログです。<br/>
+ということは、パケットが詰まってたりして起こったのではなく、接続自体が遮断された可能性があります。<br/>
+また、ADSLを利用しているアパートのOpenVPNは切断されません。<br/>
+ここから、これはauひかり固有の問題ではないかと考えました。</p>
+
+<h4>VPNを遮断？</h4>
+
+<p>これはあくまでも予想ですが、auひかりは、意図的にVPN通信を遮断してるんじゃないんですかね？<br/>
+well-knownポートである1194を利用した接続 = OpenVPN = 切断！<br/>
+といったことをしてると予想します。<br/>
+一応、<a href="http://www.au.kddi.com/internet/application/agreement/">利用規約</a>を見る限りでは制限している項目はなさそうですが、、、プロパイダですかね。<br/>
+ちなみに、プロパイダはBiglobeを契約しています。<br/>
+<a href="http://media.kddi.com/extlib/pdf/internet/application/contract/biglobe.pdf">Biglobeの利用規約</a>の第12条の3(トラフィックについて)の項目に則って、帯域制限されてるんですかね。こればっかりは中の人に聞いてみないとわからないですね。</p>
+
+<h3>今後の予定</h3>
+
+<p><a href="http://yamatamemo.blogspot.jp/2012/01/openvpn-1.html">このページ</a>を参考に、チューニングをしたいと思います。<br/>
+AES-NIを利用するとだいぶパフォーマンスが向上するみたいです。kvmホストで利用しているNUC(BOXDC53427HYE)のCPUはどうやら対応しているみたいなので、楽しみですね。</p>
+
+<h3>さいごに</h3>
+
+<p>万が一この利用が各種利用規約に違反している場合は、ご連絡ください。対処いたします。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[今年やったこと]]></title>
+    <link href="http://www.yujilow.net/2014-12-29/this-year-and-next-year"/>
+    <updated>2014-12-29T23:42:11+09:00</updated>
+    <id>http://www.yujilow.net/2014-12-29/this-year-and-next-year</id>
+    <content type="html"><![CDATA[<p>ブログらしく、今年のできごとをまとめておきます。</p>
+
+<!--more-->
+
+
+<h2>よかったこと</h2>
+
+<h3>自宅サーバを整備した</h3>
+
+<p>自宅の環境は、全て今年に作ったと思います。<br/>
+具体的には、</p>
+
+<ul>
+<li>fedora + zfsでNASを制作した</li>
+<li>fedoraでkvmホストを作った</li>
+<li>OpenStackを構築して、運用を諦めた</li>
+<li>DHCP静的マッピングを覚えた</li>
+<li>DNSサーバを作った</li>
+</ul>
+
+
+<p>でした。<br/>
+物理サーバのOSをfedoraに置き換えたのはつい最近なんですが、、、</p>
+
+<h3>いくつかandroidアプリを作った</h3>
+
+<p>たぶん全部今年だった気が、、、<br/>
+<a href="https://play.google.com/store/apps/details?id=com.yujilow1220.vpn_on_nofitication&amp;hl=ja">VPN接続設定を呼び出すandroidアプリ</a>を制作したので、ぜひ使ってみてください。<br/>
+最近OpenVPNに対応したので結構便利ですよ！<br/>
+ほかは見なくてもいいです</p>
+
+<h3>NodeJSを使った</h3>
+
+<p>大学祭の展示企画で、NodeJSを利用したサーバサイドを制作しました。<br/>
+モジュールって、便利だなって思いました。</p>
+
+<h3>インターンに行った</h3>
+
+<p><a href="http://www.yahoo.co.jp/">某企業</a>のインターンに参加して、インフラって楽しいな！ってことをやりました。<br/>
+Dockerを利用してとあるシステムの構築なんかをしました。<br/>
+他の参加者の方がすごく優秀な人で、自分だけ大したことないものを制作してしまった感じがありました。自分がこもっていた世界は、太平洋と比べたハワイアンズくらい狭いものだったんですね。</p>
+
+<h3>ブログ始めた</h3>
+
+<p>ブログ始めました。<br/>
+定期的に見てくれている人がいてくれたらうれしいです。<br/>
+これからも思いついたことを頑張って書いていきます。</p>
+
+<h2>よくなかったこと</h2>
+
+<h3>ハッカソンに参加した</h3>
+
+<p>別の某企業主催(詳しくは伏せます)のハッカソンに参加しました。<br/>
+逗子まで行って2泊３日でプロトタイプを制作するという内容でした。(伏せきれてない)</p>
+
+<p>例えるなら、俺たちすげえだろ！っていう人たちの下で、すげえだろ！って言われ続けるようなイベントでした。<br/>
+学んだことは、こういう人たちには近づかないほうがいいなってことでした。<br/>
+一緒にやった人たちはいい人でしたけど、、</p>
+
+<h3>朝起きられなくなった</h3>
+
+<p>午前中に起きられなくなりました。<br/>
+午前中の時間がもったいない上に、夜遅くまで起きちゃうので寝付きも悪いし、また朝起きられないという悪循環です。<br/>
+誰か起こしてください。</p>
+
+<h3>忙殺された</h3>
+
+<p>いろんなことにやる気が吸い取られました。<br/>
+来年はもうちょっともやもやしない日々を送りたいです。</p>
+
+<h3>その他</h3>
+
+<ul>
+<li>タブレット買った(売った)</li>
+<li>Z ULTRA買った(売ってない)</li>
+<li>携帯をMVNOにした</li>
+<li>光回線入れようとしたけどアパートの構造上無理だった</li>
+<li>筋トレ始めた(つい最近)</li>
+</ul>
+
+
+<h2>来年やること</h2>
+
+<ul>
+<li>Go言語やろう</li>
+<li>英語勉強しよう</li>
+<li>早起きしよう</li>
+<li>自信をつけよう</li>
+<li>ものを作ろう</li>
+<li>もうちょっとブログ書こう</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[owncloudはただの自前DropBoxじゃない]]></title>
+    <link href="http://www.yujilow.net/2014-12-29/owncloud-install"/>
+    <updated>2014-12-29T22:29:29+09:00</updated>
+    <id>http://www.yujilow.net/2014-12-29/owncloud-install</id>
+    <content type="html"><![CDATA[<p><a href="http://owncloud.jp">owncloud</a>というソフトウェアはご存知ですか？<br/>
+DropBoxのようなクラウドストレージサービスを自前で構築できるという便利なソフトです。</p>
+
+<p>DropBoxあるからいらないじゃーん！って思ってスルーしてる人もいるかと思います。</p>
+
+<p>しかし、このowncloud、ただのDropBox代替ではありません。<br/>
+かなり便利な機能をたくさん搭載しています！</p>
+
+<p>詳しくは続きをどうぞ。</p>
+
+<!--more-->
+
+
+<h3>owncloudの記事いろいろ</h3>
+
+<p><a href="http://www.virment.com/linux/1861/">容量無制限のプライベートなDropBox環境として使えるownCloud環境の構築手順をメモ</a><br/>
+<a href="http://gihyo.jp/admin/serial/01/ubuntu-recipe/0231">第231回　ownCloudで自分専用クラウドストレージ：Ubuntu Weekly Recipe｜gihyo.jp … 技術評論社</a><br/>
+<a href="http://cloud.watch.impress.co.jp/docs/special/20141022_671477.html">ownCloudで“Dropboxライク”な自社専用ストレージをつくろう！</a></p>
+
+<p>構築方法なんかは先人の知恵を拝借することにします。</p>
+
+<h3>owncloud画面</h3>
+
+<p><img src="http://www.yujilow.net/images/post/own01.png"></p>
+
+<p>これは、実際のowncloudの画面です。ここは普通のクラウドストレージとほぼ同じですね。<br/>
+左上の「ファイル」をクリックしてみましょう。<br/>
+<img src="http://www.yujilow.net/images/post/own02.png"><br/>
+いっぱいアイコンがありますね。</p>
+
+<p>これもすべてowncloudの機能の一部なんです。</p>
+
+<h3>ピクチャ</h3>
+
+<p><img src="http://www.yujilow.net/images/post/own03.png"><br/>
+アップロードされた画像フォルダが表示されます。<br/>
+画像をクリックすると、、、<br/>
+<img src="http://www.yujilow.net/images/post/own04.png"><br/>
+このように、モーダルで表示されます。<br/>
+ちなみに、この写真は夏休みにNYに行ったときの写真です。どうでもいいです。<br/>
+旅行の写真をみんなで見ながら、ファイル共有で写真をダウンロードするという利用シーンが思い浮かびますね。</p>
+
+<h3>カレンダー</h3>
+
+<p><img src="http://www.yujilow.net/images/post/own05.png"><br/>
+カレンダーです。月表示です。<br/>
+<img src="http://www.yujilow.net/images/post/own06.png"><br/>
+週表示もあります。ドラッグ&amp;ドロップで予定を追加したり、すでにある予定を移動したりできます。<br/>
+CalDavというカレンダー用プロトコルを使用することにより、Macの標準カレンダーアプリで操作することができるようになります。Googleカレンダーとほぼ一緒ですね。</p>
+
+<h3>ブックマーク</h3>
+
+<p><img src="http://www.yujilow.net/images/post/own07.png"><br/>
+ブックマークです。
+<img src="http://www.yujilow.net/images/post/own08.png"><br/>
+ブックマークレットを使用して、ブックマークを追加することもできます。</p>
+
+<h3>Rainloop</h3>
+
+<p><img src="http://www.yujilow.net/images/post/own09.png"><br/>
+プラグインを使用することで、オープンソースwebメーラであるRainloopを利用することもできます。すごいですね。</p>
+
+<h3>他にも、、、</h3>
+
+<p><img src="http://www.yujilow.net/images/post/own10.png"><br/>
+<a href="https://apps.owncloud.com/">https://apps.owncloud.com/</a>には、owncloudで使用できるプラグインがたくさんあります。<br/>
+ownCloud SMSなんてちょっと気になりますね。</p>
+
+<p><img src="http://www.yujilow.net/images/post/own11.png"><br/>
+また、「ファイル」から動画や音楽をストリーミング再生することもできます。意外と便利です。</p>
+
+<h3>まとめ</h3>
+
+<p>owncloudの一番素晴らしいところは、これらのデータを<strong>すべて手元においておける</strong>という点です。<br/>
+GoogleカレンダーやDropBoxを利用していると、どうしてもこれらの会社と一蓮托生となってしまいます。GoogleReaderがいい例ですね。<br/>
+自分でサービスを構築すれば、自分が飽きるまでサービスは継続するし、利用規約もないのでものすごい使い方しても大丈夫です。<br/>
+どんな用途でも使用できる、超自分勝手サービスへと育てましょう。</p>
+
+<p>#スクショ取る前にブックマークバー隠しとけばよかった、、、</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[内向きDNSのすゝめ]]></title>
+    <link href="http://www.yujilow.net/2014-12-27/dns-server-must-be-built"/>
+    <updated>2014-12-27T18:47:50+09:00</updated>
+    <id>http://www.yujilow.net/2014-12-27/dns-server-must-be-built</id>
+    <content type="html"><![CDATA[<p>宅内専用のDNSサーバを設置すると、かなり便利なことがありますよ。</p>
+
+<!--more-->
+
+
+<h3>設置してよかったこと</h3>
+
+<ul>
+<li>サーバの名前がわかりやすくなる</li>
+<li>自宅と外部で同じ名前のアドレスが利用できる</li>
+<li>外部から自宅サーバへのssh接続が楽になる</li>
+<li>自己満足</li>
+</ul>
+
+
+<h3>詳細</h3>
+
+<h4>1. サーバの名前がわかりやすい</h4>
+
+<p>192.168.0.xxxって言われるよりも、www.yujilow.netって言われたほうがわかりやすいですよね。</p>
+
+<h4>2. 自宅と外部で同じ名前のアドレスが利用できる</h4>
+
+<p>外部公開しているドメインで内部からはアクセス出来ないことはご存知だと思います。</p>
+
+<p>gitなんかは、リモートリポジトリをgit.domain.com(外部)と192.168.0.xxx(内部)で登録してたりします。あほらしいですね。</p>
+
+<p>内向きDNSを利用することにより、その問題が解決します。</p>
+
+<p>それはつまり、自宅サーバをVPSのように利用できるようになるということです。便利ですね。</p>
+
+<h4>3. 外部から自宅サーバへの接続が楽になる</h4>
+
+<p>外部公開していないサーバへも外部からドメインを利用してssh接続できるようになります。</p>
+
+<p>やり方を説明します。</p>
+
+<p>外部接続用サーバを一台設置します。僕はVPNサーバと併用しています。</p>
+
+<p>便宜的に、このサーバをlogin.domain.comとします。</p>
+
+<p>sshのコンフィグを設定します。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Host login
+</span><span class='line'>        User username
+</span><span class='line'>        Port 22
+</span><span class='line'>        HostName login.domain.com
+</span><span class='line'>        IdentityFile    ~/.ssh/private_key
+</span><span class='line'>
+</span><span class='line'>Host *.domain.com
+</span><span class='line'>                User username
+</span><span class='line'>                ProxyCommand ssh login -W %h:%p
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>つまり、login.domain.comを踏み台にしてその下の*.domain.comへと接続するのです。</p>
+
+<p>こうすることによって、sshを外部公開するサーバは1台だけで済みます。この１台のセキュリティは完璧にしておきましょうね。</p>
+
+<p>え？VPNだけでいいじゃないかって？うるせえ！！</p>
+
+<h4>4. 自己満足</h4>
+
+<p>「俺、自分ちにDNSあるんだぜ〜」と、人知れずニヤニヤできます。</p>
+
+<p>自宅サーバを作る理由なんて、大体が自己満足の達成です。思いっきりニヤニヤしておきましょう。</p>
+
+<p>ただし、ニヤニヤを通り越して知り合いにいろいろ吹聴してまわると、大抵ウザがられます。気をつけましょう。</p>
+
+<h3>まとめ</h3>
+
+<ul>
+<li>内向き便利</li>
+<li>hostsいじるよりもよっぽど便利</li>
+<li>自己満足って大事</li>
+</ul>
+
+
+<p>次はdhcpを建てたいなあ、、、</p>
+]]></content>
+  </entry>
+  
+</feed>

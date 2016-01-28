@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: octopress | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[自宅サーバ+octopressでブログを公開するまで]]></title>
+    <link href="http://www.yujilow.net/2014-12-27/how-to-move-octopress"/>
+    <updated>2014-12-27T18:19:22+09:00</updated>
+    <id>http://www.yujilow.net/2014-12-27/how-to-move-octopress</id>
+    <content type="html"><![CDATA[<p>今までgithub pagesで運用していたブログを自宅サーバに移行しました。</p>
+
+<p>いろいろと不満が出てきたので、、、</p>
+
+<!--more-->
+
+
+<h3>不満</h3>
+
+<p>不満だったのは以下のことでした。</p>
+
+<ul>
+<li>テーマの変更が少しめんどくさい</li>
+<li>大きな変更を行うといちいちリポジトリを壊すのがこわい</li>
+<li>独自ドメインが使いたい</li>
+<li>時間かけたブログ改変がうまく当たらない←主にこれ</li>
+</ul>
+
+
+<h3>構成</h3>
+
+<p>構成は以下の通り。</p>
+
+<ul>
+<li>kvm VM(1CPU, メモリ1GB)</li>
+<li>Debian</li>
+<li>Apache</li>
+</ul>
+
+
+<h3>ブログ移行のすべて</h3>
+
+<h4>1. Apacheの設定</h4>
+
+<p>インストール<br/>
+<code>
+$ sudo apt-get install apache2
+</code></p>
+
+<p>/etc/apache2/conf.dの下に、blog.confを作成(名前はなんでもいい)</p>
+
+<p>中には、こんなかんじで記述します。</p>
+
+<pre><code>NameVirtualHost *:80
+
+&lt;VirtualHost *:80&gt;
+    ServerName www.yujilow.net
+    DocumentRoot /path/to/blog
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p> タグ内の<code>ServerName</code>にサブドメインを、<code>DocumentRoot</code>に、ブログ格納フォルダを設定します。<br/>
+<VirtualHost>を追加すれば、複数サブドメインをひとつのApacheで動作させることができます。</p>
+
+<h4>2. octopressの設定</h4>
+
+<p>Rakefileを編集します。</p>
+
+<pre><code>## -- Rsync Deploy config -- ##
+# Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
+ssh_user       = “username@www.yujilow.net"
+ssh_port       = "22"
+document_root  = “path/to/blog"
+rsync_delete   = false
+rsync_args     = ""  # Any extra arguments to pass to rsync
+deploy_default = "rsync"
+</code></pre>
+
+<p>deploy_defaultを”rsync”に設定し、sshの情報を記述します。</p>
+
+<h4>3. DNSの設定</h4>
+
+<p>ドメインを取得したサービスで、DNSの設定をします。</p>
+
+<p>僕はお名前.comでドメインを取得しました。</p>
+
+<p>DNSルーティングで、”www.yujilow.net” を、自宅のIPアドレスで解決できるように設定します。</p>
+
+<p>固定IPで契約していない場合は、ddns設定をするといいでしょう。僕は、無料ドメインでddns設定を行い、CNAME設定を行っています。</p>
+
+<p>本当は昔のブログから301リダイレクトを張らなきゃいけないんですが、僕はほっといてます。SEO的にあまりよろしくありません。</p>
+
+<h3>気をつけること</h3>
+
+<p>ブログのパーマリンクには気を使いましょう。</p>
+
+<p>octopressのアップデートで、カテゴリの最初が強制的に小文字になってしまうようになりました。</p>
+
+<p>そのせいで、ほぼリンクが全て置き換わるようになりました。めちゃくちゃですね。</p>
+
+<p>今はパーマリンクにはカテゴリは使用せず、日付を利用するようにしています。</p>
+
+<p>こんなかんじで移行しました。参考になれば幸いです。</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: subsonic | Yujilow's Note]]></title>
+  <link href="http://www.yujilow.net/blog/categories/subsonic/atom.xml" rel="self"/>
+  <link href="http://www.yujilow.net/"/>
+  <updated>2015-12-28T15:14:20+09:00</updated>
+  <id>http://www.yujilow.net/</id>
+  <author>
+    <name><![CDATA[yujilow]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Macで使える、最強SubSonicクライアントはこれだ！]]></title>
+    <link href="http://www.yujilow.net/2015-01-17/the-best-subsonic-client-for-mac-is-it"/>
+    <updated>2015-01-17T20:36:24+09:00</updated>
+    <id>http://www.yujilow.net/2015-01-17/the-best-subsonic-client-for-mac-is-it</id>
+    <content type="html"><![CDATA[<p>散々迷った結果、いい感じに落ち着いたSubSonicクライアントを紹介します。</p>
+
+<!--more-->
+
+
+<h3>Mac</h3>
+
+<p><a href="http://www.subsonic.org/pages/apps.jsp">公式</a>には、多くのクライアントソフトが載ってますね。<br/>
+Macで使えるクライアントは、<a href="http://www.subsonic.org/pages/apps.jsp#submariner">Submariner</a> と <a href="http://www.subsonic.org/pages/apps.jsp#thumper">Thumper</a>でしょうか。</p>
+
+<h3>使ってみた</h3>
+
+<p>まずはSubmarinerから。あれ？OK押しても設定項目が消えない、接続できない、あれれ、、、<br/>
+サーバに接続することすら叶いませんでした。とほほ。</p>
+
+<h3>気を取り直して</h3>
+
+<p>Thumperを使ってみよう。Githubから.appをダウンロードしてきて、zipを解凍して、起動！あれ、<strong>起動しない</strong>。<br/>
+起動すらできませんでした。とほほほほ。</p>
+
+<h3>イチかバチかを思いついた</h3>
+
+<p>Mac用のアプリはだめだね。どうしようか、、、<br/>
+そういえば、<strong>AndroidアプリをChromeで使う</strong>方法があったっけ。</p>
+
+<h3>試してみた</h3>
+
+<p>ARChonというランタイムを使用します。</p>
+
+<p>{% img <a href="https://camo.githubusercontent.com/a97f2daa90c81be81c0459136067b016fa9215f7/687474703a2f2f763134642e636f6d2f672f6368726f6d6561706b732f342e706e67">https://camo.githubusercontent.com/a97f2daa90c81be81c0459136067b016fa9215f7/687474703a2f2f763134642e636f6d2f672f6368726f6d6561706b732f342e706e67</a> %}<br/>
+利用シーン</p>
+
+<p>Androidアプリには、使いやすいと評判の高い<a href="https://play.google.com/store/apps/details?id=com.thejoshwa.ultrasonic.androidapp&amp;hl=ja">UltraSonic</a>を利用します。</p>
+
+<h3>導入</h3>
+
+<h4>1. ARChonをインストール</h4>
+
+<p><a href="http://tabkul.com/?p=72610">Windows版Chrome拡張『ARChon』でAndroidアプリを起動した話</a><br/>
+こちらのページを参考に、ARChonをインストールします。<br/>
+MACでもWinでもOKなはずです。</p>
+
+<h4>2. apkを変換</h4>
+
+<p><a href="http://plaza.rakuten.co.jp/jashi/diary/201406170000/">どうにか</a>、<a href="https://chrome.google.com/webstore/detail/apk-downloader/cgihflhdpokeobcfimliamffejfnmfii">こうにか</a>して入手したUltraSonicのapkを変換します。<br/>
+僕は、Chromeアプリの<a href="https://chrome.google.com/webstore/detail/twerk/jhdnjmjhmfihbfjdgmnappnoaehnhiaf">twerk</a>を利用しました。これで問題無いと思います。</p>
+
+<h4>3. UltraSonicをインストール</h4>
+
+<p>ARChonと全く同じ要領で、UltraSonicをインストールします。</p>
+
+<h4>4. おしまい</h4>
+
+<p>{% img /images/post/subsonic01.png %}<br/>
+無事、使えるようになりました。</p>
+
+<h3>使用感</h3>
+
+<p>正直、実用に耐えうるのかは心配でした。しかし、それは杞憂でした。<br/>
+挙動、サウンド、機能、すべての面において申し分ない動作をしてくれます。<br/>
+こりゃすげえ！</p>
+
+<h3>まとめ</h3>
+
+<p>へたなネイティブアプリを使うよりも、これからはARChonの時代が来るかもしれない。</p>
+]]></content>
+  </entry>
+  
+</feed>

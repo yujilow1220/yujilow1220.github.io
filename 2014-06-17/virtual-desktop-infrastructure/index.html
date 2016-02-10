@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.yujilow.net/2014-06-17/virtual-desktop-infrastructure">
+  <link rel="canonical" href="http://www.yujilow.net/2014-06-16/virtual-desktop-infrastructure">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/bootstrap/bootstrap.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/bootstrap/responsive.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -118,7 +118,7 @@
 
 
 
-<time class='entry-date' datetime='2014-06-17T00:49:01+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:49 am</span></time>
+<time class='entry-date' datetime='2014-06-16T11:49:01-04:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:49 am</span></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -239,6 +239,64 @@ USBレンダリング機能とかもあったような。<br/>
 
 <p>詳しくはまた追記します。<br/>
 家庭でのVDIは、グラフィックが鬼門ですね、、、VT-d対応ハードがほしい。</p>
+
+<h2>追記(2016/02/09)</h2>
+
+<p>この記事を書いてしばらく経って、状況が変わってきたので追記します。</p>
+
+<p>まず、仮想化基盤における変化。</p>
+
+<h2>仮想化基盤</h2>
+
+<h3>VMWare ESXiに Embedded Clientが登場</h3>
+
+<p>VMWare ESXiにホスト搭載型のクライアントが登場しました。</p>
+
+<p>詳しくはこちら。</p>
+
+<p><a href="http://yujilow1220.github.io/2015-09-23/esxi-new-official-web-client">VMWare ESXi無償版対応公式Webクライアント ESXi Embedded Host Clientを試してみた</a></p>
+
+<p>これで、Windows縛りという制約がなくなりました。よかったよかった。</p>
+
+<h3>Mac OS XにApple純正のハイパーバイザ「Hypervisor.framework」が出現</h3>
+
+<p>長らく純正のハイパーバイザが存在しなかったOSXに、とうとうハイパーバイザが登場しました。</p>
+
+<p>早速、この仕組を利用した仮想化基盤である「xhyve」が登場しています。</p>
+
+<p><a href="http://ascii.jp/elem/000/001/043/1043010/">ascii 「boot2docker」も動作!! 「Hypervisor.framework」が変えるOS Xの仮想化環境</a></p>
+
+<p>「iMacをサーバにする」という新たな選択肢が増えましたね。または、Mac Proを買う口実に。。。</p>
+
+<h2>リモートデスクトップ</h2>
+
+<p>リモートデスクトップに関しては、あまり変化なさそうです。しいて言えば、Chrome リモートデスクトップが登場したくらいでしょうか。</p>
+
+<p>Ubuntuで試しましたが、ChromeのOSS版であるChromiumでも動作しました。かなり便利に使えるので、セキュリティにさえ気を使えば強力な選択肢になりえます。</p>
+
+<p>しかし、動画関連が弱いですね。</p>
+
+<p>あ、あとSplashtopが公式に14.04に対応しました。めでたしめでたし。</p>
+
+<h2>この記事の後に試したこと</h2>
+
+<p>VDIの実験をしました。それは、<strong>VGAパススルー状態でのRDPは快適か</strong>という実験です。</p>
+
+<p>ここでのRDPは、Windows標準のリモートデスクトップのことです。</p>
+
+<p>結論を言うと、非常に快適でした。重いFlashもさくさく動き、転送されてくる画面は圧縮済み。なんとまあ素晴らしい状態でした。</p>
+
+<p>VGAに不具合があったのか、パススルーがうまくいってなかったのかわかりませんが、たまにqemuがハングしたので残念ながら破棄。すごく使いやすかったのに。。。</p>
+
+<h2>追記まとめ</h2>
+
+<p>４月になったらまたいろいろ試したいです。お金が貯まるまで我慢。。。</p>
+
+<h2>お知らせ</h2>
+
+<p>ブログ移転しました。ESXiと家についても書く予定なので、ぜひ来てください！</p>
+
+<p><a href="http://yujilow.hatenablog.com">こちら</a></p>
 </div>
 
 
@@ -254,7 +312,7 @@ USBレンダリング機能とかもあったような。<br/>
 
 
 
-<time class='entry-date' datetime='2014-06-17T00:49:01+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:49 am</span></time>
+<time class='entry-date' datetime='2014-06-16T11:49:01-04:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:49 am</span></time>
       
 
 <span class="categories">
@@ -278,7 +336,7 @@ USBレンダリング機能とかもあったような。<br/>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.yujilow.net/2014-06-17/virtual-desktop-infrastructure" data-via="yujilow1220" data-counturl="http://www.yujilow.net/2014-06-17/virtual-desktop-infrastructure" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.yujilow.net/2014-06-16/virtual-desktop-infrastructure" data-via="yujilow1220" data-counturl="http://www.yujilow.net/2014-06-16/virtual-desktop-infrastructure" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -304,7 +362,7 @@ USBレンダリング機能とかもあったような。<br/>
       
       <li><a href="/blog/archives">Blog Archives</a></li>
       
-      <li class="next"><a class="basic-alignment right" href="/2014-06-18/virt-manager-on-osx"
+      <li class="next"><a class="basic-alignment right" href="/2014-06-17/virt-manager-on-osx"
         title="Next Post: virt-managerをMacにインストール(できない)">virt-managerをMacにインストール(できない)
         &raquo;</a></li>
       
@@ -377,7 +435,7 @@ USBレンダリング機能とかもあったような。<br/>
   </div>
   <footer role="contentinfo" class="page-footer"><hr>
 <p>
-  Copyright &copy; 2015 - yujilow -
+  Copyright &copy; 2016 - yujilow -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
@@ -389,8 +447,8 @@ USBレンダリング機能とかもあったような。<br/>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://www.yujilow.net/2014-06-17/virtual-desktop-infrastructure';
-        var disqus_url = 'http://www.yujilow.net/2014-06-17/virtual-desktop-infrastructure';
+        var disqus_identifier = 'http://www.yujilow.net/2014-06-16/virtual-desktop-infrastructure';
+        var disqus_url = 'http://www.yujilow.net/2014-06-16/virtual-desktop-infrastructure';
         var disqus_script = 'embed.js';
       
     (function () {
